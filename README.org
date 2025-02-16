@@ -1,0 +1,12 @@
+:PROPERTIES:
+:header-args: :results silent
+:END:
+#+title: WSL 2 configuration
+#+author: Aaron Kunde
+#+email: aaron.kunde@web.de
+Settings and descriptions of the WSL 2 configuration.
+
+This project describes the configuration of the WSL 2 and scripts to set up this configuration.
+
+* Prerequisites
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian distribution with the WSL version 2.4.11.0.
