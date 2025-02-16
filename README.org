@@ -6,14 +6,16 @@ Settings and descriptions of the WSL 2 configuration.
 This project describes the configuration of the WSL 2 and scripts to set up this configuration.
 
 * Prerequisites
-It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
 
 * Configuration
 To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed by root.
 #+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
-    set -e
+  set -e
 
-    <<apt_disable_recs>>
+  <<apt_disable_recs>>
+  <<apt_add_non-free>>
+  <<apt_update>>
 #+end_src
 
 ** Disable recommended packages
@@ -32,3 +34,24 @@ To verify, execution of
 should return:
 : APT::Install-Recommends "0";
 : APT::Install-Suggests "0";
+
+** TODO Add non-free packages
+To install non-free packages, add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
+#+name: apt_add_non-free
+#+begin_src shell :dir /sudo:: :results silent
+  sed /etc/apt/sources.list -e \
+      's/\(deb.* \)main/\1non-free non-free-firmware/' \
+      | tee /etc/apt/sources.list.d/debian.non-free.list
+#+end_src
+
+and update APT by executing
+#+name: apt_update
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get update
+#+end_src
+afterwards.
+
+To verify, execution of
+#+begin_src shell :results verbatim
+#+end_src
+
