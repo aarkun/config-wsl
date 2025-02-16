@@ -1,6 +1,3 @@
-:PROPERTIES:
-:header-args: :results silent
-:END:
 #+title: WSL 2 configuration
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
@@ -9,4 +6,29 @@ Settings and descriptions of the WSL 2 configuration.
 This project describes the configuration of the WSL 2 and scripts to set up this configuration.
 
 * Prerequisites
-It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian distribution with the WSL version 2.4.11.0.
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
+
+* Configuration
+To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed by root.
+#+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
+    set -e
+
+    <<apt_disable_recs>>
+#+end_src
+
+** Disable recommended packages
+Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does_not_install_additional_packages][Reduce Debian]], reconfigure /apt/ so that it does not install additional packages, by adding a new file ~/etc/apt/apt.conf.d/10get~:
+
+#+name: apt_disable_recs
+#+begin_src shell :dir /sudo:: :results silent
+  echo 'APT::Install-Recommends "0";' > /etc/apt/apt.conf.d/10get
+#+end_src
+
+To verify, execution of
+#+begin_src shell :results verbatim
+  apt-config dump | grep -e 'APT::Install-'
+#+end_src
+
+should return:
+: APT::Install-Recommends "0";
+: APT::Install-Suggests "0";
