@@ -6,3 +6,4 @@ sed /etc/apt/sources.list -e \
     's/\(deb.* \)main/\1non-free non-free-firmware/' \
     | tee /etc/apt/sources.list.d/debian.non-free.list
 apt-get update
+update-alternatives --set editor /usr/bin/vim.tiny

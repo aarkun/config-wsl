@@ -16,6 +16,7 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<apt_disable_recs>>
   <<apt_add_non-free>>
   <<apt_update>>
+  <<alternatives_set_editor>>
 #+end_src
 
 ** Disable recommended packages
@@ -51,7 +52,20 @@ and update APT by executing
 #+end_src
 afterwards.
 
+** Set default editor
+Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed /vim.tiny/:
+#+name: alternatives_set_editor
+#+begin_src shell :dir /sudo:: :results silent
+  update-alternatives --set editor /usr/bin/vim.tiny
+#+end_src
+
 To verify, execution of
 #+begin_src shell :results verbatim
+  update-alternatives --display editor | grep current
+#+end_src
+
+should result to:
+:   link currently points to /usr/bin/vim.tiny
+
 #+end_src
 
