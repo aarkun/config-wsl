@@ -116,3 +116,36 @@ Install packages for working with LaTeX. Emacs is already installed or will be a
 	  texlive-latex-extra \
 	  texlive-plain-generic
 #+end_src
+
+** Activate systemd                                                :obsolete:
+To use Podman or Docker properly, /systemctl/ is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. Because in newer versions (WSL version: 2.3.26.0) this is already done, the following steps should not be needed:
+
+1. Create a file in the WSL ~/etc/wsl.conf~, if not already exists:
+#+begin_src shell :dir /sudo:: :results silent
+  echo -e "[boot]\nsystemd=true" > /etc/wsl.conf
+#+end_src
+
+2. Restart WSL
+#+begin_src powershell
+  wsl --shutdown
+#+end_src
+
+3. To check, if ~systemctl~ works, executing
+#+begin_src shell :results verbatim
+  systemctl list-unit-files --type=service
+#+end_src
+
+should result in something like:
+#+begin_example
+  UNIT FILE                              STATE           PRESET
+  apt-daily-upgrade.service              static          -
+  ...
+  x11-common.service                     masked          enabled
+
+  115 unit files listed.
+#+end_example
+
+*Note*: To have systemctl working for non-root users, /dbus-user-session/ must be installed and running. It is not installed as default, but comes as a dependency of /podman/ or /gnupg/. After installation of /dbus-user-session/, it may be necessary to terminate WSL with:
+#+begin_src powershell
+  wsl --terminate <<Distro>>
+#+end_src
