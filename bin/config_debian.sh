@@ -10,3 +10,27 @@ sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
 apt-get update
+apt-get install -y \
+	aspell-de \
+	bash-completion \
+	ca-certificates \
+	curl \
+	dos2unix \
+	emacs \
+	emacs-common-non-dfsg \
+	file \
+	git \
+	gitk \
+	gnupg \
+	gnuplot \
+	man-db \
+	net-tools \
+	netcat-openbsd \
+	markdown \
+	openssh-client \
+	patch
+apt-get install -y \
+	auctex \
+	texlive-latex-recommended \
+	texlive-latex-extra \
+	texlive-plain-generic

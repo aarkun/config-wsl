@@ -19,6 +19,8 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<locale_install_de>>
 
   <<apt_update>>
+  <<install_global_base_software>>
+  <<install_global_latex>>
 #+end_src
 
 ** Disable recommended packages
@@ -38,8 +40,8 @@ should return:
 : APT::Install-Recommends "0";
 : APT::Install-Suggests "0";
 
-** TODO Add non-free packages
-To install non-free packages, add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
+** Add non-free packages
+To install non-free packages (like /emacs-common-non-dfsg/), add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
 #+name: apt_add_non-free
 #+begin_src shell :dir /sudo:: :results silent
   sed /etc/apt/sources.list -e \
@@ -79,3 +81,38 @@ To use /de_DE.UTF-8/ in other programs, like Emacs, these additional locales mus
 
 ** OPTIONAL: Set locale for scripts                                :optional:
 Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now the default is /en_EN.UTF-8/ is used.
+
+** Install global software
+Install software for every day use:
+#+name: install_global_base_software
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  aspell-de \
+	  bash-completion \
+	  ca-certificates \
+	  curl \
+	  dos2unix \
+	  emacs \
+	  emacs-common-non-dfsg \
+	  file \
+	  git \
+	  gitk \
+	  gnupg \
+	  gnuplot \
+	  man-db \
+	  net-tools \
+	  netcat-openbsd \
+	  markdown \
+	  openssh-client \
+	  patch
+#+end_src
+
+Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
+#+name: install_global_latex
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  auctex \
+	  texlive-latex-recommended \
+	  texlive-latex-extra \
+	  texlive-plain-generic
+#+end_src
