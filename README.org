@@ -15,8 +15,10 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<apt_disable_recs>>
   <<apt_add_non-free>>
-  <<apt_update>>
   <<alternatives_set_editor>>
+  <<locale_install_de>>
+
+  <<apt_update>>
 #+end_src
 
 ** Disable recommended packages
@@ -67,5 +69,13 @@ To verify, execution of
 should result to:
 :   link currently points to /usr/bin/vim.tiny
 
+** Add needed locales
+To use /de_DE.UTF-8/ in other programs, like Emacs, these additional locales must at least be installed, like it is described at https://wiki.debian.org/Locale:
+#+name: locale_install_de
+#+begin_src shell :dir /sudo:: :results verbatim
+  sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
+  locale-gen
 #+end_src
 
+** OPTIONAL: Set locale for scripts                                :optional:
+Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now the default is /en_EN.UTF-8/ is used.
