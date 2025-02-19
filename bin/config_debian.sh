@@ -46,3 +46,4 @@ apt-get install -y podman
 apt-get install --mark-auto \
 	uidmap \
 	slirp4netns
+apt-get install -y podman-compose

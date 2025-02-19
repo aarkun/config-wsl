@@ -24,6 +24,7 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<purge_docker_and_podman>>
   <<install_podman>>
+  <<install_podman-compose>>
 #+end_src
 
 ** Disable recommended packages
@@ -186,18 +187,163 @@ Based on https://docs.podman.io/en/latest/Introduction.html, execution of
 
 should restult in:
 : hey there
-#+begin_src shell
-  sudo apt-get purge docker podman podman-compose docker-compose containernetworking-plugins
+
+** Use docker-compose files
+There are several alternatives to use Docker Compose files together with Podman:
+1. [[* Use Podman Compose 1.0.3][Use Podman Compose]]
+2. [[* OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman][Use Docker Compose]]
+3. Use Podman Pods and generate Kubernetes files, like described on https://www.redhat.com/en/blog/compose-podman-pods
+
+*** Use Podman Compose 1.0.3
+This is based on https://github.com/containers/podman-compose. Since this is the simpliest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
+To Install Podman Compose, just execute:
+#+name: install_podman-compose
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get install -y podman-compose
 #+end_src
 
-*** TODO Installation
-Based on https://podman.io/docs/installation, install podman with its recommended packages, which are needed for a smooth experience:
+*** OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman       :optional:
+Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by ~podman-compose~ are needed. This may lead to side-effects with networking.
+
+1. Verify, that Podman socket is active by executing
+   #+begin_src shell :results verbatim
+      systemctl status podman.socket
+   #+end_src
+
+   which should result to something like:
+   #+begin_example
+     ● podman.socket - Podman API Socket
+	  Loaded: loaded (/lib/systemd/system/podman.socket; enabled; preset: enabled)
+	  Active: active (listening) since Mon 2025-02-17 08:59:30 CET; 2 days ago
+	Triggers: ● podman.service
+	    Docs: man:podman-system-service(1)
+	  Listen: /run/podman/podman.sock (Stream)
+	  CGroup: /system.slice/podman.socket
+
+     Feb 17 08:59:30 6RBVJR3 systemd[1]: Listening on podman.socket - Podman API Socket.
+   #+end_example
+
+2. Install /docker-compose/ and /podman-docker/ as dependency:
+   #+begin_src shell :dir /sudo:: :results silent
+       apt-get install -y docker-compose
+       apt-get install -y --mark-auto podman-docker
+   #+end_src
+
+3. Verify the communication with the Docker socket by executing:
+   #+begin_src shell :dir /sudo:: :results verbatim
+     curl -H "Content-Type: application/json" --unix-socket /var/run/docker.sock http://localhost/_ping
+   #+end_src
+
+   This should result to:
+   : OK
+
+4. Start Podman socket for regular user:
+   #+begin_src shell :results silent
+     systemctl --user enable podman.socket
+     systemctl --user start podman.socket
+   #+end_src
+
+   Verify the creation of the socket, by executing
+   #+begin_src shell :results verbatim
+     systemctl --user status podman.socket
+   #+end_src
+
+   which should return something like:
+   #+begin_example
+     ● podman.socket - Podman API Socket
+	  Loaded: loaded (/usr/lib/systemd/user/podman.socket; enabled; preset: enabled)
+	  Active: active (listening) since Wed 2025-02-19 17:10:37 CET; 7s ago
+	Triggers: ● podman.service
+	    Docs: man:podman-system-service(1)
+	  Listen: /run/user/1000/podman/podman.sock (Stream)
+	  CGroup: /user.slice/user-1000.slice/user@1000.service/app.slice/podman.socket
+
+     Feb 19 17:10:37 6RBVJR3 systemd[205]: Listening on podman.socket - Podman API Socket.
+   #+end_example
+
+5. Verify by executing ~docker-compose~ after setting the environment variable ~DOCKER_HOST~
+   #+begin_src shell
+     DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock docker-compose up
+   #+end_src
+
+*** TODO Needed for init containers
 #+begin_src shell
-  sudo apt-get install --install-recommends podman
+  sudo apt-get install catatonit
 #+end_src
 
-**** Install Dependencies
-Install new network stack for Podman >= 4, if not installed automatically:
+*** TODO Later dependencies for podman
 #+begin_src shell
-   sudo apt-get install netavark aardvark-dns
+  netavark aardvark-dns
+  buildah
+  +dbus-user-session+
+  fuse-overlayfs
+  catatonit
 #+end_src
+
+*** TODO Stuff to docker-compose
+https://github.com/containers/podman-compose/blob/devel/README.md
+https://docs.oracle.com/en/learn/podman-compose/index.html
+https://github.com/containers/podman/issues/13396
+https://www.redhat.com/sysadmin/container-networking-podman
+https://github.com/containers/podman/pull/17578
+https://github.com/containers/podman/issues/17499
+https://github.com/containers/podman/issues/17731
+Wird benötigt, wenn Features von docker-compose benötigt werden, die nicht von Podman compose unterstützt werden. Kann aber zu Nebeneffekten bei Netzwerken führen, da hierduch CNI als Default-Netzwerk-Backend gesetzt wird, was wiederum nicht dem Podman-Reinen default von netavark.
+
+
+*** OBSOLETE: Setup for Debian WSL2 Podman 3.x
+https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
+#+begin_src sh
+  mkdir -p $HOME/.config/containers/ &&
+  sed -e 's/.*cgroup_manager =.*/cgroup_manager = "cgroupfs"/' /usr/share/containers/containers.conf | sed -e 's/.*events_logger = .*/events_logger = "file"/' > ~/.config/containers/containers.conf
+#+end_src
+
+
+
+*** Networking-Probleme
+https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
+
+
+** TODO Basic SD
+#+begin_src
+
+#+end_src
+#+begin_src shell :results verbatim
+apt-cache show \
+
+
+	     xz-utils \
+
+	     unzip 
+#+end_src
+
+** TODO Install user software
+*** TODO Install asdf
+
+** TODO Weiteres für Entwicklung
+#+begin_src shell
+  apt-mark showauto \
+
+
+	 gimp \
+	 # To prevent error: https://stackoverflow.com/questions/17355863/cant-find-install-libxtst-so-6 \
+	 libxtst6 \
+	 # Maybe because of plantuml
+	 graphviz \
+	 bzip2 \
+
+	 # for IntelliJ \
+	 libdrm2 \
+	 libgbm1 \
+	 # To prevent error messages. See: https://gist.github.com/jeffcogswell/62395900725acef1c0a5a608f7eb7a05 \
+	 at-spi2-core \
+	 # To prevent error messages. See: https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo \
+	 libgl1-mesa-glx \
+
+#+end_src
+
+#+RESULTS:
+
+
+
+
