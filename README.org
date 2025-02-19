@@ -21,6 +21,9 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<apt_update>>
   <<install_global_base_software>>
   <<install_global_latex>>
+
+  <<purge_docker_and_podman>>
+  <<install_podman>>
 #+end_src
 
 ** Disable recommended packages
@@ -148,4 +151,53 @@ should result in something like:
 *Note*: To have systemctl working for non-root users, /dbus-user-session/ must be installed and running. It is not installed as default, but comes as a dependency of /podman/ or /gnupg/. After installation of /dbus-user-session/, it may be necessary to terminate WSL with:
 #+begin_src powershell
   wsl --terminate <<Distro>>
+#+end_src
+
+** Install Podman 4.3.1
+
+*** Deinstall old versions
+If an older version of podman or docker is installed, it should be purged:
+#+name: purge_docker_and_podman
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get purge -y \
+	  docker \
+	  docker-compose \
+	  containernetworking-plugins \
+	  podman \
+	  podman-compose
+  apt-get autopurge -y
+#+end_src
+
+*** Install Podman
+Based on https://podman.io/docs/installation, install podman and its necessary dependencies:
+#+name: install_podman
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get install -y podman
+  apt-get install --mark-auto \
+	  uidmap \
+	  slirp4netns
+#+end_src
+
+*** Verify
+Based on https://docs.podman.io/en/latest/Introduction.html, execution of
+#+begin_src shell :results verbatim
+  podman run docker.io/library/busybox echo "hey there"
+#+end_src
+
+should restult in:
+: hey there
+#+begin_src shell
+  sudo apt-get purge docker podman podman-compose docker-compose containernetworking-plugins
+#+end_src
+
+*** TODO Installation
+Based on https://podman.io/docs/installation, install podman with its recommended packages, which are needed for a smooth experience:
+#+begin_src shell
+  sudo apt-get install --install-recommends podman
+#+end_src
+
+**** Install Dependencies
+Install new network stack for Podman >= 4, if not installed automatically:
+#+begin_src shell
+   sudo apt-get install netavark aardvark-dns
 #+end_src

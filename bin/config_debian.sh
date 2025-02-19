@@ -34,3 +34,15 @@ apt-get install -y \
 	texlive-latex-recommended \
 	texlive-latex-extra \
 	texlive-plain-generic
+
+apt-get purge -y \
+	docker \
+	docker-compose \
+	containernetworking-plugins \
+	podman \
+	podman-compose
+apt-get autopurge -y
+apt-get install -y podman
+apt-get install --mark-auto \
+	uidmap \
+	slirp4netns
