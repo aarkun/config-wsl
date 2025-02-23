@@ -304,6 +304,19 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 
+** Configure user environment
+#+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
+  set -e
+
+  <<gpg_add_tty>>
+#+end_src
+
+*** Configure GPG
+To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.bashrc~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
+#+name: gpg_add_tty
+#+begin_src shell :results silent
+  echo 'export GPG_TTY=$(tty)' >> ~/.bashrc
+#+end_src
 ** TODO Basic SD
 #+begin_src
 
