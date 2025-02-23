@@ -8,7 +8,7 @@ This project describes the configuration of the WSL 2 and scripts to set up this
 * Prerequisites
 It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
 
-* Configuration
+* Configure WSL Debian
 To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed by root.
 #+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
@@ -303,15 +303,14 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 *** Networking-Probleme
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
-
-** Configure user environment
+* Configure user environment
 #+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
   <<gpg_add_tty>>
 #+end_src
 
-*** Configure GPG
+** Configure GPG
 To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.bashrc~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
 #+name: gpg_add_tty
 #+begin_src shell :results silent
