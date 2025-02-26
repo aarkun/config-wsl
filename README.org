@@ -290,8 +290,7 @@ https://github.com/containers/podman/issues/17499
 https://github.com/containers/podman/issues/17731
 Wird benötigt, wenn Features von docker-compose benötigt werden, die nicht von Podman compose unterstützt werden. Kann aber zu Nebeneffekten bei Netzwerken führen, da hierduch CNI als Default-Netzwerk-Backend gesetzt wird, was wiederum nicht dem Podman-Reinen default von netavark.
 
-
-*** OBSOLETE: Setup for Debian WSL2 Podman 3.x
+*** TODO OBSOLETE: Setup for Debian WSL2 Podman 3.x                :obsolete:
 https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 #+begin_src sh
   mkdir -p $HOME/.config/containers/ &&
@@ -299,8 +298,7 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 #+end_src
 
 
-
-*** Networking-Probleme
+*** TODO Networking-Probleme
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 * Configure user environment
