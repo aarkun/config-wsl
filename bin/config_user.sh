@@ -16,3 +16,8 @@ mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
 echo -e '\n. <(asdf completion bash)' >> ~/.bashrc
+
+asdf plugin add kubectl
+asdf install kubectl latest
+asdf set -u kubectl latest
+echo -e '\n. <(kubectl completion bash)' >> ~/.bashrc

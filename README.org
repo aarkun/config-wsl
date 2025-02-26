@@ -315,6 +315,9 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   <<asdf_extract>>
   <<asdf_add_shims>>
   <<asdf_add_shell_completions>>
+
+  <<kubectl_install>>
+  <<kubectl_add_shell_completions>>
 #+end_src
 
 ** Configure GPG
@@ -428,6 +431,31 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    #+name: asdf_create_config
    #+begin_src shell
      echo 'legacy_version_file = yes' > ~/.asdfrc
+   #+end_src
+
+** Install kubectl
+1. To install the latest version of kubectl using asdf, execute:
+   #+name: kubectl_install
+   #+begin_src shell :results silent
+     asdf plugin add kubectl
+     asdf install kubectl latest
+     asdf set -u kubectl latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     kubectl version
+   #+end_src
+
+   Which should return something like:
+   : Client Version: v1.32.1
+   : Kustomize Version: v5.5.0
+   : Server Version: v1.31.4+rke2r1
+
+3. Install autocompletion for bash. Based on https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/, add a line to ~$HOME/.bashrc~:
+   #+name: kubectl_add_shell_completions
+   #+begin_src shell :results silent
+     echo -e '\n. <(kubectl completion bash)' >> ~/.bashrc
    #+end_src
 
 ** TODO Basic SD
