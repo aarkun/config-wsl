@@ -312,6 +312,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   <<ssh_add_start_ssh-agent_to_profile>>
   <<ssh_add_config>>
 
+  <<firefox_create_link>>
+
   <<asdf_download>>
   <<asdf_verify>>
   <<asdf_extract>>
@@ -329,6 +331,11 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   <<python_install>>
 
   <<azure-cli_install>>
+
+  <<idea_download>>
+  <<idea_verify>>
+  <<idea_extract>>
+  <<idea_create_link>>
 #+end_src
 
 ** Configure GPG
@@ -374,6 +381,15 @@ To always instruct a running SSH agent to add keys, add the following configurat
 #+name: ssh_add_config
 #+begin_src shell :results silent
   echo 'AddKeysToAgent yes' > ~/.ssh/config
+#+end_src
+
+** Create link to Firefox
+To use the Firefox, which is installed on the host system, create the following link in =~/.local/bin/=:
+#+name: firefox_create_link
+#+begin_src shell
+  mkdir -p ~/.local/bin
+  ln -fs "/mnt/c/Users/$USER/AppData/Local/Microsoft/WindowsApps/firefox.exe" \
+     ~/.local/bin/firefox
 #+end_src
 
 ** Install asdf
@@ -567,6 +583,35 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    :   "azure-cli-telemetry": "1.1.0",
    :   "extensions": {}
    : }
+
+** Install IntelliJ
+1. Download latest release files from https://www.jetbrains.com/idea/download/?section=linux:
+   #+name: idea_download
+   #+begin_src shell :results silent
+     IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
+     curl -O --output-dir /tmp \
+	  "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
+   #+end_src
+
+2. Verify checksum:
+   #+name: idea_verify
+   #+begin_src shell :results silent
+     grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$IDEA_INSTALLATION_FILE.sha256
+   #+end_src
+
+3. Extract binary:
+   #+name: idea_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
+   #+end_src
+
+4. Create link:
+   #+name: idea_create_link
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
+   #+end_src
 ** TODO Basic SD
 #+begin_src
 

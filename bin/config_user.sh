@@ -7,6 +7,10 @@ echo '' >> ~/.profile
 cat bin/start_ssh-agent.sh >> ~/.profile
 echo 'AddKeysToAgent yes' > ~/.ssh/config
 
+mkdir -p ~/.local/bin
+ln -fs "/mnt/c/Users/$USER/AppData/Local/Microsoft/WindowsApps/firefox.exe" \
+   ~/.local/bin/firefox
+
 ASDF_VERSION=v0.16.4
 ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
 curl -L -O --output-dir /tmp \
@@ -38,3 +42,12 @@ asdf set -u python 3.11.11
 asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
+
+IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
+curl -O --output-dir /tmp \
+     "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
+grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$IDEA_INSTALLATION_FILE.sha256
+mkdir -p ~/opt
+tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
+mkdir -p ~/opt
+find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
