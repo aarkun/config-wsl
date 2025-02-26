@@ -47,3 +47,8 @@ apt-get install --mark-auto \
 	uidmap \
 	slirp4netns
 apt-get install -y podman-compose
+
+apt-get install -y \
+	gcc \
+	zlib1g-dev \
+	libssl-dev

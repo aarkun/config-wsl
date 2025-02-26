@@ -25,6 +25,8 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<purge_docker_and_podman>>
   <<install_podman>>
   <<install_podman-compose>>
+
+  <<install_global_python-requirements>>
 #+end_src
 
 ** Disable recommended packages
@@ -321,6 +323,12 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<helm_install>>
   <<helm_add_shell_completions>>
+
+  <<make_install>>
+
+  <<python_install>>
+
+  <<azure-cli_install>>
 #+end_src
 
 ** Configure GPG
@@ -483,6 +491,82 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    #+begin_src shell :results silent
      echo -e '\n. <(helm completion bash)' >> ~/.bashrc
    #+end_src
+
+** Install make
+1. To install the latest version of make using asdf, execute:
+   #+name: make_install
+   #+begin_src shell :results silent
+     asdf plugin add make
+     asdf install make latest
+     asdf set -u make latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     make -v
+   #+end_src
+
+   Which should return something like:
+   : GNU Make 4.4.1
+   : Built for x86_64-pc-linux-gnu
+   : Copyright (C) 1988-2023 Free Software Foundation, Inc.
+   : License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
+   : This is free software: you are free to change and redistribute it.
+   : There is NO WARRANTY, to the extent permitted by law.
+
+** Install Python 3.11
+1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
+   #+name: install_global_python-requirements
+   #+begin_src shell :dir /sudo::
+     apt-get install -y \
+	     gcc \
+	     zlib1g-dev \
+	     libssl-dev
+   #+end_src
+
+   *Note*: These are the minimum required packages, to complete the installation. For later use, further packages may be needed.
+
+2. Furthermore, [[* Install make][make]] needs to be installed, which can be done using asdf.
+
+3. After that, Python 3.11.11 can be installed using asdf by executing:
+   #+name: python_install
+   #+begin_src shell :results silent
+     asdf plugin add python
+     asdf install python 3.11.11
+     asdf set -u python 3.11.11
+   #+end_src
+
+4. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     python --version
+   #+end_src
+
+   Which should return:
+   : Python 3.11.11
+
+** Install Azure CLI
+1. Before installing Azure CLI, a version of [[* Install Python 3.11][Python]] must be installed, which can be done using asdf.
+
+2. To install the latest version of azure-cli using asdf, execute:
+   #+name: azure-cli_install
+   #+begin_src shell :results silent
+     asdf plugin add azure-cli
+     asdf install azure-cli latest
+     asdf set -u azure-cli latest
+   #+end_src
+
+3. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     az version
+   #+end_src
+
+   Which should return something like:
+   : {
+   :   "azure-cli": "2.68.0",
+   :   "azure-cli-core": "2.68.0",
+   :   "azure-cli-telemetry": "1.1.0",
+   :   "extensions": {}
+   : }
 ** TODO Basic SD
 #+begin_src
 
