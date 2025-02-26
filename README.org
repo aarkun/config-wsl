@@ -306,10 +306,15 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   set -e
 
   <<gpg_add_tty>>
+
   <<ssh_add_start_ssh-agent_to_profile>>
   <<ssh_add_config>>
-  <<asdf_checkout>>
-  <<asdf_add_scripts>>
+
+  <<asdf_download>>
+  <<asdf_verify>>
+  <<asdf_extract>>
+  <<asdf_add_shims>>
+  <<asdf_add_shell_completions>>
 #+end_src
 
 ** Configure GPG
@@ -358,28 +363,72 @@ To always instruct a running SSH agent to add keys, add the following configurat
 #+end_src
 
 ** Install asdf
-Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]]:
+Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]] /Download Pre-compiled binary/:
+
+1. Download latest release files from https://github.com/asdf-vm/asdf/releases:
+   #+name: asdf_download
+   #+begin_src shell :results silent
+     ASDF_VERSION=v0.16.4
+     ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
+     curl -L -O --output-dir /tmp \
+	  "https://github.com/asdf-vm/asdf/releases/download/$ASDF_VERSION/$ASDF_INSTALLATION_FILE{,.md5}"
+   #+end_src
+
+2. Verify checksum:
+   #+name: asdf_verify
+   #+begin_src shell :results silent
+     grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$ASDF_INSTALLATION_FILE.md5
+   #+end_src
+
+3. Extract binary:
+   #+name: asdf_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/.local/bin
+     tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
+   #+end_src
+
+4. Verify installation. After relogin executing
+   #+begin_src shell :results verbatim
+     type -a asdf
+   #+end_src
+
+   should result to:
+   : asdf is /home/kunde/.local/bin/asdf
+
+5. The asdf shims directory must be added to ~PATH~:
+   #+name: asdf_add_shims
+   #+begin_src shell :results silent
+     echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
+   #+end_src
+
+6. To add shell completion, add a line this to ~$HOME/.bashrc~:
+   #+name: asdf_add_shell_completions
+   #+begin_src shell :results silent
+     echo -e '\n. <(asdf completion bash)' >> ~/.bashrc
+   #+end_src
+
+** Install asdf (legacy)                                           :obsolete:
+Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting started (pre-0.16.0)]]:
 
 1. Checkout latest release:
-   #+name: asdf_checkout
    #+begin_src shell :results silent
-       git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+       git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.15.0
    #+end_src
 
 2. Add script to ~$PATH~ and Bash completions:
-   #+name: asdf_add_scripts
    #+begin_src shell :results silent
-     echo -e '\nsource "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
-     echo 'source "$HOME/.asdf/completions/asdf.bash" ' >> ~/.bashrc
+     echo -e '\n. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+     echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
   #+end_src
 
-3. Create configuration, to support versions files used by other version managers:
+3. To take effect, relogin or create a new subshell
+
+** Configure asdf
+Create a configuration file ~$HOME/.asdfrc~, to support versions files used by other version managers:
    #+name: asdf_create_config
    #+begin_src shell
      echo 'legacy_version_file = yes' > ~/.asdfrc
    #+end_src
-
-4. To take effect, relogin or create a new subshell
 
 ** TODO Basic SD
 #+begin_src
