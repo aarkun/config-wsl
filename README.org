@@ -310,6 +310,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   <<gpg_add_tty>>
   <<ssh_add_start_ssh-agent_to_profile>>
   <<ssh_add_config>>
+  <<asdf_checkout>>
+  <<asdf_add_scripts>>
 #+end_src
 
 ** Configure GPG
@@ -356,6 +358,31 @@ To always instruct a running SSH agent to add keys, add the following configurat
 #+begin_src shell :results silent
   echo 'AddKeysToAgent yes' > ~/.ssh/config
 #+end_src
+
+** Install asdf
+Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]]:
+
+1. Checkout latest release:
+   #+name: asdf_checkout
+   #+begin_src shell :results silent
+       git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1
+   #+end_src
+
+2. Add script to ~$PATH~ and Bash completions:
+   #+name: asdf_add_scripts
+   #+begin_src shell :results silent
+     echo -e '\nsource "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+     echo 'source "$HOME/.asdf/completions/asdf.bash" ' >> ~/.bashrc
+  #+end_src
+
+3. Create configuration, to support versions files used by other version managers:
+   #+name: asdf_create_config
+   #+begin_src shell
+     echo 'legacy_version_file = yes' > ~/.asdfrc
+   #+end_src
+
+4. To take effect, relogin or create a new subshell
+
 ** TODO Basic SD
 #+begin_src
 
@@ -368,9 +395,6 @@ apt-cache show \
 
 	     unzip 
 #+end_src
-
-** TODO Install user software
-*** TODO Install asdf
 
 ** TODO Weiteres für Entwicklung
 #+begin_src shell
