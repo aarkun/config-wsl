@@ -313,10 +313,10 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 #+end_src
 
 ** Configure GPG
-To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.bashrc~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
+To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.profile~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
 #+name: gpg_add_tty
 #+begin_src shell :results silent
-  echo 'export GPG_TTY=$(tty)' >> ~/.bashrc
+  echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
 #+end_src
 
 ** Configure SSH agent
