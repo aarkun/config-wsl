@@ -308,6 +308,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   set -e
 
   <<gpg_add_tty>>
+  <<ssh_add_start_ssh-agent_to_profile>>
+  <<ssh_add_config>>
 #+end_src
 
 ** Configure GPG
@@ -315,6 +317,44 @@ To enable signing of git commits using the commandline, add the following config
 #+name: gpg_add_tty
 #+begin_src shell :results silent
   echo 'export GPG_TTY=$(tty)' >> ~/.bashrc
+#+end_src
+
+** Configure SSH agent
+Based on https://www.ssh.com/academy/ssh/agent, the SSH agent should be either started by adding
+#+begin_src shell
+  eval $(ssh-agent)
+#+end_src
+to ~$HOME/.profile~ or by using the provided ~/etc/X11/Xsession.d/90x11-common_ssh-agent~ for a system-wide start. Both ways are not suitable for WSL, because the first creates a new agent for each terminal and the latter does not work, because ~Xsession~ is never executed.
+
+Therefore, based on https://superuser.com/questions/1808572/how-to-automate-starting-the-ssh-agent-and-adding-my-keys-in-wsl2-for-windows, the following lines are added to ~$HOME/profile~
+#+begin_src shell :tangle bin/start_ssh-agent.sh :mkdirp yes :noweb yes
+  SSH_AGENT_ENV_FILE=.ssh/agent-env
+
+  if [ -z "$(pidof ssh-agent)" ]; then
+      ssh-agent | head -n2 > $SSH_AGENT_ENV_FILE
+  fi
+  if [ -f $SSH_AGENT_ENV_FILE ]; then
+      eval $(cat $SSH_AGENT_ENV_FILE)
+  fi
+#+end_src
+
+by executing:
+#+name: ssh_add_start_ssh-agent_to_profile
+#+begin_src shell :results silent
+  echo '' >> ~/.profile
+  cat bin/start_ssh-agent.sh >> ~/.profile
+#+end_src
+
+Another option could be, to use /systemd/ as user by by executing:
+#+begin_src shell
+  systemctl --user start ssh-agent
+#+end_src
+But this is not a suitable solution, because it does not set the necessary environment variables ~SSH_AUTH_SOCK~ in the current or a new terminal.
+
+To always instruct a running SSH agent to add keys, add the following configuration setting to your local ssh config file ~$HOME/.ssh/config~ before any ~Host~ or ~Match~ restrictions. Otherwise it will only be activated for this condition. Here it is set as the first option:
+#+name: ssh_add_config
+#+begin_src shell :results silent
+  echo 'AddKeysToAgent yes' > ~/.ssh/config
 #+end_src
 ** TODO Basic SD
 #+begin_src
