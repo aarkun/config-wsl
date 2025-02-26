@@ -318,6 +318,9 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<kubectl_install>>
   <<kubectl_add_shell_completions>>
+
+  <<helm_install>>
+  <<helm_add_shell_completions>>
 #+end_src
 
 ** Configure GPG
@@ -458,6 +461,28 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
      echo -e '\n. <(kubectl completion bash)' >> ~/.bashrc
    #+end_src
 
+** Install Helm
+1. To install the latest version of helm using asdf, execute:
+   #+name: helm_install
+   #+begin_src shell :results silent
+     asdf plugin add helm
+     asdf install helm latest
+     asdf set -u helm latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     helm version
+   #+end_src
+
+   Which should return something like:
+   : version.BuildInfo{Version:"v3.17.1", GitCommit:"980d8ac1939e39138101364400756af2bdee1da5", GitTreeState:"clean", GoVersion:"go1.23.5"}
+
+3. Install autocompletion for bash. Based on https://helm.sh/docs/helm/helm_completion_bash/#helm, add a line to ~$HOME/.bashrc~:
+   #+name: helm_add_shell_completions
+   #+begin_src shell :results silent
+     echo -e '\n. <(helm completion bash)' >> ~/.bashrc
+   #+end_src
 ** TODO Basic SD
 #+begin_src
 

@@ -21,3 +21,8 @@ asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
 echo -e '\n. <(kubectl completion bash)' >> ~/.bashrc
+
+asdf plugin add helm
+asdf install helm latest
+asdf set -u helm latest
+echo -e '\n. <(helm completion bash)' >> ~/.bashrc
