@@ -43,6 +43,9 @@ asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
 
+asdf plugin add golang
+asdf install golang latest
+
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"

@@ -332,6 +332,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<azure-cli_install>>
 
+  <<golang_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -654,6 +656,28 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 	     [WARNING Service-Kubelet]: kubelet service is not enabled, please run 'systemctl enable kubelet.service'
      error execution phase wait-control-plane: could not initialize a Kubernetes cluster
      ...
+   #+end_example
+
+** Install Go
+The actual used version of Go is project specific and not set globally. It is determined locally by an existing ~go.mod~ or ~.tool-versions~.
+
+1. To install the latest version of Go using asdf, execute:
+   #+name: golang_install
+   #+begin_src shell :results silent
+     asdf plugin add golang
+     asdf install golang latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     go version
+   #+end_src
+
+   Which should return something like:
+   #+begin_example
+     No version is set for command go
+     Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
+     golang 1.24.0
    #+end_example
 ** TODO Basic SD
 #+begin_src
