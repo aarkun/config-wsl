@@ -612,6 +612,49 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
      mkdir -p ~/opt
      find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
    #+end_src
+
+** Install minikube                                                    :fail:
+1. To install the latest version of minikube using asdf, execute:
+   #+name: minikube_install
+   #+begin_src shell :results silent
+     asdf plugin add minikube
+     asdf install minikube latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     minikube version
+   #+end_src
+
+   Which should return something like
+   #+begin_example
+     No version is set for command minikube
+     Consider adding one of the following versions in your config file at /home/kunde/.tool-versions
+     minikube 1.35.0
+   #+end_example
+
+3. The actual used version of minikube is project specific and not set globally. It is determined locally by an existing ~.tool-versions~. To use latest minikube together with Podman rootless execute the following in the project:
+   #+begin_src shell
+     asdf set minikube latest
+     minikube config set rootless true
+   #+end_src
+
+4. After that, minikube might be used in the project with:
+   #+begin_src shell
+     minikube start
+   #+end_src
+
+   *Note*: Actually minikube in combination with podman rootless and WSL 2 Debian does not work and leads to the folling errors and warnings:
+   #+begin_example
+     The minimum required version for podman is "4.9.0". your version is "4.3.1". minikube might not work. use at your own risk.
+     ...
+     stderr:
+	     [WARNING Swap]: swap is supported for cgroup v2 only. The kubelet must be properly configured to use swap. Please refer to https://kubernetes.io/docs/concepts/architecture/nodes/#swap-memory, or disable swap on the node
+	     [WARNING SystemVerification]: cgroups v1 support is in maintenance mode, please migrate to cgroups v2
+	     [WARNING Service-Kubelet]: kubelet service is not enabled, please run 'systemctl enable kubelet.service'
+     error execution phase wait-control-plane: could not initialize a Kubernetes cluster
+     ...
+   #+end_example
 ** TODO Basic SD
 #+begin_src
 
