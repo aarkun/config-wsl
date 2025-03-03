@@ -59,3 +59,16 @@ mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
 mkdir -p ~/opt
 find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
+
+DBEAVER_VERSION=25.0.0
+DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
+curl -L -O --output-dir /tmp \
+     https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+curl -L -O --output-dir /tmp \
+     https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
+grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
+     /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+mkdir -p ~/opt
+tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
+mkdir -p ~/opt
+ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver

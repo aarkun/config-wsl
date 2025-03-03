@@ -340,6 +340,11 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
   <<idea_verify>>
   <<idea_extract>>
   <<idea_create_link>>
+
+  <<dbeaver_download>>
+  <<dbeaver_verify>>
+  <<dbeaver_extract>>
+  <<dbeaver_create_link>>
 #+end_src
 
 ** Configure GPG
@@ -703,6 +708,39 @@ The actual used version of Java may be project specific. But at least a JRE is n
    : openjdk 21.0.5 2024-10-15 LTS
    : OpenJDK Runtime Environment Temurin-21.0.5+11 (build 21.0.5+11-LTS)
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
+
+** Install DBeaver
+1. Download latest release files from
+   #+name: dbeaver_download
+   #+begin_src shell :results silent
+     DBEAVER_VERSION=25.0.0
+     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
+     curl -L -O --output-dir /tmp \
+	  https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+     curl -L -O --output-dir /tmp \
+	  https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
+   #+end_src
+
+2. Verify checksum:
+   #+name: dbeaver_verify
+   #+begin_src shell :results silent
+     grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
+	  /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+   #+end_src
+
+3. Extract binary:
+   #+name: dbeaver_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
+   #+end_src
+
+4. Create link:
+   #+name: dbeaver_create_link
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
+   #+end_src
 ** TODO Basic SD
 #+begin_src
 
