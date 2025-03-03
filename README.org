@@ -600,7 +600,8 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 2. Verify checksum:
    #+name: idea_verify
    #+begin_src shell :results silent
-     grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$IDEA_INSTALLATION_FILE.sha256
+     grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
+	  /tmp/$IDEA_INSTALLATION_FILE.sha256
    #+end_src
 
 3. Extract binary:

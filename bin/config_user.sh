@@ -53,7 +53,8 @@ asdf set -u temurin-21.0.5+11.0.LTS
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
-grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$IDEA_INSTALLATION_FILE.sha256
+grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
+     /tmp/$IDEA_INSTALLATION_FILE.sha256
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
 mkdir -p ~/opt
