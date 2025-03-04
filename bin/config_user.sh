@@ -15,21 +15,22 @@ ASDF_VERSION=v0.16.4
 ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
 curl -L -O --output-dir /tmp \
      "https://github.com/asdf-vm/asdf/releases/download/$ASDF_VERSION/$ASDF_INSTALLATION_FILE{,.md5}"
-grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$ASDF_INSTALLATION_FILE.md5
+grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) \
+     /tmp/$ASDF_INSTALLATION_FILE.md5
 mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
-echo -e '\n. <(asdf completion bash)' >> ~/.bashrc
+echo -e '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
 
 asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
-echo -e '\n. <(kubectl completion bash)' >> ~/.bashrc
+echo -e '\n. <(kubectl completion bash)' >> ~/.profile
 
 asdf plugin add helm
 asdf install helm latest
 asdf set -u helm latest
-echo -e '\n. <(helm completion bash)' >> ~/.bashrc
+echo -e '\n. <(helm completion bash)' >> ~/.profile
 
 asdf plugin add make
 asdf install make latest
