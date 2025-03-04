@@ -416,7 +416,8 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
 2. Verify checksum:
    #+name: asdf_verify
    #+begin_src shell :results silent
-     grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) /tmp/$ASDF_INSTALLATION_FILE.md5
+     grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) \
+	  /tmp/$ASDF_INSTALLATION_FILE.md5
    #+end_src
 
 3. Extract binary:
