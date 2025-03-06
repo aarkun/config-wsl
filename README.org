@@ -336,6 +336,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<java_install>>
 
+  <<maven_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -745,6 +747,28 @@ The actual used version of Java may be project specific. But at least a JRE is n
      mkdir -p ~/opt
      ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
    #+end_src
+
+** Install Maven
+The actual used version of Maven is project specific and not set globally. It is determined locally by an ~.tool-versions~.
+
+1. To install the latest version of Go using asdf, execute:
+   #+name: maven_install
+   #+begin_src shell :results silent
+     asdf plugin add maven
+     asdf install maven latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     mvn --version
+   #+end_src
+
+   Which should return to:
+   : Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
+   : Maven home: /home/kunde/.asdf/installs/maven/3.9.9
+   : Java version: 21.0.5, vendor: Eclipse Adoptium, runtime: /home/kunde/.asdf/installs/java/temurin-21.0.5+11.0.LTS
+   : Default locale: en_US, platform encoding: UTF-8
+   : OS name: "linux", version: "5.15.167.4-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 ** TODO Basic SD
 #+begin_src
 

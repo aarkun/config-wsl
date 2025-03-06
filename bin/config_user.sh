@@ -51,6 +51,9 @@ asdf plugin add java
 asdf install temurin-21.0.5+11.0.LTS
 asdf set -u temurin-21.0.5+11.0.LTS
 
+asdf plugin add maven
+asdf install maven latest
+
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
