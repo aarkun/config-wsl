@@ -789,31 +789,16 @@ The actual used version of Gradle is project specific and not set globally. It i
 
    Which should result to something like:
    : gradle 8.12
-** TODO Basic SD
-#+begin_src
 
-#+end_src
-#+begin_src shell :results verbatim
-apt-cache show \
-
-
-	     xz-utils \
-
-	     unzip 
-#+end_src
 
 ** TODO Weiteres für Entwicklung
 #+begin_src shell
   apt-mark showauto \
-
-
 	 gimp \
 	 # To prevent error: https://stackoverflow.com/questions/17355863/cant-find-install-libxtst-so-6 \
 	 libxtst6 \
 	 # Maybe because of plantuml
 	 graphviz \
-	 bzip2 \
-
 	 # for IntelliJ \
 	 libdrm2 \
 	 libgbm1 \
@@ -821,10 +806,7 @@ apt-cache show \
 	 at-spi2-core \
 	 # To prevent error messages. See: https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo \
 	 libgl1-mesa-glx \
-
 #+end_src
-
-#+RESULTS:
 
 
 
