@@ -338,6 +338,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<maven_install>>
 
+  <<gradle_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -769,6 +771,24 @@ The actual used version of Maven is project specific and not set globally. It is
    : Java version: 21.0.5, vendor: Eclipse Adoptium, runtime: /home/kunde/.asdf/installs/java/temurin-21.0.5+11.0.LTS
    : Default locale: en_US, platform encoding: UTF-8
    : OS name: "linux", version: "5.15.167.4-microsoft-standard-wsl2", arch: "amd64", family: "unix"
+
+** Install Gradle
+The actual used version of Gradle is project specific and not set globally. It is determined locally by an ~.tool-versions~.
+
+1. To install the latest version of Go using asdf, execute:
+   #+name: gradle_install
+   #+begin_src shell :results silent
+     asdf plugin add gradle
+     asdf install gradle latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     gradle --version &2>1
+   #+end_src
+
+   Which should result to something like:
+   : gradle 8.12
 ** TODO Basic SD
 #+begin_src
 
