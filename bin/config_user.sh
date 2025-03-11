@@ -57,6 +57,8 @@ asdf install maven latest
 asdf plugin add gradle
 asdf install gradle latest
 
+asdf plugin add nodejs
+
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"

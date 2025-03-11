@@ -342,6 +342,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<gradle_install>>
 
+  <<nodejs_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -802,6 +804,27 @@ The actual used version of Gradle is project specific and not set globally. It i
    Which should result to something like:
    : gradle 8.12
 
+** Install Node.js
+The actual used version of Node.js is project specific and not set globally. It is determined locally by an existing ~.nvwmrc~ or ~.tool-versions~.
+
+1. To add the Node.js plugin, execute:
+   #+name: nodejs_install
+   #+begin_src shell :results silent
+     asdf plugin add nodejs
+   #+end_src
+
+2. The desired version is then installed locally in the project:
+   #+begin_src shell :results silent
+     asdf install nodejs
+   #+end_src
+
+3. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     node --version
+   #+end_src
+
+   Which should return something like:
+   : v22.14.0
 
 ** TODO Weiteres für Entwicklung
 #+begin_src shell
