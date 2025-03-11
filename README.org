@@ -9,7 +9,7 @@ This project describes the configuration of the WSL 2 and scripts to set up this
 It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
 
 * Configure WSL Debian
-To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed by root.
+To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as ~root~.
 #+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
@@ -32,7 +32,7 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 #+end_src
 
 ** Disable recommended packages
-Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does_not_install_additional_packages][Reduce Debian]], reconfigure /apt/ so that it does not install additional packages, by adding a new file ~/etc/apt/apt.conf.d/10get~:
+Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does_not_install_additional_packages][Reduce Debian]], reconfigure APT so that it does not install additional packages, by adding a new file ~/etc/apt/apt.conf.d/10get~:
 
 #+name: apt_disable_recs
 #+begin_src shell :dir /sudo:: :results silent
@@ -49,7 +49,7 @@ should return:
 : APT::Install-Suggests "0";
 
 ** Add non-free packages
-To install non-free packages (like /emacs-common-non-dfsg/), add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
+To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
 #+name: apt_add_non-free
 #+begin_src shell :dir /sudo:: :results silent
   sed /etc/apt/sources.list -e \
@@ -65,7 +65,7 @@ and update APT by executing
 afterwards.
 
 ** Set default editor
-Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed /vim.tiny/:
+Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed [[https://packages.debian.org/bookworm/vim-tiny][vim.tiny]]:
 #+name: alternatives_set_editor
 #+begin_src shell :dir /sudo:: :results silent
   update-alternatives --set editor /usr/bin/vim.tiny
@@ -126,7 +126,7 @@ Install packages for working with LaTeX. Emacs is already installed or will be a
 #+end_src
 
 ** Activate systemd                                                :obsolete:
-To use Podman or Docker properly, /systemctl/ is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. Because in newer versions (WSL version: 2.3.26.0) this is already done, the following steps should not be needed:
+To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. Because in newer versions (WSL version: 2.3.26.0) this is already done, the following steps should not be needed:
 
 1. Create a file in the WSL ~/etc/wsl.conf~, if not already exists:
 #+begin_src shell :dir /sudo:: :results silent
@@ -153,7 +153,7 @@ should result in something like:
   115 unit files listed.
 #+end_example
 
-*Note*: To have systemctl working for non-root users, /dbus-user-session/ must be installed and running. It is not installed as default, but comes as a dependency of /podman/ or /gnupg/. After installation of /dbus-user-session/, it may be necessary to terminate WSL with:
+*Note*: To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]. After installation of ~dbus-user-session~, it may be necessary to terminate WSL with:
 #+begin_src powershell
   wsl --terminate <<Distro>>
 #+end_src
@@ -174,7 +174,7 @@ If an older version of podman or docker is installed, it should be purged:
 #+end_src
 
 *** Install Podman
-Based on https://podman.io/docs/installation, install podman and its necessary dependencies:
+Based on https://podman.io/docs/installation, install [[https://packages.debian.org/bookworm/podman][podman]] and its necessary dependencies:
 #+name: install_podman
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman
@@ -200,14 +200,14 @@ There are several alternatives to use Docker Compose files together with Podman:
 
 *** Use Podman Compose 1.0.3
 This is based on https://github.com/containers/podman-compose. Since this is the simpliest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
-To Install Podman Compose, just execute:
+To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], just execute:
 #+name: install_podman-compose
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman-compose
 #+end_src
 
 *** OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman       :optional:
-Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by ~podman-compose~ are needed. This may lead to side-effects with networking.
+Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by Podman Compose are needed. This may lead to side-effects with networking.
 
 1. Verify, that Podman socket is active by executing
    #+begin_src shell :results verbatim
@@ -227,7 +227,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
      Feb 17 08:59:30 6RBVJR3 systemd[1]: Listening on podman.socket - Podman API Socket.
    #+end_example
 
-2. Install /docker-compose/ and /podman-docker/ as dependency:
+2. Install [[https://packages.debian.org/bookworm/docker-compose][docker-compose]] and [[https://packages.debian.org/bookworm/podman-docker][podman-docker]] as dependency:
    #+begin_src shell :dir /sudo:: :results silent
        apt-get install -y docker-compose
        apt-get install -y --mark-auto podman-docker
@@ -247,12 +247,12 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
      systemctl --user start podman.socket
    #+end_src
 
-   Verify the creation of the socket, by executing
+   Verify the creation of the socket, by executing:
    #+begin_src shell :results verbatim
      systemctl --user status podman.socket
    #+end_src
 
-   which should return something like:
+   This should return something like:
    #+begin_example
      ● podman.socket - Podman API Socket
 	  Loaded: loaded (/usr/lib/systemd/user/podman.socket; enabled; preset: enabled)
@@ -301,11 +301,11 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
   sed -e 's/.*cgroup_manager =.*/cgroup_manager = "cgroupfs"/' /usr/share/containers/containers.conf | sed -e 's/.*events_logger = .*/events_logger = "file"/' > ~/.config/containers/containers.conf
 #+end_src
 
-
 *** TODO Networking-Probleme
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 * Configure user environment
+The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user.
 #+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
@@ -390,7 +390,7 @@ by executing:
   cat bin/start_ssh-agent.sh >> ~/.profile
 #+end_src
 
-Another option could be, to use /systemd/ as user by by executing:
+Another option could be, to use [[https://packages.debian.org/bookworm/systemd][systemd]] as user by by executing:
 #+begin_src shell
   systemctl --user start ssh-agent
 #+end_src
@@ -412,7 +412,7 @@ To use the Firefox, which is installed on the host system, create the following 
 #+end_src
 
 ** Install asdf
-Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]] /Download Pre-compiled binary/:
+Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]] -> /Download Pre-compiled binary/:
 
 1. Download latest release files from https://github.com/asdf-vm/asdf/releases:
    #+name: asdf_download
@@ -482,7 +482,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    #+end_src
 
 ** Install kubectl
-1. To install the latest version of kubectl using asdf, execute:
+1. To install the latest version of [[https://kubernetes.io/docs/reference/kubectl/][kubectl]] using asdf, execute:
    #+name: kubectl_install
    #+begin_src shell :results silent
      asdf plugin add kubectl
@@ -508,7 +508,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 
 ** Install Helm
-1. To install the latest version of helm using asdf, execute:
+1. To install the latest version of [[https://helm.sh/][Helm]] using asdf, execute:
    #+name: helm_install
    #+begin_src shell :results silent
      asdf plugin add helm
@@ -532,7 +532,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/helm~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 
 ** Install make
-1. To install the latest version of make using asdf, execute:
+1. To install the latest version of [[https://www.gnu.org/software/make/][GNU make]] using asdf, execute:
    #+name: make_install
    #+begin_src shell :results silent
      asdf plugin add make
@@ -554,7 +554,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    : There is NO WARRANTY, to the extent permitted by law.
 
 ** Install Python 3.11
-1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
+1. [[https://www.python.org/][Python]] needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
    #+name: install_global_python-requirements
    #+begin_src shell :dir /sudo::
      apt-get install -y \
@@ -584,9 +584,9 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    : Python 3.11.11
 
 ** Install Azure CLI
-1. Before installing Azure CLI, a version of [[* Install Python 3.11][Python]] must be installed, which can be done using asdf.
+1. Before installing [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]], a version of [[* Install Python 3.11][Python]] must be installed, which can be done using asdf.
 
-2. To install the latest version of azure-cli using asdf, execute:
+2. To install the latest version of Azure CLI using asdf, execute:
    #+name: azure-cli_install
    #+begin_src shell :results silent
      asdf plugin add azure-cli
@@ -648,7 +648,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    #+end_src
 
 ** Install minikube                                                    :fail:
-1. To install the latest version of minikube using asdf, execute:
+1. To install the latest version of [[https://minikube.sigs.k8s.io/][minikube]] using asdf, execute:
    #+name: minikube_install
    #+begin_src shell :results silent
      asdf plugin add minikube
@@ -691,7 +691,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    #+end_example
 
 ** Install Go
-The actual used version of Go is project specific and not set globally. It is determined locally by an existing ~go.mod~ or ~.tool-versions~.
+The actual used version of [[https://go.dev/][Go]] is project specific and not set globally. It is determined locally by an existing ~go.mod~ or ~.tool-versions~.
 
 1. To install the latest version of Go using asdf, execute:
    #+name: golang_install
@@ -713,7 +713,7 @@ The actual used version of Go is project specific and not set globally. It is de
    #+end_example
 
 ** Install Java
-The actual used version of Java may be project specific. But at least a JRE is needed globally. So, we define one JDK globally:
+The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least a JRE is needed globally. So, one JDK is defined globally:
 
 1. To install the latest version of Go using asdf, execute:
    #+name: java_install
@@ -734,7 +734,7 @@ The actual used version of Java may be project specific. But at least a JRE is n
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
 
 ** Install DBeaver
-1. Download latest release files from
+1. Download latest release files from https://dbeaver.io/download/:
    #+name: dbeaver_download
    #+begin_src shell :results silent
      DBEAVER_VERSION=25.0.0
@@ -767,7 +767,7 @@ The actual used version of Java may be project specific. But at least a JRE is n
    #+end_src
 
 ** Install Maven
-The actual used version of Maven is project specific and not set globally. It is determined locally by an ~.tool-versions~.
+The actual used version of [[https://maven.apache.org/][Maven]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
 1. To install the latest version of Go using asdf, execute:
    #+name: maven_install
@@ -789,7 +789,7 @@ The actual used version of Maven is project specific and not set globally. It is
    : OS name: "linux", version: "5.15.167.4-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 
 ** Install Gradle
-The actual used version of Gradle is project specific and not set globally. It is determined locally by an ~.tool-versions~.
+The actual used version of [[https://gradle.org/][Gradle]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
 1. To install the latest version of Go using asdf, execute:
    #+name: gradle_install
@@ -807,7 +807,7 @@ The actual used version of Gradle is project specific and not set globally. It i
    : gradle 8.12
 
 ** Install Node.js
-The actual used version of Node.js is project specific and not set globally. It is determined locally by an existing ~.nvwmrc~ or ~.tool-versions~.
+The actual used version of [[https://nodejs.org/en][Node.js]] is project specific and not set globally. It is determined locally by an existing ~.nvwmrc~ or ~.tool-versions~.
 
 1. To add the Node.js plugin, execute:
    #+name: nodejs_install
