@@ -59,6 +59,8 @@ asdf install gradle latest
 
 asdf plugin add nodejs
 
+asdf plugin add pnpm
+
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"

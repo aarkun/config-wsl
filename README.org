@@ -344,6 +344,8 @@ https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
   <<nodejs_install>>
 
+  <<pnpm_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -825,6 +827,29 @@ The actual used version of Node.js is project specific and not set globally. It 
 
    Which should return something like:
    : v22.14.0
+
+** Install pnpm
+The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+
+1. To add the Node.js plugin, execute:
+   #+name: pnpm_install
+   #+begin_src shell :results silent
+     asdf plugin add pnpm
+   #+end_src
+
+2. The desired version is then installed locally in the project. The version is usually defined in ~package.json~ and can be determein:
+   #+begin_src shell :results silent
+     asdf install pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '"')
+     asdf set pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '"')
+   #+end_src
+
+3. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     pnpm --version
+   #+end_src
+
+   Which should return something like:
+   : 9.6.0
 
 ** TODO Weiteres für Entwicklung
 #+begin_src shell
