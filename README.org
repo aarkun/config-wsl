@@ -97,6 +97,7 @@ Install software for every day use:
   apt-get install -y \
 	  aspell-de \
 	  bash-completion \
+	  btop \
 	  ca-certificates \
 	  curl \
 	  dos2unix \
@@ -107,6 +108,8 @@ Install software for every day use:
 	  gitk \
 	  gnupg \
 	  gnuplot \
+	  htop \
+	  lsof \
 	  man-db \
 	  net-tools \
 	  netcat-openbsd \

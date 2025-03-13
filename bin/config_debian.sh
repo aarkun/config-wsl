@@ -13,6 +13,7 @@ apt-get update
 apt-get install -y \
 	aspell-de \
 	bash-completion \
+	btop \
 	ca-certificates \
 	curl \
 	dos2unix \
@@ -23,6 +24,8 @@ apt-get install -y \
 	gitk \
 	gnupg \
 	gnuplot \
+	htop \
+	lsof \
 	man-db \
 	net-tools \
 	netcat-openbsd \
