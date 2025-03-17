@@ -842,8 +842,8 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 
 2. The desired version is then installed locally in the project. The version is usually defined in ~package.json~ and can be determein:
    #+begin_src shell :results silent
-     asdf install pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '"')
-     asdf set pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '"')
+     asdf install pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '",')
+     asdf set pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '",')
    #+end_src
 
 3. Verify installation by executing:
