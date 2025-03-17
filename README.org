@@ -202,7 +202,7 @@ There are several alternatives to use Docker Compose files together with Podman:
 3. Use Podman Pods and generate Kubernetes files, like described on https://www.redhat.com/en/blog/compose-podman-pods
 
 *** Use Podman Compose 1.0.3
-This is based on https://github.com/containers/podman-compose. Since this is the simpliest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
+This is based on https://github.com/containers/podman-compose. Since this is the simplest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
 To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], just execute:
 #+name: install_podman-compose
 #+begin_src shell :dir /sudo:: :results silent
