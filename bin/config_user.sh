@@ -33,6 +33,7 @@ tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
 echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
+echo 'legacy_version_file = yes' > ~/.asdfrc
 
 asdf plugin add kubectl
 asdf install kubectl latest

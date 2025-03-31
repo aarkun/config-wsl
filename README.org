@@ -334,6 +334,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<asdf_extract>>
   <<asdf_add_shims>>
   <<asdf_add_shell_completions>>
+  <<asdf_create_config>>
 
   <<kubectl_install>>
   <<kubectl_add_shell_completions>>
