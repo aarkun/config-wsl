@@ -374,7 +374,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.profile~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
 #+name: gpg_add_tty
 #+begin_src shell :results silent
-  echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
+  echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
 #+end_src
 
 ** Configure SSH agent
@@ -462,14 +462,14 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
 5. The asdf shims directory must be added to ~PATH~ for the current and future sessions:
    #+name: asdf_add_shims
    #+begin_src shell :results silent
-     echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
      PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+     echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
    #+end_src
 
 6. To add shell completion, add the following line to ~$HOME/.bashrc~:
    #+name: asdf_add_shell_completions
    #+begin_src shell :results silent
-     echo -e '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
+     echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
    #+end_src
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.local/bin~ is added to the ~$PATH~ in ~$HOME/.profile~, ~asdf~ cannot be called without prefix. So the explicit path to asdf is used.
 
@@ -483,7 +483,7 @@ Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting s
 
 2. Add script to ~$PATH~ and Bash completions:
    #+begin_src shell :results silent
-     echo -e '\n. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
+     echo '\n. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
      echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
   #+end_src
 
@@ -518,7 +518,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 3. Install autocompletion for bash. Based on https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/, add a line to ~$HOME/.profile~:
    #+name: kubectl_add_shell_completions
    #+begin_src shell :results silent
-     echo -e '\n. <(kubectl completion bash)' >> ~/.profile
+     echo '\n. <(kubectl completion bash)' >> ~/.profile
    #+end_src
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 
@@ -542,7 +542,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 3. Install autocompletion for bash. Based on https://helm.sh/docs/helm/helm_completion_bash/#helm, add a line to ~$HOME/.profile~:
    #+name: helm_add_shell_completions
    #+begin_src shell :results silent
-     echo -e '\n. <(helm completion bash)' >> ~/.profile
+     echo '\n. <(helm completion bash)' >> ~/.profile
    #+end_src
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/helm~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 

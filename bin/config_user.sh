@@ -9,9 +9,9 @@ fi
 cp /etc/skel/.profile ~
 cp /etc/skel/.bashrc ~
 
-echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
 PATH="$HOME/.local/bin:$PATH"
 
+echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 echo '' >> ~/.profile
 cat bin/start_ssh-agent.sh >> ~/.profile
@@ -30,19 +30,19 @@ grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) \
      /tmp/$ASDF_INSTALLATION_FILE.md5
 mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
-echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
-echo -e '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
 PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
+echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
 
 asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
-echo -e '\n. <(kubectl completion bash)' >> ~/.profile
+echo '\n. <(kubectl completion bash)' >> ~/.profile
 
 asdf plugin add helm
 asdf install helm latest
 asdf set -u helm latest
-echo -e '\n. <(helm completion bash)' >> ~/.profile
+echo '\n. <(helm completion bash)' >> ~/.profile
 
 asdf plugin add make
 asdf install make latest
