@@ -13,6 +13,7 @@ echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 echo '' >> ~/.profile
 cat bin/start_ssh-agent.sh >> ~/.profile
+mkdir -p ~/.ssh
 echo 'AddKeysToAgent yes' > ~/.ssh/config
 
 mkdir -p ~/.local/bin

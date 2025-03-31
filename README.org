@@ -410,6 +410,7 @@ But this is not a suitable solution, because it does not set the necessary envir
 To always instruct a running SSH agent to add keys, add the following configuration setting to your local ssh config file ~$HOME/.ssh/config~ before any ~Host~ or ~Match~ restrictions. Otherwise it will only be activated for this condition. Here it is set as the first option:
 #+name: ssh_add_config
 #+begin_src shell :results silent
+  mkdir -p ~/.ssh
   echo 'AddKeysToAgent yes' > ~/.ssh/config
 #+end_src
 
