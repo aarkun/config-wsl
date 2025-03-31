@@ -317,6 +317,9 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
       exit 1
   fi
 
+  cp /etc/skel/.profile ~
+  cp /etc/skel/.bashrc ~
+
   <<gpg_add_tty>>
 
   <<ssh_add_start_ssh-agent_to_profile>>

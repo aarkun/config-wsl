@@ -6,6 +6,9 @@ if [ $(id -u) -eq 0 ]; then
     exit 1
 fi
 
+cp /etc/skel/.profile ~
+cp /etc/skel/.bashrc ~
+
 echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 echo '' >> ~/.profile
