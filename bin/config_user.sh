@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+if [ $(id -u) -eq 0 ]; then
+    echo "You should not be root"
+    exit 1
+fi
+
 echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 echo '' >> ~/.profile

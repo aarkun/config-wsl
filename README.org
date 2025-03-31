@@ -312,6 +312,11 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 #+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
+  if [ $(id -u) -eq 0 ]; then
+      echo "You should not be root"
+      exit 1
+  fi
+
   <<gpg_add_tty>>
 
   <<ssh_add_start_ssh-agent_to_profile>>
