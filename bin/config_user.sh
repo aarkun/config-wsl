@@ -10,6 +10,8 @@ cp /etc/skel/.profile ~
 cp /etc/skel/.bashrc ~
 
 echo -e '\nexport GPG_TTY=$(tty)' >> ~/.profile
+PATH="$HOME/.local/bin:$PATH"
+
 
 echo '' >> ~/.profile
 cat bin/start_ssh-agent.sh >> ~/.profile
@@ -30,6 +32,7 @@ mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
 echo -e '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
+PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 asdf plugin add kubectl
 asdf install kubectl latest

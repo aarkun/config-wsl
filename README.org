@@ -308,7 +308,7 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 * Configure user environment
-The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user.
+The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path ~$HOME/.local/bin~ is only added to ~$PATH~, if the directory exists. Because this is not the case, when executing this script initially, ~$HOME/.local/bin~ is added for this script execution explicitly:
 #+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
@@ -319,6 +319,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   cp /etc/skel/.profile ~
   cp /etc/skel/.bashrc ~
+
+  PATH="$HOME/.local/bin:$PATH"
 
   <<gpg_add_tty>>
 
@@ -457,10 +459,11 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    should result to:
    : asdf is /home/kunde/.local/bin/asdf
 
-5. The asdf shims directory must be added to ~PATH~:
+5. The asdf shims directory must be added to ~PATH~ for the current and future sessions:
    #+name: asdf_add_shims
    #+begin_src shell :results silent
      echo -e '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
+     PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
    #+end_src
 
 6. To add shell completion, add the following line to ~$HOME/.bashrc~:
