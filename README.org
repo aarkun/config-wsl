@@ -572,7 +572,7 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 ** Install Python 3.11
 1. [[https://www.python.org/][Python]] needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
    #+name: install_global_python-requirements
-   #+begin_src shell :dir /sudo::
+   #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
 	     gcc \
 	     zlib1g-dev \
