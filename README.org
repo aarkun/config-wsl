@@ -733,14 +733,14 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
    #+end_example
 
 ** Install Java
-The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least a JRE is needed globally. So, one JDK is defined globally:
+The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least one JRE is needed globally. So, one JDK is defined globally:
 
 1. To install the latest version of Go using asdf, execute:
    #+name: java_install
    #+begin_src shell :results silent
      asdf plugin add java
-     asdf install temurin-21.0.5+11.0.LTS
-     asdf set -u temurin-21.0.5+11.0.LTS
+     asdf install java temurin-21.0.5+11.0.LTS
+     asdf set -u java temurin-21.0.5+11.0.LTS
    #+end_src
 
 2. Verify installation by executing:
