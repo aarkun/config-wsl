@@ -524,12 +524,12 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 
 ** Install Helm
-1. To install the latest version of [[https://helm.sh/][Helm]] using asdf, execute:
+1. The ~latest~ version is currently not supported by the asdf plugin. Therefore, a specific version of [[https://helm.sh/][Helm]] is installed:
    #+name: helm_install
    #+begin_src shell :results silent
      asdf plugin add helm
-     asdf install helm latest
-     asdf set -u helm latest
+     asdf install helm 3.17.1
+     asdf set -u helm 3.17.1
    #+end_src
 
 2. Verify installation by executing:

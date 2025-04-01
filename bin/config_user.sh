@@ -41,8 +41,8 @@ asdf set -u kubectl latest
 echo '\n. <(kubectl completion bash)' >> ~/.profile
 
 asdf plugin add helm
-asdf install helm latest
-asdf set -u helm latest
+asdf install helm 3.17.1
+asdf set -u helm 3.17.1
 echo '\n. <(helm completion bash)' >> ~/.profile
 
 asdf plugin add make
