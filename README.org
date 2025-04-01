@@ -27,6 +27,7 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<install_podman-compose>>
 
   <<install_global_python-requirements>>
+  <<install_global_gradle-requirements>>
 
   <<idea_install_libxtst6>>
 #+end_src
@@ -811,14 +812,24 @@ The actual used version of [[https://maven.apache.org/][Maven]] is project speci
 ** Install Gradle
 The actual used version of [[https://gradle.org/][Gradle]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
-1. To install the latest version of Go using asdf, execute:
+1. To add the Gradle asdf plugin, execute:
    #+name: gradle_install
    #+begin_src shell :results silent
      asdf plugin add gradle
-     asdf install gradle latest
    #+end_src
 
-2. Verify installation by executing:
+2. unzip] must be installed first
+   #+name: install_global_gradle-requirements
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y unzip
+   #+end_src
+
+3. The desired version is then installed locally in the project. The ~latest~ version is currently not supported by the asdf plugin. Therefore, a specific version must be installed:
+   #+begin_src shell :results silent
+     asdf install gradle 8.12
+   #+end_src
+
+4. Verify installation by executing:
    #+begin_src shell :results verbatim
      gradle --version &2>1
    #+end_src

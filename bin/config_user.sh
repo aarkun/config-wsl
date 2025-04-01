@@ -67,7 +67,6 @@ asdf plugin add maven
 asdf install maven latest
 
 asdf plugin add gradle
-asdf install gradle latest
 
 asdf plugin add nodejs
 

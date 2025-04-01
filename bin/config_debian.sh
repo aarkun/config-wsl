@@ -55,5 +55,6 @@ apt-get install -y \
 	gcc \
 	zlib1g-dev \
 	libssl-dev
+apt-get install -y unzip
 
 apt-get install -y libxtst6
