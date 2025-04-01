@@ -58,7 +58,6 @@ asdf install azure-cli latest
 asdf set -u azure-cli latest
 
 asdf plugin add golang
-asdf install golang latest
 
 asdf plugin add java
 asdf install temurin-21.0.5+11.0.LTS

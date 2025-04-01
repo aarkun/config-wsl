@@ -713,10 +713,14 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
    #+name: golang_install
    #+begin_src shell :results silent
      asdf plugin add golang
-     asdf install golang latest
    #+end_src
 
-2. Verify installation by executing:
+2. The desired version is then installed locally in the project:
+   #+begin_src shell :results silent
+     asdf install golang
+   #+end_src
+
+3. Verify installation by executing:
    #+begin_src shell :results verbatim
      go version
    #+end_src
