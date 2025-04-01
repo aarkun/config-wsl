@@ -844,7 +844,7 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
 ** Install Node.js
 The actual used version of [[https://nodejs.org/en][Node.js]] is project specific and not set globally. It is determined locally by an existing ~.nvwmrc~ or ~.tool-versions~.
 
-1. To add the Node.js plugin, execute:
+1. To add the Node.js asdf plugin, execute:
    #+name: nodejs_install
    #+begin_src shell :results silent
      asdf plugin add nodejs
@@ -866,7 +866,7 @@ The actual used version of [[https://nodejs.org/en][Node.js]] is project specifi
 ** Install pnpm
 The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
-1. To add the Node.js plugin, execute:
+1. To add the pnpm asdf plugin, execute:
    #+name: pnpm_install
    #+begin_src shell :results silent
      asdf plugin add pnpm
