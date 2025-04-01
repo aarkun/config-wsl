@@ -402,7 +402,7 @@ by executing:
 #+name: ssh_add_start_ssh-agent_to_profile
 #+begin_src shell :results silent
   echo '' >> ~/.profile
-  cat bin/start_ssh-agent.sh >> ~/.profile
+  cat $(dirname $_)/start_ssh-agent.sh >> ~/.profile
 #+end_src
 
 Another option could be, to use [[https://packages.debian.org/bookworm/systemd][systemd]] as user by by executing:

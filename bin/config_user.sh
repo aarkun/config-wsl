@@ -14,7 +14,7 @@ PATH="$HOME/.local/bin:$PATH"
 echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 echo '' >> ~/.profile
-cat bin/start_ssh-agent.sh >> ~/.profile
+cat $(dirname $_)/start_ssh-agent.sh >> ~/.profile
 mkdir -p ~/.ssh
 echo 'AddKeysToAgent yes' > ~/.ssh/config
 
