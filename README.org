@@ -387,7 +387,8 @@ Based on https://www.ssh.com/academy/ssh/agent, the SSH agent should be either s
 to ~$HOME/.profile~ or by using the provided ~/etc/X11/Xsession.d/90x11-common_ssh-agent~ for a system-wide start. Both ways are not suitable for WSL, because the first creates a new agent for each terminal and the latter does not work, because ~Xsession~ is never executed.
 
 Therefore, based on https://superuser.com/questions/1808572/how-to-automate-starting-the-ssh-agent-and-adding-my-keys-in-wsl2-for-windows, the following lines are added to ~$HOME/profile~
-#+begin_src shell :tangle bin/start_ssh-agent.sh :mkdirp yes :noweb yes
+#+name: start_ssh-agent.sh
+#+begin_src shell
   SSH_AGENT_ENV_FILE=~/.ssh/agent-env
 
   if [ -z "$(pidof ssh-agent)" ]; then
@@ -400,9 +401,11 @@ Therefore, based on https://superuser.com/questions/1808572/how-to-automate-star
 
 by executing:
 #+name: ssh_add_start_ssh-agent_to_profile
-#+begin_src shell :results silent
-  echo '' >> ~/.profile
-  cat $(dirname $_)/start_ssh-agent.sh >> ~/.profile
+#+begin_src shell :noweb yes :exports none :results silent
+  cat <<'EOF' >> ~/.profile
+
+  <<start_ssh-agent.sh>>
+  EOF
 #+end_src
 
 Another option could be, to use [[https://packages.debian.org/bookworm/systemd][systemd]] as user by by executing:
