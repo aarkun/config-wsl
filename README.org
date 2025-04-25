@@ -746,7 +746,7 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
 ** Install Go
 The actual used version of [[https://go.dev/][Go]] is project specific and not set globally. It is determined locally by an existing ~go.mod~ or ~.tool-versions~.
 
-1. To install the latest version of Go using asdf, execute:
+1. To add the asdf plugin, execute:
    #+name: golang_install
    #+begin_src shell :results silent
      asdf plugin add golang
@@ -754,7 +754,7 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
 
 2. The desired version is then installed locally in the project:
    #+begin_src shell :results silent
-     asdf install golang
+     asdf install golang latest
    #+end_src
 
 3. Verify installation by executing:
@@ -763,11 +763,9 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
    #+end_src
 
    Which should return something like:
-   #+begin_example
-     No version is set for command go
-     Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
-     golang 1.24.0
-   #+end_example
+   :  No version is set for command go
+   :  Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
+   :  golang 1.24.0
 
 ** Install Java
 The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least one JRE is needed globally. So, one JDK is defined globally:
