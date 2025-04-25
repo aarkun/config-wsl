@@ -770,7 +770,7 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
 ** Install Java
 The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least one JRE is needed globally. So, one JDK is defined globally:
 
-1. To install the latest version of Go using asdf, execute:
+1. To install a version of Java using asdf, execute:
    #+name: java_install
    #+begin_src shell :results silent
      asdf plugin add java
