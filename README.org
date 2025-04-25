@@ -673,9 +673,13 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
    : Python 3.10.11
 
 ** Install Azure CLI
-1. Before installing [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]], a version of [[* Install Python 3.11][Python]] must be installed, which can be done using asdf.
+1. [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]], needs [[* Install Python 3.11][Python]], which is installed together with  the Azure CLI. To complete the installation process, the python version must be set globally first:
+   #+name: azure-cli_set_global_python_version
+   #+begin_src shell :results silent
+     asdf set -u python 3.10.11
+   #+end_src
 
-2. To install the latest version of Azure CLI using asdf, execute:
+2. To install the latest version of Azure CLI and the necessary python version using asdf, execute:
    #+name: azure-cli_install
    #+begin_src shell :results silent
      asdf plugin add azure-cli
