@@ -372,6 +372,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<python_install>>
 
+  <<azure-cli_set_global_python_version>>
   <<azure-cli_install>>
 
   <<golang_install>>
@@ -636,8 +637,10 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    : This is free software: you are free to change and redistribute it.
    : There is NO WARRANTY, to the extent permitted by law.
 
-** Install Python 3.11
-1. [[https://www.python.org/][Python]] needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
+** Install Python
+The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+
+1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
    #+name: install_global_python-requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
@@ -650,21 +653,24 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
 
 2. Furthermore, [[* Install make][make]] needs to be installed, which can be done using asdf.
 
-3. After that, Python 3.11.11 can be installed using asdf by executing:
+3. After that, Python can be installed using asdf, by adding the asdf plugin:
    #+name: python_install
    #+begin_src shell :results silent
      asdf plugin add python
-     asdf install python 3.11.11
-     asdf set -u python 3.11.11
    #+end_src
 
-4. Verify installation by executing:
+4. The desired version is then installed locally in the project:
+   #+begin_src shell :results silent
+     asdf install python latest
+   #+end_src
+
+5. Verify installation by executing:
    #+begin_src shell :results verbatim
      python --version
    #+end_src
 
-   Which should return:
-   : Python 3.11.11
+   Which should return something like:
+   : Python 3.10.11
 
 ** Install Azure CLI
 1. Before installing [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]], a version of [[* Install Python 3.11][Python]] must be installed, which can be done using asdf.
