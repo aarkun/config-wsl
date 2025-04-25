@@ -788,39 +788,6 @@ The actual used version of [[https://www.java.com/][Java]] may be project specif
    : OpenJDK Runtime Environment Temurin-21.0.5+11 (build 21.0.5+11-LTS)
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
 
-** Install DBeaver
-1. Download latest release files from https://dbeaver.io/download/:
-   #+name: dbeaver_download
-   #+begin_src shell :results silent
-     DBEAVER_VERSION=25.0.0
-     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
-     curl -L -O --output-dir /tmp \
-	  https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
-     curl -L -O --output-dir /tmp \
-	  https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
-   #+end_src
-
-2. Verify checksum:
-   #+name: dbeaver_verify
-   #+begin_src shell :results silent
-     grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
-	  /tmp/$DBEAVER_INSTALLATION_FILE.sha256
-   #+end_src
-
-3. Extract binary:
-   #+name: dbeaver_extract
-   #+begin_src shell :results silent
-     mkdir -p ~/opt
-     tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
-   #+end_src
-
-4. Create link:
-   #+name: dbeaver_create_link
-   #+begin_src shell :results silent
-     mkdir -p ~/opt
-     ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
-   #+end_src
-
 ** Install Maven
 The actual used version of [[https://maven.apache.org/][Maven]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
@@ -919,6 +886,39 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 
    Which should return something like:
    : 9.6.0
+
+** Install DBeaver
+1. Download latest release files from https://dbeaver.io/download/:
+   #+name: dbeaver_download
+   #+begin_src shell :results silent
+     DBEAVER_VERSION=25.0.0
+     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
+     curl -L -O --output-dir /tmp \
+	  https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+     curl -L -O --output-dir /tmp \
+	  https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
+   #+end_src
+
+2. Verify checksum:
+   #+name: dbeaver_verify
+   #+begin_src shell :results silent
+     grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
+	  /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+   #+end_src
+
+3. Extract binary:
+   #+name: dbeaver_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
+   #+end_src
+
+4. Create link:
+   #+name: dbeaver_create_link
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
+   #+end_src
 
 ** Install IntelliJ
 1. To prevent the following error
