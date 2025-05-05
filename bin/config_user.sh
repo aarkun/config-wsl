@@ -11,6 +11,8 @@ cp /etc/skel/.bashrc ~
 
 PATH="$HOME/.local/bin:$PATH"
 
+echo '\nexport NO_AT_BRIDGE=1' >> ~/.profile
+
 echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 cat <<'EOF' >> ~/.profile
