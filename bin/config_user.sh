@@ -98,7 +98,6 @@ grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
      /tmp/$IDEA_INSTALLATION_FILE.sha256
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
-mkdir -p ~/opt
 find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
 asdf install nodejs 18.7.0
 asdf set -u nodejs 18.7.0

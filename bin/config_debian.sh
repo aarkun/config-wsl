@@ -65,4 +65,6 @@ apt-get install -y \
 	libssl-dev
 apt-get install -y unzip
 
-apt-get install -y libxtst6
+apt-get install -y \
+	libxtst6 \
+	libgbm1 libglx-mesa0
