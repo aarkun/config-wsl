@@ -70,6 +70,8 @@ asdf plugin add make
 asdf install make latest
 asdf set -u make latest
 
+asdf plugin add shellcheck
+
 asdf plugin add python
 
 asdf set -u python 3.10.11
@@ -114,3 +116,13 @@ mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
 mkdir -p ~/opt
 ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
+
+VSCODE_VERSION=1.99.3
+VSCODE_INSTALLATION_FILE=code-stable-$VSCODE_VERSION.tar.gz
+curl -L -o /tmp/$VSCODE_INSTALLATION_FILE \
+     "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
+curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
+    grep $(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)
+mkdir -p ~/opt
+tar -C ~/opt -x -f /tmp/$VSCODE_INSTALLATION_FILE
+ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code

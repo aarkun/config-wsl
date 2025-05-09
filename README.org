@@ -118,7 +118,8 @@ Install software for every day use:
 	  netcat-openbsd \
 	  markdown \
 	  openssh-client \
-	  patch
+	  patch \
+	  xz-utils
 #+end_src
 
 Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
@@ -372,6 +373,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<make_install>>
 
+  <<shellcheck_install>>
+
   <<python_install>>
 
   <<azure-cli_set_global_python_version>>
@@ -399,6 +402,11 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<dbeaver_verify>>
   <<dbeaver_extract>>
   <<dbeaver_create_link>>
+
+  <<vscode_download>>
+  <<vscode_verify>>
+  <<vscode_extract>>
+  <<vscode_create_link>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -647,6 +655,31 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    : License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
    : This is free software: you are free to change and redistribute it.
    : There is NO WARRANTY, to the extent permitted by law.
+
+** Install ShellCheck
+The actual used version of [[https://www.shellcheck.net/][ShellCheck]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+
+1. To add the ShellCheck asdf plugin, execute:
+   #+name: shellcheck_install
+   #+begin_src shell :results silent
+     asdf plugin add shellcheck
+   #+end_src
+
+2. The desired version is then installed locally in the project:
+   #+begin_src shell :results silent
+     asdf install shellcheck latest
+   #+end_src
+
+3. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     shellcheck --version
+   #+end_src
+
+   Which should return something like:
+   : ShellCheck - shell script analysis tool
+   : version: 0.10.0
+   : license: GNU General Public License, version 3
+   : website: https://www.shellcheck.net
 
 ** Install Python
 The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
@@ -976,6 +1009,36 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+begin_src shell :results silent
      asdf install nodejs 18.7.0
      asdf set -u nodejs 18.7.0
+   #+end_src
+
+** Install Visual Studio Code
+1. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
+   #+name: vscode_download
+   #+begin_src shell :results silent
+     VSCODE_VERSION=1.99.3
+     VSCODE_INSTALLATION_FILE=code-stable-$VSCODE_VERSION.tar.gz
+     curl -L -o /tmp/$VSCODE_INSTALLATION_FILE \
+	  "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
+   #+end_src
+
+2. Verify checksum:
+   #+name: vscode_verify
+   #+begin_src shell :results silent
+     curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
+	 grep $(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)
+   #+end_src
+
+3. Extract binary:
+   #+name: vscode_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     tar -C ~/opt -x -f /tmp/$VSCODE_INSTALLATION_FILE
+   #+end_src
+
+4. Create link:
+   #+name: vscode_create_link
+   #+begin_src shell :results silent
+     ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
    #+end_src
 
 ** TODO Weiteres für Entwicklung

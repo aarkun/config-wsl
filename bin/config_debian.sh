@@ -31,7 +31,8 @@ apt-get install -y \
 	netcat-openbsd \
 	markdown \
 	openssh-client \
-	patch
+	patch \
+	xz-utils
 apt-get install -y \
 	auctex \
 	texlive-latex-recommended \
