@@ -86,6 +86,8 @@ asdf install java temurin-21.0.5+11.0.LTS
 asdf set -u java temurin-21.0.5+11.0.LTS
 
 asdf plugin add maven
+asdf install maven latest
+asdf set -u maven latest
 
 asdf plugin add gradle
 

@@ -833,21 +833,17 @@ The actual used version of [[https://www.java.com/][Java]] may be project specif
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
 
 ** Install Maven
-The actual used version of [[https://maven.apache.org/][Maven]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+The actual used version of [[https://maven.apache.org/][Maven]] may be project specific. But at least one version is needed globally. So, one Maven version is defined globally:
 
 1. To add the Maven asdf plugin, execute:
    #+name: maven_install
    #+begin_src shell :results silent
      asdf plugin add maven
-   #+end_src
-
-2. The desired version is then installed locally in the project:
-   #+begin_src shell :results silent
      asdf install maven latest
-     asdf set maven latest
+     asdf set -u maven latest
    #+end_src
 
-3. Verify installation by executing:
+2. Verify installation by executing:
    #+begin_src shell :results verbatim
      mvn --version
    #+end_src
