@@ -844,6 +844,7 @@ The actual used version of [[https://maven.apache.org/][Maven]] is project speci
 2. The desired version is then installed locally in the project:
    #+begin_src shell :results silent
      asdf install maven latest
+     asdf set maven latest
    #+end_src
 
 3. Verify installation by executing:
