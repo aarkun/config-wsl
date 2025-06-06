@@ -32,6 +32,8 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<install_global_gradle-requirements>>
 
   <<idea_install_requirements>>
+
+  <<plantuml_install_requirements>>
 #+end_src
 
 ** Disable recommended packages
@@ -407,6 +409,13 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<vscode_verify>>
   <<vscode_extract>>
   <<vscode_create_link>>
+
+  <<plantuml_import_key>>
+  <<plantuml_sign_key>>
+  <<plantuml_download>>
+  <<plantuml_verify>>
+  <<plantuml_remove_signature>>
+  <<plantuml_create_link>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1038,14 +1047,73 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
      ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
    #+end_src
 
+** Install PlantUML
+1. Install [[https://packages.debian.org/bookworm/graphviz][graphviz]], which is necessary for some diagrams, as described at https://plantuml.com/en/graphviz-dot:
+   #+name: plantuml_install_requirements
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y graphviz
+   #+end_src
+
+2. Import GPG-Key of user id /plantuml@gmail.com/ having the key id /019586D44BD80213/ and the fingerprint /C08C18EE1706DB378BD993C8019586D44BD80213/:
+   #+name: plantuml_import_key
+   #+begin_src shell results silent
+     gpg --recv-keys 019586D44BD80213
+   #+end_src
+
+3. Sign and mark as non-exportable without user interaction.
+   *Note*: This only works, if the signing key is present!
+   #+name: plantuml_sign_key
+   #+begin_src shell results silent
+     gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
+   #+end_src
+
+4. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
+   #+name: plantuml_download
+   #+begin_src shell :results silent
+     PLANTUML_VERSION=1.2025.3
+     PLANTUML_INSTALLATION_FILE=plantuml-$PLANTUML_VERSION.jar
+     mkdir -p ~/opt
+     curl -L -O --output-dir ~/opt \
+	  "https://github.com/plantuml/plantuml/releases/download/v$PLANTUML_VERSION/$PLANTUML_INSTALLATION_FILE{,.asc}"
+   #+end_src
+
+5. Verify the installation file:
+   #+name: plantuml_verify
+   #+begin_src shell
+     gpg --verify ~/opt/$PLANTUML_INSTALLATION_FILE.asc
+   #+end_src
+
+   should result something like:
+   : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
+   : gpg:                using RSA key 019586D44BD80213
+   : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [unknown]
+   : gpg: WARNING: This key is not certified with a trusted signature!
+   : gpg:          There is no indication that the signature belongs to the owner.
+   : Primary key fingerprint: C08C 18EE 1706 DB37 8BD9  93C8 0195 86D4 4BD8 0213
+
+6. Delete signature:
+   #+name: plantuml_remove_signature
+   #+begin_src shell :results silent
+     rm  ~/opt/$PLANTUML_INSTALLATION_FILE.asc
+   #+end_src
+
+7. Create link:
+   #+name: plantuml_create_link
+   #+begin_src shell :results silent
+     ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
+   #+end_src
+
+8. To verify installation, execute:
+   #+begin_src shell :results verbatim
+     java -jar ~/opt/plantuml.jar -testdot
+   #+end_src
+
+   should result something like:
+   : Dot version: dot - graphviz version 2.43.0 (0)
+   : Installation seems OK. File generation OK
+
 ** TODO Weiteres für Entwicklung
 #+begin_src shell
   apt-mark showauto \
-	 gimp \
-	 # Maybe because of plantuml
-	 graphviz
+	   gimp
 #+end_src
-
-
-
-
