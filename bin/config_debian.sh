@@ -70,4 +70,7 @@ apt-get install -y \
 	libxtst6 \
 	libgbm1 libglx-mesa0
 
+apt-get install -y \
+	libgl1
+
 apt-get install -y graphviz

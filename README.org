@@ -33,6 +33,8 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<idea_install_requirements>>
 
+  <<vscode_install_requirements>>
+
   <<plantuml_install_requirements>>
 #+end_src
 
@@ -1016,7 +1018,16 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
 ** Install Visual Studio Code
-1. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
+1. Install necessary prerequisites for different features:
+   #+name: vscode_install_requirements
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y \
+	     libgl1
+   #+end_src
+   [[https://packages.debian.org/bookworm/libgl1][libgl1]] needs to be installed, to preven the following error:
+   : Could not dlopen libGL.so.1: libGL.so.1: cannot open shared object file: No such file or directory
+
+2. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
    #+name: vscode_download
    #+begin_src shell :results silent
      VSCODE_VERSION=1.99.3
@@ -1025,21 +1036,21 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 	  "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
    #+end_src
 
-2. Verify checksum:
+3. Verify checksum:
    #+name: vscode_verify
    #+begin_src shell :results silent
      curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
 	 grep $(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)
    #+end_src
 
-3. Extract binary:
+4. Extract binary:
    #+name: vscode_extract
    #+begin_src shell :results silent
      mkdir -p ~/opt
      tar -C ~/opt -x -f /tmp/$VSCODE_INSTALLATION_FILE
    #+end_src
 
-4. Create link:
+5. Create link:
    #+name: vscode_create_link
    #+begin_src shell :results silent
      ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
