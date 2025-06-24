@@ -410,8 +410,6 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<vscode_extract>>
   <<vscode_create_link>>
 
-  <<plantuml_import_key>>
-  <<plantuml_sign_key>>
   <<plantuml_download>>
   <<plantuml_verify>>
   <<plantuml_remove_signature>>
@@ -1055,14 +1053,13 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
 2. Import GPG-Key of user id /plantuml@gmail.com/ having the key id /019586D44BD80213/ and the fingerprint /C08C18EE1706DB378BD993C8019586D44BD80213/:
-   #+name: plantuml_import_key
+   *Note*: Must be done before, once
    #+begin_src shell results silent
      gpg --recv-keys 019586D44BD80213
    #+end_src
 
 3. Sign and mark as non-exportable without user interaction.
-   *Note*: This only works, if the signing key is present!
-   #+name: plantuml_sign_key
+   *Note*: This only works, if the signing key is present! And must be done before
    #+begin_src shell results silent
      gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
    #+end_src
@@ -1084,12 +1081,10 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
    should result something like:
+   : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2025.3.jar'
    : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
    : gpg:                using RSA key 019586D44BD80213
-   : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [unknown]
-   : gpg: WARNING: This key is not certified with a trusted signature!
-   : gpg:          There is no indication that the signature belongs to the owner.
-   : Primary key fingerprint: C08C 18EE 1706 DB37 8BD9  93C8 0195 86D4 4BD8 0213
+   : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [full]
 
 6. Delete signature:
    #+name: plantuml_remove_signature

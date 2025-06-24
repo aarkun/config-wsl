@@ -129,8 +129,6 @@ mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$VSCODE_INSTALLATION_FILE
 ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
 
-gpg --recv-keys 019586D44BD80213
-gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
 PLANTUML_VERSION=1.2025.3
 PLANTUML_INSTALLATION_FILE=plantuml-$PLANTUML_VERSION.jar
 mkdir -p ~/opt
