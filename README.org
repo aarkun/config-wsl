@@ -28,6 +28,12 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<install_podman_global_requirements>>
   <<install_podman-compose>>
 
+  <<nct_add_gpg-key>>
+  <<nct_add_apt-sources>>
+  <<apt_update>>
+  <<nct_install>>
+  <<nct_configure_podman>>
+
   <<install_global_python-requirements>>
   <<install_global_gradle-requirements>>
 
@@ -335,6 +341,60 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 
 *** TODO Networking-Probleme
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
+
+** Add NVIDIA Container Toolkit
+To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the
+[[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
+
+1. Download the GPG keys and add them to the keyring as ~/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg~:
+   #+name: nct_add_gpg-key
+   #+begin_src shell :results silent :dir /sudo::
+     curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
+	 | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+   #+end_src
+
+2. Add the sources for the toolkit as ~/etc/apt/sources.list.d/nvidia-container-toolkit.list~ to APT:
+   #+name: nct_add_apt-sources
+   #+begin_src  shell :results silent :dir /sudo::
+     curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+	 | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+	 | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+     apt-get install -y nvidia-container-toolkit
+   #+end_src
+
+3. Update APT:
+   #+name: apt_update
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get update
+   #+end_src
+
+4. Install the toolkit:
+   #+name: nct_install
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y nvidia-container-toolkit
+   #+end_src
+
+5. Verify, by executing
+   #+begin_src shell
+     nvidia-ctk cdi list
+   #+end_src
+
+   This should result to:
+   : nvidia.com/gpu=all
+
+6. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding ~/etc/cdi/nvidia.yaml~:
+   #+name: nct_configure_podman
+   #+begin_src shell :results silen :dir /sudo::
+     nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
+   #+end_src
+
+7. Verify, by executing
+   #+begin_src shell
+     podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L
+   #+end_src
+
+   This should result to:
+   : GPU 0: NVIDIA RTX A1000 Laptop GPU (UUID: GPU-67d3f5e6-b6f8-ecd8-b874-106d2fc38caf)
 
 * Configure user environment
 The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path ~$HOME/.local/bin~ is only added to ~$PATH~, if the directory exists. Because this is not the case, when executing this script initially, ~$HOME/.local/bin~ is added for this script execution explicitly:
