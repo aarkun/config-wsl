@@ -33,6 +33,7 @@ apt-get install -y \
 	openssh-client \
 	patch \
 	xz-utils
+
 apt-get install -y \
 	auctex \
 	texlive-latex-recommended \
@@ -53,11 +54,11 @@ rm -rf /var/lib/docker \
    /etc/apt/keyrings/docker.asc \
    /etc/containers
 apt-get install -y podman
-apt-get install -y --mark-auto fuse-overlayfs
 apt-get install -y --mark-auto \
 	uidmap \
 	slirp4netns \
 	aardvark-dns
+apt-get install -y --mark-auto fuse-overlayfs
 apt-get install -y podman-compose
 
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
@@ -74,6 +75,7 @@ apt-get install -y \
 	gcc \
 	zlib1g-dev \
 	libssl-dev
+
 apt-get install -y unzip
 
 apt-get install -y \

@@ -20,13 +20,14 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<apt_update>>
   <<install_global_base_software>>
-  <<install_global_latex>>
 
-  <<purge_docker_and_podman>>
-  <<install_podman>>
-  <<install_podman_rootless_requirements>>
-  <<install_podman_global_requirements>>
-  <<install_podman-compose>>
+  <<latex_install>>
+
+  <<podman_purge_old_versions>>
+  <<podman_install>>
+  <<podman_install_global_requirements>>
+  <<podman_install_rootless_requirements>>
+  <<podman-compose_install>>
 
   <<nct_add_gpg-key>>
   <<nct_add_apt-sources>>
@@ -34,8 +35,9 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<nct_install>>
   <<nct_configure_podman>>
 
-  <<install_global_python-requirements>>
-  <<install_global_gradle-requirements>>
+  <<python_install_requirements>>
+
+  <<gradle_install_requirements>>
 
   <<idea_install_requirements>>
 
@@ -133,7 +135,7 @@ Install software for every day use:
 #+end_src
 
 Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
-#+name: install_global_latex
+#+name: latex_install
 #+begin_src shell :dir /sudo::
   apt-get install -y \
 	  auctex \
@@ -180,7 +182,7 @@ The current version of Podman in the current Debian stable distribution is 4.3.1
 
 *** Deinstall old versions
 Based on the [[https://docs.docker.com/engine/install/debian/][Docker installation manual]], uninstall old versions of docker and podman and everything, which might have been installed before:
-#+name: purge_docker_and_podman
+#+name: podman_purge_old_versions
 #+begin_src shell :dir /sudo:: :results silent
   apt-get purge -y \
 	  ,*docker* \
@@ -199,13 +201,13 @@ Based on the [[https://docs.docker.com/engine/install/debian/][Docker installati
 
 *** Install Podman
 Based on https://podman.io/docs/installation, install [[https://packages.debian.org/bookworm/podman][podman]] and its necessary dependencies:
-#+name: install_podman
+#+name: podman_install
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman
 #+end_src
 
 The additional packages [[https://packages.debian.org/bookworm/uidmap][uidmap]] and [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] are required, to run podman without errors. The packages [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] and its dependency [[https://packages.debian.org/bookworm/netavark][netavark]] are necessary to let podman container communicate in their own networks:
-#+name: install_podman_global_requirements
+#+name: podman_install_global_requirements
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y --mark-auto \
 	  uidmap \
@@ -217,7 +219,7 @@ The additional packages [[https://packages.debian.org/bookworm/uidmap][uidmap]] 
 
 *** Install dependencies for rootless
 Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], the package [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] must be installed:
-#+name: install_podman_rootless_requirements
+#+name: podman_install_rootless_requirements
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y --mark-auto fuse-overlayfs
 #+end_src
@@ -241,7 +243,7 @@ There are several alternatives to use Docker Compose files together with Podman:
 *** Use Podman Compose 1.0.3
 This is based on https://github.com/containers/podman-compose. Since this is the simplest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
 To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], just execute:
-#+name: install_podman-compose
+#+name: podman-compose_install
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman-compose
 #+end_src
@@ -754,7 +756,7 @@ The actual used version of [[https://www.shellcheck.net/][ShellCheck]] is projec
 The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
 
 1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
-   #+name: install_global_python-requirements
+   #+name: python_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
 	     gcc \
@@ -934,7 +936,7 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    #+end_src
 
 2. unzip] must be installed first
-   #+name: install_global_gradle-requirements
+   #+name: gradle_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y unzip
    #+end_src
