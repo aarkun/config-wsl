@@ -1,0 +1,5 @@
+#+title: WSL 2 Setup
+#+author: Aaron Kunde
+#+email: aaron.kunde@web.de
+
+This project describes the [[file:docs/install.org][installation]], [[file:docs/config.org][configuration]] and [[file:docs/backup.org][backup]] of WSL 2.

@@ -1,6 +1,7 @@
 #+title: WSL 2 configuration
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
+
 Settings and descriptions of the WSL 2 configuration.
 
 This project describes the configuration of the WSL 2 and scripts to set up this configuration.
@@ -10,7 +11,7 @@ It is assumed, that an official [[https://github.com/microsoft/WSL/releases][rel
 
 * Configure WSL Debian
 To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as /root/.
-#+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
+#+begin_src shell :tangle ../bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
   <<apt_disable_recs>>
@@ -392,7 +393,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
 
 * Configure user environment
 The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path ~$HOME/.local/bin~ is only added to ~$PATH~, if the directory exists. Because this is not the case, when executing this script initially, ~$HOME/.local/bin~ is added for this script execution explicitly:
-#+begin_src shell :tangle bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
+#+begin_src shell :tangle ../bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
   if [ $(id -u) -eq 0 ]; then

@@ -1,0 +1,123 @@
+#+title: WSL 2 Installation
+#+author: Aaron Kunde
+#+email: aaron.kunde@web.de
+
+The general installation is described at https://github.com/microsoft/WSL and can be done by executing:
+#+begin_src powershell
+  wsl --install Debian
+#+end_src
+
+* Install multiple versions of Debian
+To install multiple Debian distros, several options exist:
+1. [[* Usean official distro][Use an official distro]]
+2. [[* Create a base distro][Create a base distro]]
+
+** Use an official distro
+According to [[https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro][Build a Custom Linux Distribution for WSL]], a ~.wsl~ file is only a ~.tar~ archive, which can be imported with ~wsl -import~.
+
+*** Download a distro
+Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline install]] documentation, the URLs for a ~.wsl~ file can be found in the [[https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json][DistributionInfo.json]]:
+#+begin_src powershell
+  Invoke-WebRequest -Uri `
+    https://salsa.debian.org/debian/WSL/-/jobs/7949331/artifacts/raw/Debian_WSL_AMD64_v1.22.0.0.wsl `
+    -OutFile "$target_dir\Debian_WSL_AMD64_v1.22.0.0.tar.gz"
+#+end_src
+
+*** Import the new distro
+Import the distro as second distro:
+#+begin_src powershell
+  wsl --import Debian-1 Deb-Dir_1 `
+    "$target_dir\Debian_WSL_AMD64_v1.22.0.0.tar.gz"
+#+end_src
+
+*** Verify imports
+To verify the distros, execute:
+#+begin_src powershell
+  wsl -l
+#+end_src
+
+This should return:
+: Windows Subsystem for Linux Distributions:
+: Debian (Default)
+: Debian-1
+
+*** Create a user
+Create a user /kunde/ interactively and add it to the group ~sudo~:
+#+begin_src powershell
+  wsl -d Debian-1 wsl -d Debian-1 -u root adduser kunde
+  wsl -d Debian-1 wsl -d Debian-1 -u root adduser kunde sudo
+#+end_src
+
+** Create a base distro
+This approach creates a base distro from a fresh installation and reuses this for multiple versions:
+
+*** Create a base distro
+1. After making a backup of your current Debian distro, unregister it:
+   #+begin_src powershell
+     wsl --unregister Debian
+   #+end_src
+
+2. Verify, that no Debian distro exists:
+   #+begin_src powershell
+     wsl --list
+   #+end_src
+
+   should return:
+   : Windows Subsystem for Linux has no installed distributions.
+
+3. Reinstall a fresh Debian distro with a user /kunde/:
+   #+begin_src powershell
+     wsl --install Debian
+   #+end_src
+
+4. Backup the fresh Debian distro as base distro and unregister it:
+    #+begin_src powershell
+      wsl --shutdown
+      wsl --export Debian "$backup_dir\backup.wsl2.debian.base.tar"
+      wsl --unregister Debian
+    #+end_src
+
+*** Reimport the base distro
+Reimport the base distro as second distro:
+#+begin_src powershell
+  wsl --import Debian-1 Deb-Dir_1  "$backup_dir\backup.wsl2.debian.base.tar"
+#+end_src
+
+*** Verify imports
+To verify the distros, execute:
+#+begin_src powershell
+  wsl -l
+#+end_src
+
+This should return:
+: Windows Subsystem for Linux Distributions:
+: Debian (Default)
+: Debian-1
+
+* Set default user
+The user /kunde/ has been created during the [[* Install multiple versions of Debian][installation]]. Set it as the default user:
+#+begin_src powershell
+  wsl --manage Debian-1 --set-default-user kunde
+#+end_src
+
+* Use the new distro
+Use the newly created distro with
+#+begin_src powershell
+  wsl -d Debian-1
+#+end_src
+
+* Fix terminal
+After creating a new Terminal, error messages occur, because no icon is set. To fix it, set a proper icon in Terminal. Set Icon to one of the following options:
+- Tux :: ~ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png~
+- Debian swirl :: ~C:\Users\kunde\Deb-Dir_1\shortcut.ico~
+
+* Run Linux GUI apps
+To [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][run Linux GUI apps on the Windows Subsystem for Linux]], an update may be necessary:
+#+begin_src powershell
+  wsl --update
+#+end_src
+
+After that the WSL has to be restarted:
+#+begin_src powershell
+  wsl --shutdown
+#+end_src
