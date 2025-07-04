@@ -9,7 +9,7 @@ This project describes the configuration of the WSL 2 and scripts to set up this
 It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
 
 * Configure WSL Debian
-To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as ~root~.
+To automate the configuration the script [[file:bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as /root/.
 #+begin_src shell :tangle bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
@@ -47,37 +47,37 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 #+end_src
 
 ** Disable recommended packages
-Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does_not_install_additional_packages][Reduce Debian]], reconfigure APT so that it does not install additional packages, by adding a new file ~/etc/apt/apt.conf.d/10get~:
-
+Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does_not_install_additional_packages][Reduce Debian]], configure APT to not install additional packages. Add a new file ~/etc/apt/apt.conf.d/10get~:
 #+name: apt_disable_recs
 #+begin_src shell :dir /sudo:: :results silent
   echo 'APT::Install-Recommends "0";' > /etc/apt/apt.conf.d/10get
 #+end_src
 
-To verify, execution of
+To verify, execute:
 #+begin_src shell :results verbatim
   apt-config dump | grep -e 'APT::Install-'
 #+end_src
 
-should return:
+This should result to:
 : APT::Install-Recommends "0";
 : APT::Install-Suggests "0";
 
 ** Add non-free packages
-To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
-#+name: apt_add_non-free
-#+begin_src shell :dir /sudo:: :results silent
-  sed /etc/apt/sources.list -e \
-      's/\(deb.* \)main/\1non-free non-free-firmware/' \
-      | tee /etc/apt/sources.list.d/debian.non-free.list
-#+end_src
+To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]]:
 
-and update APT by executing
-#+name: apt_update
-#+begin_src shell :dir /sudo:: :results silent
-  apt-get update
-#+end_src
-afterwards.
+1. Add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
+   #+name: apt_add_non-free
+   #+begin_src shell :dir /sudo:: :results silent
+     sed /etc/apt/sources.list -e \
+	 's/\(deb.* \)main/\1non-free non-free-firmware/' \
+	 | tee /etc/apt/sources.list.d/debian.non-free.list
+   #+end_src
+
+2. Update APT:
+   #+name: apt_update
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get update
+   #+end_src
 
 ** Set default editor
 Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed [[https://packages.debian.org/bookworm/vim-tiny][vim.tiny]]:
@@ -86,16 +86,16 @@ Based on  https://wiki.debian.org/TextEditor set the default editor globally to 
   update-alternatives --set editor /usr/bin/vim.tiny
 #+end_src
 
-To verify, execution of
+To verify, execute:
 #+begin_src shell :results verbatim
   update-alternatives --display editor | grep current
 #+end_src
 
-should result to:
+This should result to:
 :   link currently points to /usr/bin/vim.tiny
 
 ** Add needed locales
-To use /de_DE.UTF-8/ in other programs, like Emacs, these additional locales must at least be installed, like it is described at https://wiki.debian.org/Locale:
+To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it must be installed, like it is described at https://wiki.debian.org/Locale:
 #+name: locale_install_de
 #+begin_src shell :dir /sudo:: :results verbatim
   sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
@@ -147,22 +147,22 @@ Install packages for working with LaTeX. Emacs is already installed or will be a
 ** Activate systemd                                                :obsolete:
 To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. Because in newer versions (WSL version: 2.3.26.0) this is already done, the following steps should not be needed:
 
-1. Create a file in the WSL ~/etc/wsl.conf~, if not already exists:
+1. Create a file ~/etc/wsl.conf~, if not already exists:
 #+begin_src shell :dir /sudo:: :results silent
   echo -e "[boot]\nsystemd=true" > /etc/wsl.conf
 #+end_src
 
-2. Restart WSL
+2. Restart WSL:
 #+begin_src powershell
   wsl --shutdown
 #+end_src
 
-3. To check, if ~systemctl~ works, executing
+3. To check, if ~systemctl~ works, execute:
 #+begin_src shell :results verbatim
   systemctl list-unit-files --type=service
 #+end_src
 
-should result in something like:
+This should result to something like:
 #+begin_example
   UNIT FILE                              STATE           PRESET
   apt-daily-upgrade.service              static          -
@@ -172,7 +172,7 @@ should result in something like:
   115 unit files listed.
 #+end_example
 
-*Note*: To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]. After installation of ~dbus-user-session~, it may be necessary to terminate WSL with:
+*Note*: To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]. After installation of dbus-user-session, it may be necessary to terminate WSL with:
 #+begin_src powershell
   wsl --terminate <<Distro>>
 #+end_src
@@ -232,7 +232,7 @@ This has no effect, which can be verified with:
 Ususally this results to:
 : graphDriverName: vfs
 
-*Note*: Accoring to https://www.redhat.com/en/blog/podman-rootless-overlay, ~fuse-overlayfs~ is not needed in newer versions of Podman anymore.
+*Note*: Accoring to https://www.redhat.com/en/blog/podman-rootless-overlay, fuse-overlayfs is not needed in newer versions of Podman anymore.
 
 ** Use docker-compose files
 There are several alternatives to use Docker Compose files together with Podman:
@@ -242,7 +242,7 @@ There are several alternatives to use Docker Compose files together with Podman:
 
 *** Use Podman Compose 1.0.3
 This is based on https://github.com/containers/podman-compose. Since this is the simplest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
-To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], just execute:
+To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], execute:
 #+name: podman-compose_install
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman-compose
@@ -251,12 +251,12 @@ To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose
 *** OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman       :optional:
 Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by Podman Compose are needed. This may lead to side-effects with networking.
 
-1. Verify, that Podman socket is active by executing
+1. Verify, that Podman socket is active:
    #+begin_src shell :results verbatim
       systemctl status podman.socket
    #+end_src
 
-   which should result to something like:
+   This should result to something like:
    #+begin_example
      ● podman.socket - Podman API Socket
 	  Loaded: loaded (/lib/systemd/system/podman.socket; enabled; preset: enabled)
@@ -275,7 +275,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
        apt-get install -y --mark-auto podman-docker
    #+end_src
 
-3. Verify the communication with the Docker socket by executing:
+3. Verify the communication with the Docker socket:
    #+begin_src shell :dir /sudo:: :results verbatim
      curl -H "Content-Type: application/json" --unix-socket /var/run/docker.sock http://localhost/_ping
    #+end_src
@@ -289,7 +289,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
      systemctl --user start podman.socket
    #+end_src
 
-   Verify the creation of the socket, by executing:
+   Verify the creation of the socket:
    #+begin_src shell :results verbatim
      systemctl --user status podman.socket
    #+end_src
@@ -345,8 +345,7 @@ https://gist.github.com/GiovanniGrieco/94ab72099fa35bc307fda0e36b88f1bd
 https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 ** Add NVIDIA Container Toolkit
-To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the
-[[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
+To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
 
 1. Download the GPG keys and add them to the keyring as ~/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg~:
    #+name: nct_add_gpg-key
@@ -376,7 +375,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
      apt-get install -y nvidia-container-toolkit
    #+end_src
 
-5. Verify, by executing
+   Verify the installation:
    #+begin_src shell
      nvidia-ctk cdi list
    #+end_src
@@ -384,13 +383,13 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    This should result to:
    : nvidia.com/gpu=all
 
-6. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding ~/etc/cdi/nvidia.yaml~:
+5. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding ~/etc/cdi/nvidia.yaml~:
    #+name: nct_configure_podman
    #+begin_src shell :results silen :dir /sudo::
      nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
    #+end_src
 
-7. Verify, by executing
+   Verify, by executing ~nvidia-smi~ inside a container:
    #+begin_src shell
      podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L
    #+end_src
