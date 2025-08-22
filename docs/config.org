@@ -1079,7 +1079,7 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
      apt-get install -y \
 	     libgl1
    #+end_src
-   [[https://packages.debian.org/bookworm/libgl1][libgl1]] needs to be installed, to preven the following error:
+   [[https://packages.debian.org/bookworm/libgl1][libgl1]] needs to be installed, to prevent the following error:
    : Could not dlopen libGL.so.1: libGL.so.1: cannot open shared object file: No such file or directory
 
 2. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
