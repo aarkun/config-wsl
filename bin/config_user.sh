@@ -137,3 +137,6 @@ curl -L -O --output-dir ~/opt \
 gpg --verify ~/opt/$PLANTUML_INSTALLATION_FILE.asc
 rm  ~/opt/$PLANTUML_INSTALLATION_FILE.asc
 ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
+
+echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
+echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
