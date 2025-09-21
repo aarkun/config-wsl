@@ -467,6 +467,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<vscode_extract>>
   <<vscode_create_link>>
 
+  <<plantuml_fetch_gpg-key>>
+  <<plantuml_sign_gpg-key>>
   <<plantuml_download>>
   <<plantuml_verify>>
   <<plantuml_remove_signature>>
@@ -1123,13 +1125,15 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 
 2. Import GPG-Key of user id /plantuml@gmail.com/ having the key id /019586D44BD80213/ and the fingerprint /C08C18EE1706DB378BD993C8019586D44BD80213/:
    *Note*: Must be done before, once
-   #+begin_src shell results silent
+   #+name: plantuml_fetch_gpg-key
+   #+begin_src shell :results silent
      gpg --recv-keys 019586D44BD80213
    #+end_src
 
 3. Sign and mark as non-exportable without user interaction.
    *Note*: This only works, if the signing key is present! And must be done before
-   #+begin_src shell results silent
+   #+name: plantuml_sign_gpg-key
+   #+begin_src shell :results silent
      gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
    #+end_src
 
@@ -1149,30 +1153,30 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
      gpg --verify ~/opt/$PLANTUML_INSTALLATION_FILE.asc
    #+end_src
 
-   should result something like:
+   This should result to something like:
    : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2025.3.jar'
    : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
    : gpg:                using RSA key 019586D44BD80213
    : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [full]
 
-6. Delete signature:
+6. Delete the signature:
    #+name: plantuml_remove_signature
    #+begin_src shell :results silent
      rm  ~/opt/$PLANTUML_INSTALLATION_FILE.asc
    #+end_src
 
-7. Create link:
+7. Create a version agnostic link in the installation directory:
    #+name: plantuml_create_link
    #+begin_src shell :results silent
      ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
    #+end_src
 
-8. To verify installation, execute:
+8. Verify installation:
    #+begin_src shell :results verbatim
      java -jar ~/opt/plantuml.jar -testdot
    #+end_src
 
-   should result something like:
+   This should result to something like:
    : Dot version: dot - graphviz version 2.43.0 (0)
    : Installation seems OK. File generation OK
 
