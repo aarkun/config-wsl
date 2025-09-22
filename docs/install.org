@@ -118,7 +118,7 @@ Use the second distro with
 * Fix terminal
 After creating a new Terminal, error messages occur, because no icon is set. To fix it, set a proper icon in Terminal. Set Icon to one of the following options:
 - Tux :: ~ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png~
-- Debian swirl :: ~C:\Users\kunde\Deb-Dir_1\shortcut.ico~
+- Debian swirl :: ~C:\Users\%USERPROFILE%\Deb-Dir_1\shortcut.ico~
 
 * Run Linux GUI apps
 To [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][run Linux GUI apps on the Windows Subsystem for Linux]], an update may be necessary:
