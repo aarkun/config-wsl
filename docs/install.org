@@ -9,10 +9,14 @@ The general installation is described at https://github.com/microsoft/WSL and ca
 
 * Install multiple versions of Debian
 To install multiple Debian distros, several options exist:
-1. [[* Usean official distro][Use an official distro]]
-2. [[* Create a base distro][Create a base distro]]
+1. [[#official_distro][Use an official distro]]
+2. [[#base_distro][Create and use a base distro]]
 
 ** Use an official distro
+:PROPERTIES:
+:CUSTOM_ID: official_distro
+:END:
+
 According to [[https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro][Build a Custom Linux Distribution for WSL]], a ~.wsl~ file is only a ~.tar~ archive, which can be imported with ~wsl -import~.
 
 *** Download a distro
@@ -43,7 +47,11 @@ Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb
      wsl -d Debian-1 wsl -d Debian-1 -u root adduser $env:Username sudo
    #+end_src
 
-** Create a base distro
+** Create and use a base distro
+:PROPERTIES:
+:CUSTOM_ID: base_distro
+:END:
+
 This approach creates a base distro from a fresh installation and reuses this for multiple versions:
 
 *** Create a base distro
