@@ -1,4 +1,4 @@
-#+title: WSL 2 Installation
+#+title: WSL 2 installation
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
 
