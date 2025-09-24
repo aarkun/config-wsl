@@ -34,7 +34,7 @@ To export an existing distro (e.g. /Debian/):
 * Import / Restore from a backup
 Importing is different, whether a distro with this name already exists or not.
 
-** Import backuo the first time
+** Import backup the first time
 To import a backed up distro (e.g. /Debian/) in a fresh environment:
 
 1. Install a fresh distro:
