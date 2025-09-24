@@ -39,12 +39,17 @@ Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb
 *** Create a user
 1. Create a user interactively. The username is based on the current username:
    #+begin_src powershell
-     wsl -d Debian-1 wsl -d Debian-1 -u root adduser $env:Username
+     wsl -d Debian-1 -u root adduser $env:USERNAME
    #+end_src
 
 2. Add the user to the group ~sudo~:
    #+begin_src powershell
-     wsl -d Debian-1 wsl -d Debian-1 -u root adduser $env:Username sudo
+     wsl -d Debian-1 -u root adduser $env:USERNAME sudo
+   #+end_src
+
+3. Set the default user to the current username:
+   #+begin_src powershell
+     wsl --manage Debian-1 --set-default-user $env:USERNAME
    #+end_src
 
 ** Create and use a base distro
