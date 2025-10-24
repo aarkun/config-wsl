@@ -474,6 +474,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<plantuml_remove_signature>>
   <<plantuml_create_link>>
 
+  <<pandoc_install>>
+
   <<testcontainers_config>>
   <<testcontainers_disable_ryuk>>
 #+end_src
@@ -1179,6 +1181,36 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    This should result to something like:
    : Dot version: dot - graphviz version 2.43.0 (0)
    : Installation seems OK. File generation OK
+
+** Install Pandoc
+1. To install the latest version of [[https://pandoc.org/][Pandoc]] using asdf, execute:
+   #+name: pandoc_install
+   #+begin_src shell :results silent
+     asdf plugin add pandoc
+     asdf install pandoc latest
+     asdf set -u pandoc latest
+   #+end_src
+
+2. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     pandoc --version
+   #+end_src
+
+   This should result something like:
+   : pandoc 3.8.2.1
+   : Features: +server +lua
+   : Scripting engine: Lua 5.4
+   : User data directory: /home/kunde/.local/share/pandoc
+   : Copyright (C) 2006-2025 John MacFarlane. Web:  https://pandoc.org
+   : This is free software; see the source for copying conditions. There is no
+   : warranty, not even for merchantability or fitness for a particular purpose.
+
+3. Install autocompletion for bash. Based on https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/, add a line to ~$HOME/.profile~:
+   #+name: kubectl_add_shell_completions
+   #+begin_src shell :results silent
+     echo '\n. <(kubectl completion bash)' >> ~/.profile
+   #+end_src
+   Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 
 ** Configure Testcontainers
 According to [[https://podman-desktop.io/tutorial/testcontainers-with-podman][Testcontainers with Podman]], a file ~$HOME/.testcontainers.properties~ must be created:
