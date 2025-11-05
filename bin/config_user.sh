@@ -92,6 +92,8 @@ asdf set -u maven latest
 asdf plugin add gradle
 
 asdf plugin add nodejs
+asdf install nodejs 22.0.0
+asdf set -u nodejs 22.0.0
 
 asdf plugin add pnpm
 

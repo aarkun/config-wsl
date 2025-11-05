@@ -898,7 +898,7 @@ The actual used version of [[https://www.java.com/][Java]] may be project specif
      java --version
    #+end_src
 
-   Which should return to:
+   This should return to:
    : openjdk 21.0.5 2024-10-15 LTS
    : OpenJDK Runtime Environment Temurin-21.0.5+11 (build 21.0.5+11-LTS)
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
@@ -955,26 +955,23 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    : gradle 8.12
 
 ** Install Node.js
-The actual used version of [[https://nodejs.org/en][Node.js]] is project specific and not set globally. It is determined locally by an existing ~.nvwmrc~ or ~.tool-versions~.
+The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. But at least one version greater or equal than 22 is needed globally. So, one Node.js is defined globally:
 
 1. To add the Node.js asdf plugin, execute:
    #+name: nodejs_install
    #+begin_src shell :results silent
      asdf plugin add nodejs
+     asdf install nodejs 22.0.0
+     asdf set -u nodejs 22.0.0
    #+end_src
 
-2. The desired version is then installed locally in the project:
-   #+begin_src shell :results silent
-     asdf install nodejs
-   #+end_src
-
-3. Verify installation by executing:
+2. Verify installation by executing:
    #+begin_src shell :results verbatim
      node --version
    #+end_src
 
-   Which should return something like:
-   : v22.14.0
+   This should return something like:
+   : v22.0.0
 
 ** Install pnpm
 The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
