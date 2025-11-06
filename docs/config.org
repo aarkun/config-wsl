@@ -451,6 +451,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<pnpm_install>>
 
+  <<lua_install>>
+
   <<idea_download>>
   <<idea_verify>>
   <<idea_extract>>
@@ -878,7 +880,7 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
      go version
    #+end_src
 
-   Which should return something like:
+   This should return something like:
    :  No version is set for command go
    :  Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
    :  golang 1.24.0
@@ -996,6 +998,30 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 
    Which should return something like:
    : 9.6.0
+
+** Install Lua
+The actual used version of [[https://www.lua.org/][Lua]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+
+1. To add the asdf plugin, execute:
+   #+name: lua_install
+   #+begin_src shell :results silent
+     asdf plugin add lua
+   #+end_src
+
+2. The desired version is then installed locally in the project:
+   #+begin_src shell :results silent
+     asdf install lua latest
+   #+end_src
+
+3. Verify installation by executing:
+   #+begin_src shell :results verbatim
+     lua -v
+   #+end_src
+
+   This should return something like:
+   : No version is set for command lua
+   : Consider adding one of the following versions in your config file at /home/kunde/.tool-versions
+   : lua 5.4.7
 
 ** Install DBeaver
 1. Download latest release files from https://dbeaver.io/download/:

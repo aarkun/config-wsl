@@ -97,6 +97,8 @@ asdf set -u nodejs 22.0.0
 
 asdf plugin add pnpm
 
+asdf plugin add lua
+
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
