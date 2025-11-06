@@ -475,6 +475,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<plantuml_create_link>>
 
   <<pandoc_install>>
+  <<pandoc_add_shell_completions>>
 
   <<testcontainers_config>>
   <<testcontainers_disable_ryuk>>
@@ -1202,10 +1203,10 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    : This is free software; see the source for copying conditions. There is no
    : warranty, not even for merchantability or fitness for a particular purpose.
 
-3. Install autocompletion for bash. Based on https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/, add a line to ~$HOME/.profile~:
-   #+name: kubectl_add_shell_completions
+3. Install autocompletion for bash. Based on [[https://pandoc.org/MANUAL.html][Pandoc User's Guide]], add a line to ~$HOME/.profile~:
+   #+name: pandoc_add_shell_completions
    #+begin_src shell :results silent
-     echo '\n. <(kubectl completion bash)' >> ~/.profile
+     echo '\n. <(pandoc --bash-completion)' >> ~/.profile
    #+end_src
    Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
 

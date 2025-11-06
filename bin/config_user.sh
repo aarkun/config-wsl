@@ -145,6 +145,7 @@ ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
 asdf plugin add pandoc
 asdf install pandoc latest
 asdf set -u pandoc latest
+echo '\n. <(pandoc --bash-completion)' >> ~/.profile
 
 echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
 echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
