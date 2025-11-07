@@ -438,6 +438,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<azure-cli_set_global_python_version>>
   <<azure-cli_install>>
+  <<azure-cli_unset_global_python_version>>
 
   <<golang_install>>
 
@@ -588,7 +589,7 @@ To use the Firefox, which is installed on the host system, create the following 
 #+end_src
 
 ** Install asdf
-Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]] -> /Download Pre-compiled binary/:
+Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]], using the Method /Download Pre-compiled binary/:
 
 1. Download latest release files from https://github.com/asdf-vm/asdf/releases:
    #+name: asdf_download
@@ -618,7 +619,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
      type -a asdf
    #+end_src
 
-   should result to:
+   This should result to:
    : asdf is /home/kunde/.local/bin/asdf
 
 5. The asdf shims directory must be added to ~PATH~ for the current and future sessions:
@@ -652,14 +653,16 @@ Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting s
 3. To take effect, relogin or create a new subshell
 
 ** Configure asdf
-Create a configuration file ~$HOME/.asdfrc~, to support versions files used by other version managers:
+Create a configuration file =$HOME/.asdfrc=, to support versions files used by other version managers:
    #+name: asdf_create_config
    #+begin_src shell
      echo 'legacy_version_file = yes' > ~/.asdfrc
    #+end_src
 
 ** Install kubectl
-1. To install the latest version of [[https://kubernetes.io/docs/reference/kubectl/][kubectl]] using asdf, execute:
+In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl/][kubectl]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. Add the asdf plugin and install the latest version of kubectl with asdf:
    #+name: kubectl_install
    #+begin_src shell :results silent
      asdf plugin add kubectl
@@ -667,25 +670,28 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
      asdf set -u kubectl latest
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      kubectl version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : Client Version: v1.32.1
    : Kustomize Version: v5.5.0
    : Server Version: v1.31.4+rke2r1
 
-3. Install autocompletion for bash. Based on https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/, add a line to ~$HOME/.profile~:
+3. Install autocompletion for bash. Based on [[https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/][Install bash-completion]], add a line to =$HOME/.profile=:
    #+name: kubectl_add_shell_completions
    #+begin_src shell :results silent
      echo '\n. <(kubectl completion bash)' >> ~/.profile
    #+end_src
-   Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
+
+   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
 
 ** Install Helm
-1. The ~latest~ version is currently not supported by the asdf plugin. Therefore, a specific version of [[https://helm.sh/][Helm]] is installed:
+In general, the latest version of [[https://helm.sh/][Helm]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. The keyword ~latest~ is currently not supported by the asdf plugin. Therefore, a specific version of Helm is installed:
    #+name: helm_install
    #+begin_src shell :results silent
      asdf plugin add helm
@@ -693,23 +699,26 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
      asdf set -u helm 3.17.1
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      helm version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : version.BuildInfo{Version:"v3.17.1", GitCommit:"980d8ac1939e39138101364400756af2bdee1da5", GitTreeState:"clean", GoVersion:"go1.23.5"}
 
-3. Install autocompletion for bash. Based on https://helm.sh/docs/helm/helm_completion_bash/#helm, add a line to ~$HOME/.profile~:
+3. Install autocompletion for bash. Based on [[https://helm.sh/docs/helm/helm_completion_bash/#helm][helm completion bash]], add a line to =$HOME/.profile=:
    #+name: helm_add_shell_completions
    #+begin_src shell :results silent
      echo '\n. <(helm completion bash)' >> ~/.profile
    #+end_src
-   Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/helm~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
+
+   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/helm= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
 
 ** Install make
-1. To install the latest version of [[https://www.gnu.org/software/make/][GNU make]] using asdf, execute:
+In general, the latest version of [[https://www.gnu.org/software/make/][GNU make]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. Add the asdf plugin and install the latest version of make with asdf:
    #+name: make_install
    #+begin_src shell :results silent
      asdf plugin add make
@@ -717,12 +726,12 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
      asdf set -u make latest
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      make -v
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : GNU Make 4.4.1
    : Built for x86_64-pc-linux-gnu
    : Copyright (C) 1988-2023 Free Software Foundation, Inc.
@@ -731,32 +740,29 @@ Create a configuration file ~$HOME/.asdfrc~, to support versions files used by o
    : There is NO WARRANTY, to the extent permitted by law.
 
 ** Install ShellCheck
-The actual used version of [[https://www.shellcheck.net/][ShellCheck]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+In general, the latest version of [[https://www.shellcheck.net/][ShellCheck]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
-1. To add the ShellCheck asdf plugin, execute:
+1. Add the asdf plugin and install the latest version of ShellCheck with asdf:
    #+name: shellcheck_install
    #+begin_src shell :results silent
      asdf plugin add shellcheck
-   #+end_src
-
-2. The desired version is then installed locally in the project:
-   #+begin_src shell :results silent
      asdf install shellcheck latest
+     asdf set -u shellcheck latest
    #+end_src
 
-3. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      shellcheck --version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : ShellCheck - shell script analysis tool
    : version: 0.10.0
    : license: GNU General Public License, version 3
    : website: https://www.shellcheck.net
 
 ** Install Python
-The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=:
 
 1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
    #+name: python_install_requirements
@@ -769,35 +775,37 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
 
    *Note*: These are the minimum required packages, to complete the installation. For later use, further packages may be needed.
 
-2. Furthermore, [[* Install make][make]] needs to be installed, which can be done using asdf.
+2. Install [[* Install make][make]], which can be done using asdf.
 
-3. After that, Python can be installed using asdf, by adding the asdf plugin:
+3. Add the asdf plugin:
    #+name: python_install
    #+begin_src shell :results silent
      asdf plugin add python
    #+end_src
 
-4. The desired version is then installed locally in the project:
+4. Install the desired version of Python locally in the project:
    #+begin_src shell :results silent
      asdf install python latest
    #+end_src
 
-5. Verify installation by executing:
+5. Verify installation in the project:
    #+begin_src shell :results verbatim
      python --version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : Python 3.10.11
 
 ** Install Azure CLI
-1. [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]], needs [[* Install Python 3.11][Python]], which is installed together with the Azure CLI. To complete the installation process, the python version must be set globally first:
+In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. The Azure CLI installation needs Python, which is installed together with the Azure CLI. To complete the installation process, the needed version of Python must be set globally temporarly:
    #+name: azure-cli_set_global_python_version
    #+begin_src shell :results silent
      asdf set -u python 3.10.11
    #+end_src
 
-2. To install the latest version of Azure CLI and the necessary python version using asdf, execute:
+2. Add the asdf plugin and install the latest version of Azure CLI with asdf:
    #+name: azure-cli_install
    #+begin_src shell :results silent
      asdf plugin add azure-cli
@@ -805,12 +813,12 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
      asdf set -u azure-cli latest
    #+end_src
 
-3. Verify installation by executing:
+3. Verify installation:
    #+begin_src shell :results verbatim
      az version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : {
    :   "azure-cli": "2.68.0",
    :   "azure-cli-core": "2.68.0",
@@ -818,34 +826,41 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
    :   "extensions": {}
    : }
 
+4. Unset the temporary set Python version:
+   #+name: azure-cli_unset_global_python_version
+   #+begin_src shell :results silent
+     sed -i.bak -e '/^python /d' .tool-versions
+     rm .tool-version.bak
+   #+end_src
+
 ** Install minikube                                                    :fail:
-1. To install the latest version of [[https://minikube.sigs.k8s.io/][minikube]] using asdf, execute:
+In general, the latest version of [[https://minikube.sigs.k8s.io/][minikube]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. Add the asdf plugin and install the latest version of minikube with asdf:
    #+name: minikube_install
    #+begin_src shell :results silent
      asdf plugin add minikube
      asdf install minikube latest
+     asdf set -u minikube latest
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      minikube version
    #+end_src
 
-   Which should return something like
-   #+begin_example
-     No version is set for command minikube
-     Consider adding one of the following versions in your config file at /home/kunde/.tool-versions
-     minikube 1.35.0
-   #+end_example
+   This should result to something like
+   : minikube version: v1.35.0
+   : commit: dd5d320e41b5451cdf3c01891bc4e13d189586ed-dirty
 
-3. The actual used version of minikube is project specific and not set globally. It is determined locally by an existing ~.tool-versions~. To use latest minikube together with Podman rootless execute the following in the project:
-   #+begin_src shell
-     asdf set minikube latest
+3. Configure minikube to use it together with Podman rootless:
+   #+name: minikube_config
+   #+begin_src shell :results silent
      minikube config set rootless true
    #+end_src
 
-4. After that, minikube might be used in the project with:
-   #+begin_src shell
+4. Start minikube:
+   #+begin_src shell :results silent
      minikube start
    #+end_src
 
@@ -862,54 +877,54 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
    #+end_example
 
 ** Install Go
-The actual used version of [[https://go.dev/][Go]] is project specific and not set globally. It is determined locally by an existing ~go.mod~ or ~.tool-versions~.
+The actual used version of [[https://go.dev/][Go]] is project specific and not set globally. It is determined locally by an existing =go.mod= or =.tool-versions=:
 
-1. To add the asdf plugin, execute:
+1. Add the asdf plugin:
    #+name: golang_install
    #+begin_src shell :results silent
      asdf plugin add golang
    #+end_src
 
-2. The desired version is then installed locally in the project:
+2. Install the desired version of Go locally in the project:
    #+begin_src shell :results silent
      asdf install golang latest
    #+end_src
 
-3. Verify installation by executing:
+3. Verify installation in the project:
    #+begin_src shell :results verbatim
      go version
    #+end_src
 
-   This should return something like:
+   This should result to something like:
    :  No version is set for command go
    :  Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
    :  golang 1.24.0
 
 ** Install Java
-The actual used version of [[https://www.java.com/][Java]] may be project specific. But at least one JRE is needed globally. So, one JDK is defined globally:
+The actual used version of a [[https://www.java.com/][Java]] JDK may be project specific. Because at leat one JRE is needed globally, the current LTS is defined globally:
 
-1. To install a version of Java using asdf, execute:
+1. Add the asdf plugin and install a LTS version of the JRE with asdf:
    #+name: java_install
    #+begin_src shell :results silent
      asdf plugin add java
-     asdf install java temurin-21.0.5+11.0.LTS
-     asdf set -u java temurin-21.0.5+11.0.LTS
+     asdf install java temurin-jre-21.0.5+11.0.LTS
+     asdf set -u java temurin-jre-21.0.5+11.0.LTS
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      java --version
    #+end_src
 
-   This should return to:
+   This should result to:
    : openjdk 21.0.5 2024-10-15 LTS
    : OpenJDK Runtime Environment Temurin-21.0.5+11 (build 21.0.5+11-LTS)
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
 
 ** Install Maven
-The actual used version of [[https://maven.apache.org/][Maven]] may be project specific. But at least one version is needed globally. So, one Maven version is defined globally:
+In general, the latest version of [[https://maven.apache.org/][Maven]] is used for all  projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
-1. To add the Maven asdf plugin, execute:
+1. Add the asdf plugin and install the latest version of Maven with asdf:
    #+name: maven_install
    #+begin_src shell :results silent
      asdf plugin add maven
@@ -917,12 +932,12 @@ The actual used version of [[https://maven.apache.org/][Maven]] may be project s
      asdf set -u maven latest
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      mvn --version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
    : Maven home: /home/kunde/.asdf/installs/maven/3.9.9
    : Java version: 21.0.5, vendor: Eclipse Adoptium, runtime: /home/kunde/.asdf/installs/java/temurin-21.0.5+11.0.LTS
@@ -930,37 +945,37 @@ The actual used version of [[https://maven.apache.org/][Maven]] may be project s
    : OS name: "linux", version: "5.15.167.4-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 
 ** Install Gradle
-The actual used version of [[https://gradle.org/][Gradle]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+The actual used version of [[https://gradle.org/][Gradle]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=:
 
-1. To add the Gradle asdf plugin, execute:
+1. Add the asdf plugin:
    #+name: gradle_install
    #+begin_src shell :results silent
      asdf plugin add gradle
    #+end_src
 
-2. unzip] must be installed first
+2. Install [[https://packages.debian.org/bookworm/unzip][unzip]] as a necessary prerequisite for the Gradle installation:
    #+name: gradle_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y unzip
    #+end_src
 
-3. The desired version is then installed locally in the project. The ~latest~ version is currently not supported by the asdf plugin. Therefore, a specific version must be installed:
+3. Install the desired version of Gradle locally in the project. The keyword ~latest~ is currently not supported by the asdf plugin. Therefore, a specific version of Gradle must be installed:
    #+begin_src shell :results silent
      asdf install gradle 8.12
    #+end_src
 
-4. Verify installation by executing:
+4. Verify installation in the project:
    #+begin_src shell :results verbatim
-     gradle --version &2>1
+     gradle --version
    #+end_src
 
-   Which should result to something like:
+   This should result to something like:
    : gradle 8.12
 
 ** Install Node.js
-The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. But at least one version greater or equal than 22 is needed globally. So, one Node.js is defined globally:
+The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. Because at least one version of Node.js greater or equal than 22 is needed globally, one is defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =tool-versions=:
 
-1. To add the Node.js asdf plugin, execute:
+1. Add the asdf plugin:
    #+name: nodejs_install
    #+begin_src shell :results silent
      asdf plugin add nodejs
@@ -968,57 +983,93 @@ The actual used version of [[https://nodejs.org/en][Node.js]] may be project spe
      asdf set -u nodejs 22.0.0
    #+end_src
 
-2. Verify installation by executing:
+2. Verify installation:
    #+begin_src shell :results verbatim
      node --version
    #+end_src
 
-   This should return something like:
+   This should result to:
    : v22.0.0
 
 ** Install pnpm
-The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
 
-1. To add the pnpm asdf plugin, execute:
+1. Add the asdf plugin:
    #+name: pnpm_install
    #+begin_src shell :results silent
      asdf plugin add pnpm
    #+end_src
 
-2. The desired version is then installed locally in the project. The version is usually defined in ~package.json~ and can be determein:
+2. Install the desired version of pnpm locally in the project. The version is usually defined in =package.json= and can be determined:
    #+begin_src shell :results silent
-     asdf install pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '",')
-     asdf set pnpm $(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '",')
+     __PNPM_VERSION=$(grep pnpm@ package.json | cut -d'@' -f2 | tr -d '",')
+     asdf install pnpm $__PNPM_VERSION
+     asdf set pnpm $__PNPM_VERSION
+     unset __PNPM_VERSION
    #+end_src
 
-3. Verify installation by executing:
+3. Verify installation in the project:
    #+begin_src shell :results verbatim
      pnpm --version
    #+end_src
 
-   Which should return something like:
+   This should result to something like:
    : 9.6.0
 
-** Install Lua
-The actual used version of [[https://www.lua.org/][Lua]] is project specific and not set globally. It is determined locally by an existing ~.tool-versions~.
+** Install Pandoc
+In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for all  projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
-1. To add the asdf plugin, execute:
+1. Add the asdf plugin and install the latest version of Pandoc with asdf:
+   #+name: pandoc_install
+   #+begin_src shell :results silent
+     asdf plugin add pandoc
+     asdf install pandoc latest
+     asdf set -u pandoc latest
+   #+end_src
+
+2. Verify installation:
+   #+begin_src shell :results verbatim
+     pandoc --version
+   #+end_src
+
+   This should result to something like:
+   : pandoc 3.8.2.1
+   : Features: +server +lua
+   : Scripting engine: Lua 5.4
+   : User data directory: /home/kunde/.local/share/pandoc
+   : Copyright (C) 2006-2025 John MacFarlane. Web:  https://pandoc.org
+   : This is free software; see the source for copying conditions. There is no
+   : warranty, not even for merchantability or fitness for a particular purpose.
+
+3. Install autocompletion for bash. Based on [[https://pandoc.org/MANUAL.html][Pandoc User's Guide]], add a line to =$HOME/.profile=:
+   #+name: pandoc_add_shell_completions
+   #+begin_src shell :results silent
+     echo '\n. <(pandoc --bash-completion)' >> ~/.profile
+   #+end_src
+
+   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/pandoc= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
+
+** Install Lua
+The actual used version of [[https://www.lua.org/][Lua]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=:
+
+1. Add the asdf plugin:
    #+name: lua_install
    #+begin_src shell :results silent
      asdf plugin add lua
    #+end_src
 
-2. The desired version is then installed locally in the project:
+2. Install the desired version of Lua locally in the project:
    #+begin_src shell :results silent
      asdf install lua latest
+     asdf set lua latest
    #+end_src
 
-3. Verify installation by executing:
+3. Verify installation in the project:
    #+begin_src shell :results verbatim
      lua -v
    #+end_src
 
-   This should return something like:
+   This should result to something like:
    : No version is set for command lua
    : Consider adding one of the following versions in your config file at /home/kunde/.tool-versions
    : lua 5.4.7
@@ -1156,14 +1207,17 @@ The actual used version of [[https://www.lua.org/][Lua]] is project specific and
      gpg --recv-keys 019586D44BD80213
    #+end_src
 
-3. Sign and mark as non-exportable without user interaction.
-   *Note*: This only works, if the signing key is present! And must be done before
+3. Make your GPG signing key available.
+
+4. Sign and mark as non-exportable without user interaction:
    #+name: plantuml_sign_gpg-key
    #+begin_src shell :results silent
      gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
    #+end_src
 
-4. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
+   *Note*: This only works, if the signing key is present!
+
+5. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
    #+name: plantuml_download
    #+begin_src shell :results silent
      PLANTUML_VERSION=1.2025.3
@@ -1173,7 +1227,7 @@ The actual used version of [[https://www.lua.org/][Lua]] is project specific and
 	  "https://github.com/plantuml/plantuml/releases/download/v$PLANTUML_VERSION/$PLANTUML_INSTALLATION_FILE{,.asc}"
    #+end_src
 
-5. Verify the installation file:
+6. Verify the installation file:
    #+name: plantuml_verify
    #+begin_src shell
      gpg --verify ~/opt/$PLANTUML_INSTALLATION_FILE.asc
@@ -1185,19 +1239,19 @@ The actual used version of [[https://www.lua.org/][Lua]] is project specific and
    : gpg:                using RSA key 019586D44BD80213
    : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [full]
 
-6. Delete the signature:
+7. Delete the signature:
    #+name: plantuml_remove_signature
    #+begin_src shell :results silent
      rm  ~/opt/$PLANTUML_INSTALLATION_FILE.asc
    #+end_src
 
-7. Create a version agnostic link in the installation directory:
+8. Create a version agnostic link in the installation directory:
    #+name: plantuml_create_link
    #+begin_src shell :results silent
      ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
    #+end_src
 
-8. Verify installation:
+9. Verify installation:
    #+begin_src shell :results verbatim
      java -jar ~/opt/plantuml.jar -testdot
    #+end_src
@@ -1206,48 +1260,18 @@ The actual used version of [[https://www.lua.org/][Lua]] is project specific and
    : Dot version: dot - graphviz version 2.43.0 (0)
    : Installation seems OK. File generation OK
 
-** Install Pandoc
-1. To install the latest version of [[https://pandoc.org/][Pandoc]] using asdf, execute:
-   #+name: pandoc_install
-   #+begin_src shell :results silent
-     asdf plugin add pandoc
-     asdf install pandoc latest
-     asdf set -u pandoc latest
-   #+end_src
-
-2. Verify installation by executing:
-   #+begin_src shell :results verbatim
-     pandoc --version
-   #+end_src
-
-   This should result something like:
-   : pandoc 3.8.2.1
-   : Features: +server +lua
-   : Scripting engine: Lua 5.4
-   : User data directory: /home/kunde/.local/share/pandoc
-   : Copyright (C) 2006-2025 John MacFarlane. Web:  https://pandoc.org
-   : This is free software; see the source for copying conditions. There is no
-   : warranty, not even for merchantability or fitness for a particular purpose.
-
-3. Install autocompletion for bash. Based on [[https://pandoc.org/MANUAL.html][Pandoc User's Guide]], add a line to ~$HOME/.profile~:
-   #+name: pandoc_add_shell_completions
-   #+begin_src shell :results silent
-     echo '\n. <(pandoc --bash-completion)' >> ~/.profile
-   #+end_src
-   Since ~$HOME/.bashrc~ is sourced before ~$HOME/.asdf/shims~ is added to the ~$PATH~ in ~$HOME/.profile~ and the shim ~$HOME/.asdf/shims/kubectl~ itself uses ~asdf~ without a prefix, the shim cannot be used within ~$HOME/.bashrc~. As a workaround, the completion is sourced in ~$HOME/.profile~, until the shims may be fixed.
-
 ** Configure Testcontainers
-According to [[https://podman-desktop.io/tutorial/testcontainers-with-podman][Testcontainers with Podman]], a file ~$HOME/.testcontainers.properties~ must be created:
-#+name: testcontainers_config
-#+begin_src shell
-  echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
-#+end_src
+1. Set socket for Podman. According to [[https://podman-desktop.io/tutorial/testcontainers-with-podman][Testcontainers with Podman]], a file =$HOME/.testcontainers.properties= must be created:
+   #+name: testcontainers_config
+   #+begin_src shell
+     echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
+   #+end_src
 
-If writing the entry without substituting the variable ~$XDG_RUNTIME_DIR~, tests in SpringBoot might fail, because the variable is not substituted by default. To avoid this, the value is substituted, as long the directory does not change for the user.
+   *Note*: If writing the entry without substituting the variable =$XDG_RUNTIME_DIR=, tests in SpringBoot might fail, because the variable is not substituted by default. To avoid this, the value is substituted, as long the directory does not change for the user.
 
-Since Podman in rootless mode is used, [[https://java.testcontainers.org/features/configuration][Ryuk]] must be disabled, by setting the following environment ~TESTCONTAINERS_RYUK_DISABLED=true~ in ~$HOME/.profile~:
-#+name: testcontainers_disable_ryuk
-#+begin_src shell
-  echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
-#+end_src
+2. Disable [[https://java.testcontainers.org/features/configuration][Ryuk]]. Since Podman is used in rootless mode, Ryuk must be disabled, by setting the following environment ~TESTCONTAINERS_RYUK_DISABLED=true~ in =$HOME/.profile=:
+   #+name: testcontainers_disable_ryuk
+   #+begin_src shell
+     echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
+   #+end_src
 

@@ -71,6 +71,8 @@ asdf install make latest
 asdf set -u make latest
 
 asdf plugin add shellcheck
+asdf install shellcheck latest
+asdf set -u shellcheck latest
 
 asdf plugin add python
 
@@ -78,12 +80,14 @@ asdf set -u python 3.10.11
 asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
+sed -i.bak -e '/^python /d' .tool-versions
+rm .tool-version.bak
 
 asdf plugin add golang
 
 asdf plugin add java
-asdf install java temurin-21.0.5+11.0.LTS
-asdf set -u java temurin-21.0.5+11.0.LTS
+asdf install java temurin-jre-21.0.5+11.0.LTS
+asdf set -u java temurin-jre-21.0.5+11.0.LTS
 
 asdf plugin add maven
 asdf install maven latest
