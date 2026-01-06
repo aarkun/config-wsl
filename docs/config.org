@@ -482,6 +482,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<testcontainers_config>>
   <<testcontainers_disable_ryuk>>
+
+  <<mermaid_install>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1275,3 +1277,13 @@ The actual used version of [[https://www.lua.org/][Lua]] is project specific and
      echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
    #+end_src
 
+** Install mermaid-cli
+To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://github.com/mermaid-js/mermaid-cli][mermaid-cli]] must be installed. [[* Install Node.js][Node.js]] is required being installed before. 
+
+1. Install mermaid globally in the current Node.js installation, using [[https://www.npmjs.com/][npm]]:
+   #+name: mermaid_install
+   #+begin_src shell :results silent
+     npm install -g @mermaid-js/mermaid-cli
+   #+end_src
+
+   This results in =mmdc= being installed in =$HOME/.asdf/installs/nodejs/22.0.0/bin/=.
