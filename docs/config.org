@@ -512,7 +512,7 @@ to ~$HOME/.profile~ or by using the provided ~/etc/X11/Xsession.d/90x11-common_s
 Therefore, based on https://superuser.com/questions/1808572/how-to-automate-starting-the-ssh-agent-and-adding-my-keys-in-wsl2-for-windows, the following lines are added to ~$HOME/profile~
 #+name: start_ssh-agent.sh
 #+begin_src shell
-  SSH_AGENT_ENV_FILE=~/.ssh/agent-env
+  SSH_AGENT_ENV_FILE="$HOME/.ssh/agent-env"
 
   if [ -z "$(pidof ssh-agent)" ]; then
       ssh-agent | head -n2 > $SSH_AGENT_ENV_FILE

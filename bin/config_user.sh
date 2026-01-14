@@ -17,7 +17,7 @@ echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
 
 cat <<'EOF' >> ~/.profile
 
-SSH_AGENT_ENV_FILE=~/.ssh/agent-env
+SSH_AGENT_ENV_FILE="$HOME/.ssh/agent-env"
 
 if [ -z "$(pidof ssh-agent)" ]; then
     ssh-agent | head -n2 > $SSH_AGENT_ENV_FILE
