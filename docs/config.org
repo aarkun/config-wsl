@@ -464,6 +464,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<helm_install>>
   <<helm_add_shell_completions>>
 
+  <<helm-docs_install>>
+
   <<make_install>>
 
   <<shellcheck_install>>
@@ -750,6 +752,24 @@ In general, the latest version of [[https://helm.sh/][Helm]] is used for all pro
    #+end_src
 
    *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/helm= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
+
+** Install helm-docs
+Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoodj/helm-docs][helm-docs]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+1. Add the asdf plugin and install the latest version of helm-docs with asdf:
+   #+name: helm-docs_install
+   #+begin_src shell :results silent
+     asdf plugin add helm-docs
+     asdf install helm-docs latest
+     asdf set -u helm-docs latest
+   #+end_src
+
+2. Verify installation:
+   #+begin_src shell :results verbatim
+     helm-docs --version
+   #+end_src
+
+   This should result to something like:
+   : helm-docs version 1.14.2
 
 ** Install make
 In general, the latest version of [[https://www.gnu.org/software/make/][GNU make]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:

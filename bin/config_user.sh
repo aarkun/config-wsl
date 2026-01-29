@@ -66,6 +66,10 @@ asdf install helm 3.17.1
 asdf set -u helm 3.17.1
 echo '\n. <(helm completion bash)' >> ~/.profile
 
+asdf plugin add helm-docs
+asdf install helm-docs latest
+asdf set -u helm-docs latest
+
 asdf plugin add make
 asdf install make latest
 asdf set -u make latest
