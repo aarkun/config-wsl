@@ -96,6 +96,40 @@ This should result to:
 :   link currently points to /usr/bin/vim.tiny
 
 ** Add needed locales
+The default locale in WSL is determined by the locale of the Windows installation. This can be determined by executing in the powershell:
+#+begin_src powershell
+  Get-WinSystemLocale
+#+end_src
+
+This should return something like:
+: LCID             Name             DisplayName
+: ----             ----             -----------
+: 1033             en-US            English (United States)
+
+The current locale of the WSL can be determined by executing:
+#+begin_src shell :results verbatim
+  locale
+#+end_src
+
+This should then result to something like:
+#+begin_example
+  LANG=en_US.UTF-8
+  LANGUAGE=
+  LC_CTYPE="en_US.UTF-8"
+  LC_NUMERIC="en_US.UTF-8"
+  LC_TIME="en_US.UTF-8"
+  LC_COLLATE="en_US.UTF-8"
+  LC_MONETARY="en_US.UTF-8"
+  LC_MESSAGES="en_US.UTF-8"
+  LC_PAPER="en_US.UTF-8"
+  LC_NAME="en_US.UTF-8"
+  LC_ADDRESS="en_US.UTF-8"
+  LC_TELEPHONE="en_US.UTF-8"
+  LC_MEASUREMENT="en_US.UTF-8"
+  LC_IDENTIFICATION="en_US.UTF-8"
+  LC_ALL=
+#+end_example
+
 To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it must be installed, like it is described at https://wiki.debian.org/Locale:
 #+name: locale_install_de
 #+begin_src shell :dir /sudo:: :results verbatim
@@ -104,7 +138,7 @@ To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it mu
 #+end_src
 
 ** OPTIONAL: Set locale for scripts                                :optional:
-Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now the default is /en_EN.UTF-8/ is used.
+Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now, the default /en_EN.UTF-8/ is used.
 
 ** Install global software
 Install software for every day use:
@@ -924,7 +958,7 @@ The actual used version of a [[https://www.java.com/][Java]] JDK may be project 
    : OpenJDK 64-Bit Server VM Temurin-21.0.5+11 (build 21.0.5+11-LTS, mixed mode, sharing)
 
 ** Install Maven
-In general, the latest version of [[https://maven.apache.org/][Maven]] is used for all  projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+In general, the latest version of [[https://maven.apache.org/][Maven]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
 1. Add the asdf plugin and install the latest version of Maven with asdf:
    #+name: maven_install
@@ -1019,7 +1053,7 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    : 9.6.0
 
 ** Install Pandoc
-In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for all  projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
 1. Add the asdf plugin and install the latest version of Pandoc with asdf:
    #+name: pandoc_install
