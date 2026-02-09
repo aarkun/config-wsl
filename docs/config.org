@@ -817,8 +817,8 @@ In general, the latest version of [[https://www.shellcheck.net/][ShellCheck]] is
    : license: GNU General Public License, version 3
    : website: https://www.shellcheck.net
 
-** Install Python
-The actual used version of [[https://www.python.org/][Python]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=:
+** Install Python 3.10.11
+The actual used version of [[https://www.python.org/][Python]] may be project specific. But at least one version of Python greater or equal than 3.10.11 is needed globally. It may be overridden for specific projects by an existing =.tool-versions=:
 
 1. Python needs some system-wide packages installed, which are described at https://github.com/pyenv/pyenv/wiki#suggested-build-environment:
    #+name: python_install_requirements
@@ -837,29 +837,28 @@ The actual used version of [[https://www.python.org/][Python]] is project specif
    #+name: python_install
    #+begin_src shell :results silent
      asdf plugin add python
+     asdf install python 3.10.11
+     asdf set -u python 3.10.11
    #+end_src
 
-4. Install the desired version of Python locally in the project:
-   #+begin_src shell :results silent
-     asdf install python latest
+4. Verify installation:
+   #+begin_src shell :results verbatim
+     python --version
    #+end_src
 
-5. Verify installation in the project:
+   This should result to:
+   : Python 3.10.11
+
+** Install Azure CLI
+In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=. At this moment, at least Python 3.10.11 is needed for an installation.
+
+1. Verify, Python is installed at least at version 3.10.11:
    #+begin_src shell :results verbatim
      python --version
    #+end_src
 
    This should result to something like:
    : Python 3.10.11
-
-** Install Azure CLI
-In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
-
-1. The Azure CLI installation needs Python, which is installed together with the Azure CLI. To complete the installation process, the needed version of Python must be set globally temporarly:
-   #+name: azure-cli_set_global_python_version
-   #+begin_src shell :results silent
-     asdf set -u python 3.10.11
-   #+end_src
 
 2. Add the asdf plugin and install the latest version of Azure CLI with asdf:
    #+name: azure-cli_install
@@ -881,13 +880,6 @@ In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/
    :   "azure-cli-telemetry": "1.1.0",
    :   "extensions": {}
    : }
-
-4. Unset the temporary set Python version:
-   #+name: azure-cli_unset_global_python_version
-   #+begin_src shell :results silent
-     sed -i.bak -e '/^python /d' .tool-versions
-     rm .tool-version.bak
-   #+end_src
 
 ** Install minikube                                                    :fail:
 In general, the latest version of [[https://minikube.sigs.k8s.io/][minikube]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:

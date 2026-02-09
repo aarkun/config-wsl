@@ -79,13 +79,14 @@ asdf install shellcheck latest
 asdf set -u shellcheck latest
 
 asdf plugin add python
-
+asdf install python 3.10.11
 asdf set -u python 3.10.11
+
+
 asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
-sed -i.bak -e '/^python /d' .tool-versions
-rm .tool-version.bak
+
 
 asdf plugin add golang
 
