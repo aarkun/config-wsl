@@ -1029,7 +1029,7 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    : gradle 8.12
 
 ** Install Node.js
-The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. Because at least one version of Node.js greater or equal than 22 is needed globally, one is defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =tool-versions=:
+The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. Because at least one version of Node.js greater or equal than 22 is needed globally, one is defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =.tool-versions=:
 
 1. Add the asdf plugin:
    #+name: nodejs_install
