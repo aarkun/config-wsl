@@ -1330,6 +1330,7 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
    #+name: mermaid_install
    #+begin_src shell :results silent
      npm install -g @mermaid-js/mermaid-cli
+     asdf reshim
    #+end_src
 
    This results in =mmdc= being installed in =$HOME/.asdf/installs/nodejs/22.0.0/bin/=.
