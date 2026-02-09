@@ -520,6 +520,9 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<testcontainers_disable_ryuk>>
 
   <<mermaid_install>>
+
+  <<aider_install_aider-install>>
+  <<aider_install>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1342,3 +1345,46 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
 
    This should result to something like:
    : 11.12.0
+
+** Install aider
+In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=.
+According to the [[https://aider.chat/docs/install.html][Installation manual]], at least Python 3.8-3.13  is needed for an installation.
+
+1. Verify, Python is installed at least at version 3.8:
+   #+begin_src shell :results verbatim
+     python --version
+   #+end_src
+
+   This should result to something like:
+   : Python 3.10.11
+
+2. Install aider-install using pip:
+   #+name: aider_install_aider-install
+   #+begin_src shell :results silent
+     python -m pip install aider-install
+     asdf reshim
+   #+end_src
+
+   This results in =aider-install= being installed in =$HOME/.asdf/installs/python/3.10.11/bin/=.
+
+3. Install aider with aider-install:
+   #+name: aider_install
+   #+begin_src shell :results silent
+     aider-install
+   #+end_src
+
+   This results in:
+   - uv installed in =$HOME/local/.local/share/uv=
+   - aider being installed in =$HOME/.local/share/uv/tools/aider-chat=
+   - Python 3.12 installed in =$HOME/.local/share/uv/python=
+   - =uv= being installed in =$HOME/.asdf/installs/python/3.10.11/bin=
+   - =aider= being installed in =$HOME/.local/bin=
+
+4. Verify installation:
+   #+begin_src shell
+     aider --version
+   #+end_src
+
+   This should result into something like:
+   : aider 0.86.1
+   

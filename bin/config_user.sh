@@ -163,3 +163,7 @@ echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
 
 npm install -g @mermaid-js/mermaid-cli
 asdf reshim
+
+python -m pip install aider-install
+asdf reshim
+aider-install
