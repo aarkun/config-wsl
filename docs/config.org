@@ -836,7 +836,7 @@ The actual used version of [[https://www.python.org/][Python]] may be project sp
 
 2. Install [[* Install make][make]], which can be done using asdf.
 
-3. Add the asdf plugin:
+3. Add the asdf plugin and install Python 3.10.11:
    #+name: python_install
    #+begin_src shell :results silent
      asdf plugin add python
@@ -1101,29 +1101,23 @@ In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for al
    *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/pandoc= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
 
 ** Install Lua
-The actual used version of [[https://www.lua.org/][Lua]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=:
+The actual used version of [[https://www.lua.org/][Lua]] may be project specific. Since Lua is used for some global config files, at least one version is needed globally. It may be overridden for specific projects by an existing =.tool-versions=:
 
-1. Add the asdf plugin:
+1. Add the asdf plugin and install latest Lua version:
    #+name: lua_install
    #+begin_src shell :results silent
      asdf plugin add lua
-   #+end_src
-
-2. Install the desired version of Lua locally in the project:
-   #+begin_src shell :results silent
      asdf install lua latest
-     asdf set lua latest
+     asdf set -u lua latest
    #+end_src
 
-3. Verify installation in the project:
+2. Verify installation:
    #+begin_src shell :results verbatim
      lua -v
    #+end_src
 
    This should result to something like:
-   : No version is set for command lua
-   : Consider adding one of the following versions in your config file at /home/kunde/.tool-versions
-   : lua 5.4.7
+   : Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 
 ** Install DBeaver
 1. Download latest release files from https://dbeaver.io/download/:
