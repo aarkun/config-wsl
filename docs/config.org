@@ -1341,7 +1341,7 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
    : 11.12.0
 
 ** Install aider
-In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=.
+In general, the latest version of [[https://aider.chat/][aider]] is used for all projects as a default.
 According to the [[https://aider.chat/docs/install.html][Installation manual]], at least Python 3.8-3.13  is needed for an installation.
 
 1. Verify, Python is installed at least at version 3.8:
