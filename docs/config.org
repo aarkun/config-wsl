@@ -458,6 +458,10 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<asdf_add_shell_completions>>
   <<asdf_create_config>>
 
+  <<direnv_install>>
+  <<direnv_hook_into_shell>>
+  <<direnv_config_accept_env>>
+
   <<kubectl_install>>
   <<kubectl_add_shell_completions>>
 
@@ -702,6 +706,38 @@ Create a configuration file =$HOME/.asdfrc=, to support versions files used by o
    #+name: asdf_create_config
    #+begin_src shell
      echo 'legacy_version_file = yes' > ~/.asdfrc
+   #+end_src
+
+** Install direnv
+For many configurations, [[https://direnv.net/][direnv]] is very useful. In general, the latest version of direnv is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. Add the asdf plugin and install the latest version of kubectl with asdf:
+   #+name: direnv_install
+   #+begin_src shell :results silent
+     asdf plugin add direnv
+     asdf install direnv latest
+     asdf set -u direnv latest
+   #+end_src
+
+2. Verify installation:
+   #+begin_src shell :results verbatim
+     direnv --version
+   #+end_src
+
+   This should result to something like:
+   : 2.37.1
+
+3. [[https://direnv.net/docs/hook.html][Hook]] direnv into the shell:
+   #+name: direnv_hook_into_shell
+   #+begin_src shell :results silent
+     echo '\neval "$(direnv hook bash)"' >> ~/.profile
+   #+end_src
+
+4. Configure direnv by its [[https://direnv.net/man/direnv.toml.1.html][configuration file]] =$HOME/.config/direnv/direnv.toml= to accept =.env= files:
+   #+name: direnv_config_accept_env
+   #+begin_src shell :results silent
+     mkdir -p ~/.config/direnv
+     echo '[global]\nload_dotenv = true' > ~/.config/direnv/direnv.toml
    #+end_src
 
 ** Install kubectl

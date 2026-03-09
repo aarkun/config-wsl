@@ -56,6 +56,13 @@ echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
 echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
 echo 'legacy_version_file = yes' > ~/.asdfrc
 
+asdf plugin add direnv
+asdf install direnv latest
+asdf set -u direnv latest
+echo '\neval "$(direnv hook bash)"' >> ~/.profile
+mkdir -p ~/.config/direnv
+echo '[global]\nload_dotenv = true' > ~/.config/direnv/direnv.toml
+
 asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
