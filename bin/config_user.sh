@@ -89,11 +89,9 @@ asdf plugin add python
 asdf install python 3.10.11
 asdf set -u python 3.10.11
 
-
 asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
-
 
 asdf plugin add golang
 

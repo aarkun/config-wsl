@@ -475,9 +475,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<python_install>>
 
-  <<azure-cli_set_global_python_version>>
   <<azure-cli_install>>
-  <<azure-cli_unset_global_python_version>>
 
   <<golang_install>>
 
