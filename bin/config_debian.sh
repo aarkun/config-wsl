@@ -32,6 +32,7 @@ apt-get install -y \
 	markdown \
 	openssh-client \
 	patch \
+	xorriso \
 	xz-utils
 
 apt-get install -y \
