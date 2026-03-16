@@ -170,8 +170,8 @@ echo '\n. <(pandoc --bash-completion)' >> ~/.profile
 echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
 echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
 
-mkdir -p ~/.local/bin
 npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
+mkdir -p ~/.local/bin
 ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
 
 UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest

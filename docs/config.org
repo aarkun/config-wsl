@@ -1377,17 +1377,15 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
 1. Install mermaid, using [[https://www.npmjs.com/][npm]] into the local installation directory =~/opt/mermaid=:
    #+name: mermaid_install
    #+begin_src shell :results silent
-     mkdir -p ~/.local/bin
      npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
    #+end_src
 
 2. Create a link to the installed version in =~/.local/bin=, to add =mmdc= to the =PATH=:
    #+name: mermaid_add_link
    #+begin_src shell mermaid_add_link :results silent
+     mkdir -p ~/.local/bin
      ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
    #+end_src
-
-   This results in =mmdc= being installed in =$HOME/.asdf/installs/nodejs/22.0.0/bin/=.
 
 3. Verify installation:
    #+begin_src shell :results verbatim
