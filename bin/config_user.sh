@@ -112,8 +112,8 @@ asdf set -u nodejs 22.0.0
 asdf plugin add pnpm
 
 asdf plugin add lua
-asdf install lua latest
-asdf set -u lua latest
+ASDF_LUA_LUAROCKS_VERSION=3.12.2 asdf install lua 5.4.7
+asdf set -u lua 5.4.7
 
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \

@@ -1140,15 +1140,15 @@ In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for al
 
    *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/pandoc= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
 
-** Install Lua
+** Install Lua 5.4.7
 The actual used version of [[https://www.lua.org/][Lua]] may be project specific. Since Lua is used for some global config files, at least one version is needed globally. It may be overridden for specific projects by an existing =.tool-versions=:
 
-1. Add the asdf plugin and install latest Lua version:
+1. Add the asdf plugin and install latest Lua version. The current version of luarocks (3.13.0) is broken (see: https://github.com/luarocks/luarocks/issues/1851), so an older version of luarocks is enforced. Since this version does not work with the latest version of Lua (5.5.0), Lua 5.4.7 is enforced:
    #+name: lua_install
    #+begin_src shell :results silent
      asdf plugin add lua
-     asdf install lua latest
-     asdf set -u lua latest
+     ASDF_LUA_LUAROCKS_VERSION=3.12.2 asdf install lua 5.4.7
+     asdf set -u lua 5.4.7
    #+end_src
 
 2. Verify installation:
