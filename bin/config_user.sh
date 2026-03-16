@@ -123,8 +123,6 @@ grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
 find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
-asdf install nodejs 18.7.0
-asdf set -u nodejs 18.7.0
 
 DBEAVER_VERSION=25.0.0
 DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz

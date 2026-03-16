@@ -496,7 +496,6 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<idea_verify>>
   <<idea_extract>>
   <<idea_create_link>>
-  <<idea_install_nodejs>>
 
   <<dbeaver_download>>
   <<dbeaver_verify>>
@@ -1064,8 +1063,8 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    This should result to something like:
    : gradle 8.12
 
-** Install Node.js
-The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. Because at least one version of Node.js greater or equal than 22 is needed globally, one is defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =.tool-versions=:
+** Install Node.js 22.0.0
+The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. At least one version of Node.js greater or equal than 22 is needed globally for bash-language-server. So the version 22.0.0 is installed and defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =.tool-versions=:
 
 1. Add the asdf plugin:
    #+name: nodejs_install
@@ -1231,13 +1230,6 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    #+name: idea_create_link
    #+begin_src shell :results silent
      find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
-   #+end_src
-
-6. Node.js is needed globally at least in version 18.17.0 for the SonarQube plugin:
-   #+name: idea_install_nodejs
-   #+begin_src shell :results silent
-     asdf install nodejs 18.7.0
-     asdf set -u nodejs 18.7.0
    #+end_src
 
 ** Install Visual Studio Code
