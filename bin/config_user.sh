@@ -168,8 +168,9 @@ echo '\n. <(pandoc --bash-completion)' >> ~/.profile
 echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
 echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
 
-npm install -g @mermaid-js/mermaid-cli
-asdf reshim
+mkdir -p ~/.local/bin
+npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
+ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
 
 python -m pip install aider-install
 asdf reshim

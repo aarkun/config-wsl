@@ -522,6 +522,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<testcontainers_disable_ryuk>>
 
   <<mermaid_install>>
+  <<mermaid_add_link>>
 
   <<aider_install_aider-install>>
   <<aider_install>>
@@ -1363,16 +1364,22 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
 ** Install mermaid-cli
 To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://github.com/mermaid-js/mermaid-cli][mermaid-cli]] must be installed. [[* Install Node.js][Node.js]] is required being installed before. 
 
-1. Install mermaid globally in the current Node.js installation, using [[https://www.npmjs.com/][npm]]:
+1. Install mermaid, using [[https://www.npmjs.com/][npm]] into the local installation directory =~/opt/mermaid=:
    #+name: mermaid_install
    #+begin_src shell :results silent
-     npm install -g @mermaid-js/mermaid-cli
-     asdf reshim
+     mkdir -p ~/.local/bin
+     npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
+   #+end_src
+
+2. Create a link to the installed version in =~/.local/bin=, to add =mmdc= to the =PATH=:
+   #+name: mermaid_add_link
+   #+begin_src shell mermaid_add_link :results silent
+     ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
    #+end_src
 
    This results in =mmdc= being installed in =$HOME/.asdf/installs/nodejs/22.0.0/bin/=.
 
-2. Verify installation:
+3. Verify installation:
    #+begin_src shell :results verbatim
      mmdc --version
    #+end_src
