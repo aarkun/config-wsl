@@ -426,7 +426,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    : GPU 0: NVIDIA RTX A1000 Laptop GPU (UUID: GPU-67d3f5e6-b6f8-ecd8-b874-106d2fc38caf)
 
 * Configure user environment
-The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path ~$HOME/.local/bin~ is only added to ~$PATH~, if the directory exists. Because this is not the case, when executing this script initially, ~$HOME/.local/bin~ is added for this script execution explicitly:
+The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path =$HOME/.local/bin= is only added to =PATH=, if the directory exists. Because this is not the case, when executing this script initially, =$HOME/.local/bin= is added for this script execution explicitly:
 #+begin_src shell :tangle ../bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
@@ -671,7 +671,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    This should result to:
    : asdf is /home/kunde/.local/bin/asdf
 
-5. The asdf shims directory must be added to ~PATH~ for the current and future sessions:
+5. The asdf shims directory must be added to =PATH= for the current and future sessions:
    #+name: asdf_add_shims
    #+begin_src shell :results silent
      PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
@@ -683,7 +683,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    #+begin_src shell :results silent
      echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
    #+end_src
-   Since ~$HOME/.bashrc~ is sourced before ~$HOME/.local/bin~ is added to the ~$PATH~ in ~$HOME/.profile~, ~asdf~ cannot be called without prefix. So the explicit path to asdf is used.
+   Since =~/.bashrc= is sourced, before =~/.local/bin= is added to the =PATH= in =~/.profile=, ~asdf~ cannot be called without prefix. So the explicit path to asdf is used.
 
 ** Install asdf (legacy)                                           :obsolete:
 Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting started (pre-0.16.0)]]:
@@ -693,7 +693,7 @@ Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting s
      git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.15.0
    #+end_src
 
-2. Add script to ~$PATH~ and Bash completions:
+2. Add =asdf.sh= to =PATH= and Bash completions:
    #+begin_src shell :results silent
      echo '\n. "$HOME/.asdf/asdf.sh"' >> ~/.bashrc
      echo '. "$HOME/.asdf/completions/asdf.bash"' >> ~/.bashrc
@@ -767,7 +767,7 @@ In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl
      echo '\n. <(kubectl completion bash)' >> ~/.profile
    #+end_src
 
-   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
+   *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
 
 ** Install Helm
 In general, the latest version of [[https://helm.sh/][Helm]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
@@ -794,7 +794,7 @@ In general, the latest version of [[https://helm.sh/][Helm]] is used for all pro
      echo '\n. <(helm completion bash)' >> ~/.profile
    #+end_src
 
-   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/helm= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
+   *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
 
 ** Install helm-docs
 Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoodj/helm-docs][helm-docs]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
@@ -1138,7 +1138,7 @@ In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for al
      echo '\n. <(pandoc --bash-completion)' >> ~/.profile
    #+end_src
 
-   *Note*: Since =$HOME/.bashrc= is sourced before =$HOME/.asdf/shims= is added to the =$PATH= in =$HOME/.profile= and the shim =$HOME/.asdf/shims/pandoc= itself uses the command ~asdf~ without a prefix, the shim cannot be used within =$HOME/.bashrc=. As a workaround, the completion is sourced in =$HOME/.profile=, until the shims may be fixed.
+   *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
 
 ** Install Lua 5.4.7
 The actual used version of [[https://www.lua.org/][Lua]] may be project specific. Since Lua is used for some global config files, at least one version is needed globally. It may be overridden for specific projects by an existing =.tool-versions=:
@@ -1428,7 +1428,7 @@ Following https://opencode.ai/docs/de#installation, execute:
   curl -fsSL https://opencode.ai/install | bash
 #+end_src
 
-This installs the executable into =$HOME/.opencode/bin= and adds it to the ~$PATH~ in =$HOME/.profile=.
+This installs the executable into =~/.opencode/bin= and adds it to the =PATH= in =~/.profile=.
 
 ** Install k6
 The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
