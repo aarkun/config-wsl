@@ -106,12 +106,12 @@ This should return something like:
 : ----             ----             -----------
 : 1033             en-US            English (United States)
 
-The current locale of the WSL can be determined by executing:
+The default locale should be /en_US.UTF-8/. The current locale of the WSL can be determined by executing:
 #+begin_src shell :results verbatim
   locale
 #+end_src
 
-This should then result to something like:
+This should then result to:
 #+begin_example
   LANG=en_US.UTF-8
   LANGUAGE=
