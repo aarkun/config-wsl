@@ -32,6 +32,7 @@ apt-get install -y \
 	markdown \
 	openssh-client \
 	patch \
+	telnet \
 	xorriso \
 	xz-utils
 

@@ -166,6 +166,7 @@ Install software for every day use:
 	  markdown \
 	  openssh-client \
 	  patch \
+	  telnet \
 	  xorriso \
 	  xz-utils
 #+end_src
