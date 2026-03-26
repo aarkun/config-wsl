@@ -183,3 +183,7 @@ mkdir -p ~/.local/bin
 ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
 
 asdf plugin add trivy
+
+npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
+mkdir -p ~/.local/bin
+ln -fs ~/opt/openspec/bin/openspec ~/.local/bin/openspec

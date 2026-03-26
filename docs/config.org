@@ -534,6 +534,9 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<opencode_add_link>>
 
   <<trivy_install>>
+
+  <<openspec_install>>
+  <<openspec_add_link>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1468,6 +1471,30 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
 
    This should result to something like:
    : Version: 0.69.2
+
+** Install OpenSpec
+Regarding https://openspec.dev/, OpenSpec needs to be installed globally. [[* Install Node.js][Node.js]] is required being installed before. 
+
+1. Install OpenSpec, using [[https://www.npmjs.com/][npm]] into the local installation directory =~/opt/openspec=:
+#+name: openspec_install
+#+begin_src shell :results silent
+  npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
+#+end_src
+
+2. Create a link to the installed version in =~/.local/bin=, to add =openspec= to the =PATH=:
+#+name: openspec_add_link
+#+begin_src shell :results silent
+  mkdir -p ~/.local/bin
+  ln -fs ~/opt/openspec/bin/openspec ~/.local/bin/openspec
+#+end_src
+
+3. Verify installation:
+   #+begin_src shell :results verbatim
+     openspec --version
+   #+end_src
+
+   This should result to something like:
+   : 1.2.0
 
 ** Install k6
 The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
