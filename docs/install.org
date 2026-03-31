@@ -41,14 +41,15 @@ Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb
 #+end_src
 
 *** Create a user
-1. Create a user interactively. The username is based on the current username:
+Creation is based on https://learn.microsoft.com/en-en/windows/wsl/build-custom-distro and the [[https://salsa.debian.org/debian/WSL/-/blob/master/linux_files/oobe.sh][oobe.sh]]  of the Debian distribution:
+1. Create a user with default UID of 1000. Interaction is only needed to set the password. The username is based on the current username:
    #+begin_src powershell
-     wsl -d Debian-1 -u root adduser $env:USERNAME
+     wsl -d Debian-1 -u root sh -c "adduser --uid 1000 --quiet --gecos '' $env:USERNAME"
    #+end_src
 
-2. Add the user to the group ~sudo~:
+2. Add the user to the default groups:
    #+begin_src powershell
-     wsl -d Debian-1 -u root adduser $env:USERNAME sudo
+     wsl -d Debian-1 -u root sh -c "usermod $env:USERNAME -aG 'adm,cdrom,sudo,dip,plugdev'"
    #+end_src
 
 3. Set the default user to the current username:
