@@ -10,6 +10,9 @@ sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
 apt-get update
+
+apt-get install -y dbus-user-session
+
 apt-get install -y \
 	aspell-de \
 	bash-completion \

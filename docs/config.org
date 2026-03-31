@@ -20,6 +20,9 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
   <<locale_install_de>>
 
   <<apt_update>>
+
+  <<systemd_add_dbus-user-session>>
+
   <<install_global_base_software>>
 
   <<latex_install>>
@@ -140,6 +143,68 @@ To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it mu
 ** OPTIONAL: Set locale for scripts                                :optional:
 Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now, the default /en_EN.UTF-8/ is used.
 
+** Activate systemd
+To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. The current Debian distribution already contains a file =/etc/wsl.conf= with the needed entry to enable systemctl.
+
+Executing
+#+begin_src shell :results verbatim
+  grep  -e '\[boot\]' -e 'systemd=true' /etc/wsl.conf
+#+end_src
+
+should result to something like:
+: [boot]
+: systemd=true
+
+If the file is missing, follow these steps:
+1. Create a file ~/etc/wsl.conf~, if not already exists:
+   #+begin_src shell :dir /sudo:: :results silent
+     echo -e "[boot]\nsystemd=true" > /etc/wsl.conf
+   #+end_src
+
+2. After creating the file, WSL needs to be restarted:
+   #+begin_src powershell
+     wsl --shutdown
+   #+end_src
+
+To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
+ #+name: systemd_add_dbus-user-session
+ #+begin_src shell :dir /sudo:: :results silent
+   apt-get install -y dbus-user-session
+ #+end_src
+
+To verify, if ~systemctl~ works, execute:
+#+begin_src shell :results verbatim
+  systemctl list-unit-files --type=service
+#+end_src
+
+This should result to something like:
+#+begin_example
+  UNIT FILE                              STATE           PRESET
+  apt-daily-upgrade.service              static          -
+  ...
+  x11-common.service                     masked          enabled
+
+  115 unit files listed.
+#+end_example
+
+*Note*: If more than one distribution is installed, the following error might occur after logging into the distro:
+: wsl: Failed to start the systemd user session for 'kunde'. See journalctl for more details.
+
+and executing ~podman ps~ might result to something like:
+#+begin_example
+  WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
+  WARN[0000] For using systemd, you may need to login using an user session
+  WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
+  WARN[0000] Falling back to --cgroup-manager=cgroupfs
+  WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
+  WARN[0000] For using systemd, you may need to login using an user session
+  WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
+  WARN[0000] Falling back to --cgroup-manager=cgroupfs
+  CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+#+end_example
+
+See seems to be an open issue: https://github.com/microsoft/WSL/issues/13826
+
 ** Install global software
 Install software for every day use:
 #+name: install_global_base_software
@@ -179,39 +244,6 @@ Install packages for working with LaTeX. Emacs is already installed or will be a
 	  texlive-latex-recommended \
 	  texlive-latex-extra \
 	  texlive-plain-generic
-#+end_src
-
-** Activate systemd                                                :obsolete:
-To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. Because in newer versions (WSL version: 2.3.26.0) this is already done, the following steps should not be needed:
-
-1. Create a file ~/etc/wsl.conf~, if not already exists:
-#+begin_src shell :dir /sudo:: :results silent
-  echo -e "[boot]\nsystemd=true" > /etc/wsl.conf
-#+end_src
-
-2. Restart WSL:
-#+begin_src powershell
-  wsl --shutdown
-#+end_src
-
-3. To check, if ~systemctl~ works, execute:
-#+begin_src shell :results verbatim
-  systemctl list-unit-files --type=service
-#+end_src
-
-This should result to something like:
-#+begin_example
-  UNIT FILE                              STATE           PRESET
-  apt-daily-upgrade.service              static          -
-  ...
-  x11-common.service                     masked          enabled
-
-  115 unit files listed.
-#+end_example
-
-*Note*: To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]. After installation of dbus-user-session, it may be necessary to terminate WSL with:
-#+begin_src powershell
-  wsl --terminate <<Distro>>
 #+end_src
 
 ** Install Podman 4.3.1
