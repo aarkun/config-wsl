@@ -109,7 +109,7 @@ This works like a normal [[file:backup.org::#reimport][reimport]].
      wsl --manage Debian-1 --set-default-user $env:USERNAME
    #+end_src
 
-* Verify imports
+* Verify created distros
 To verify the distros, execute:
 #+begin_src powershell
   wsl -l
