@@ -21,15 +21,15 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<apt_update>>
 
-  <<systemd_add_dbus-user-session>>
 
   <<install_global_base_software>>
 
   <<latex_install>>
+  <<systemd_install_dbus-user-session>>
 
   <<podman_purge_old_versions>>
-  <<podman_install>>
   <<podman_install_global_requirements>>
+  <<podman_install>>
   <<podman_install_rootless_requirements>>
   <<podman-compose_install>>
 
@@ -166,8 +166,14 @@ If the file is missing, follow these steps:
      wsl --shutdown
    #+end_src
 
-To have systemctl working for non-root users, [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] must be installed and running. It is not installed as default, but comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
- #+name: systemd_add_dbus-user-session
+To have systemctl work properly and avoid error messages like the following
+
+
+[[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] should be installed to have systemctl work properly and avoid error messages like the following:
+: wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
+
+It is also needed to have Podman function properly. Which it why it comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
+ #+name: systemd_install_dbus-user-session
  #+begin_src shell :dir /sudo:: :results silent
    apt-get install -y dbus-user-session
  #+end_src
@@ -186,6 +192,7 @@ This should result to something like:
 
   115 unit files listed.
 #+end_example
+wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
 
 *Note*: If more than one distribution is installed, the following error might occur after logging into the distro:
 : wsl: Failed to start the systemd user session for 'kunde'. See journalctl for more details.
@@ -213,7 +220,6 @@ Install software for every day use:
 	  aspell-de \
 	  bash-completion \
 	  btop \
-	  ca-certificates \
 	  curl \
 	  dos2unix \
 	  emacs \
@@ -253,13 +259,12 @@ The current version of Podman in the current Debian stable distribution is 4.3.1
 Based on the [[https://docs.docker.com/engine/install/debian/][Docker installation manual]], uninstall old versions of docker and podman and everything, which might have been installed before:
 #+name: podman_purge_old_versions
 #+begin_src shell :dir /sudo:: :results silent
-  apt-get purge -y \
-	  ,*docker* \
+  apt-get autopurge -y \
+	  '*docker*' \
 	  docker-compose \
-	  ,*container* \
-	  ,*podman* \
+	  '*container*' \
+	  '*podman*' \
 	  podman-compose
-  apt-get autopurge -y
 
   rm -rf /var/lib/docker \
      /var/lib/containerd \
@@ -270,18 +275,53 @@ Based on the [[https://docs.docker.com/engine/install/debian/][Docker installati
 
 *** Install Podman
 Based on https://podman.io/docs/installation, install [[https://packages.debian.org/bookworm/podman][podman]] and its necessary dependencies:
-#+name: podman_install
-#+begin_src shell :dir /sudo:: :results silent
-  apt-get install -y podman
+
+1. Some packages are required to have Podman function properly, like:
+   - [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] :: Necessary for creating networks and for DNS resolution inside networks between containers.
+   - [[https://packages.debian.org/bookworm/ca-certificates][ca-certificates]] :: Needed to install the necessary certificates for downloading and using images.
+   - [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] :: Like mentioned in [[* Activate systemd][systemd activation]], this package is needed even for root mode, to have Podman work properly. Otherwise the following error occurs after pod creation:
+     : Error: crun: cannot open sd-bus: No such file or directory: OCI runtime attempted to invoke a command that was not found
+   #+name: podman_install_global_requirements
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y --mark-auto \
+	     aardvark-dns \
+	     ca-certificates \
+	     dbus-user-session
+   #+end_src
+2. After that podman can be installed:
+   #+name: podman_install
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y podman
+   #+end_src
+
+The installation for root can then be verified with:
+#+begin_src shell :dir /sudo::
+  podman network create tst_nw
+
+  podman run --name=sink -d --net tst_nw docker.io/subfuzion/netcat -k -l -p 1111
+
+  podman run --name=source -d --net tst_nw \
+	 --entrypoint '["sh", "-c", "while true; do echo \"Hello Podman\"; sleep 1; done | nc sink 1111"]' \
+	 docker.io/subfuzion/netcat
+
+  podman run --name=source -d --net tst_nw \
+	 --entrypoint '["sh", "-c", "echo \"Hello Podman\" | nc sink 1111"]' \
+	 docker.io/subfuzion/netcat
+
+  podman logs sink
 #+end_src
 
+This should result to something like:
+: Hello Podman
+#+begin_example
+#+end_example
 The additional packages [[https://packages.debian.org/bookworm/uidmap][uidmap]] and [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] are required, to run podman without errors. The packages [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] and its dependency [[https://packages.debian.org/bookworm/netavark][netavark]] are necessary to let podman container communicate in their own networks:
-#+name: podman_install_global_requirements
+#+name: podman_install_rootless_requirements
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y --mark-auto \
 	  uidmap \
 	  slirp4netns \
-	  aardvark-dns
+
 #+end_src
 
 *Note*: According to https://podman.io/docs/installation, ~slirp4netns~ is not needed in newer versions of Podman anymore.

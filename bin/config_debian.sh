@@ -13,11 +13,28 @@ apt-get update
 
 apt-get install -y dbus-user-session
 
+apt-get autopurge -y \
+	'*docker*' \
+	docker-compose \
+	'*container*' \
+	'*podman*' \
+	podman-compose
+
+rm -rf /var/lib/docker \
+   /var/lib/containerd \
+   /etc/apt/sources.list.d/docker.list \
+   /etc/apt/keyrings/docker.asc \
+   /etc/containers
+apt-get install -y --mark-auto \
+	aardvark-dns \
+	ca-certificates \
+	dbus-user-session
+apt-get install -y podman
+
 apt-get install -y \
 	aspell-de \
 	bash-completion \
 	btop \
-	ca-certificates \
 	curl \
 	dos2unix \
 	emacs \
@@ -45,24 +62,9 @@ apt-get install -y \
 	texlive-latex-extra \
 	texlive-plain-generic
 
-apt-get purge -y \
-	*docker* \
-	docker-compose \
-	*container* \
-	*podman* \
-	podman-compose
-apt-get autopurge -y
-
-rm -rf /var/lib/docker \
-   /var/lib/containerd \
-   /etc/apt/sources.list.d/docker.list \
-   /etc/apt/keyrings/docker.asc \
-   /etc/containers
-apt-get install -y podman
 apt-get install -y --mark-auto \
 	uidmap \
 	slirp4netns \
-	aardvark-dns
 apt-get install -y --mark-auto fuse-overlayfs
 apt-get install -y podman-compose
 
