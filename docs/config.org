@@ -19,8 +19,6 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<alternatives_set_editor>>
   <<locale_install_de>>
 
-  <<apt_update>>
-
   <<systemd_install_dbus-user-session>>
 
   <<podman_purge_old_versions>>
@@ -67,21 +65,14 @@ This should result to:
 : APT::Install-Suggests "0";
 
 ** Add non-free packages
-To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]]:
-
-1. Add a file ~/etc/apt/sources.list.d/debian.non-free.list~:
-   #+name: apt_add_non-free
-   #+begin_src shell :dir /sudo:: :results silent
-     sed /etc/apt/sources.list -e \
-	 's/\(deb.* \)main/\1non-free non-free-firmware/' \
-	 | tee /etc/apt/sources.list.d/debian.non-free.list
-   #+end_src
-
-2. Update APT:
-   #+name: apt_update
-   #+begin_src shell :dir /sudo:: :results silent
-     apt-get update
-   #+end_src
+To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file ~/etc/apt/sources.list.d/debian.non-free.list~ and update APT:
+#+name: apt_add_non-free
+#+begin_src shell :dir /sudo:: :results silent
+  sed /etc/apt/sources.list -e \
+      's/\(deb.* \)main/\1non-free non-free-firmware/' \
+      | tee /etc/apt/sources.list.d/debian.non-free.list
+  apt-get update
+#+end_src
 
 ** Set default editor
 Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed [[https://packages.debian.org/bookworm/vim-tiny][vim.tiny]]:
