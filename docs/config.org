@@ -248,6 +248,7 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
 	     ca-certificates \
 	     dbus-user-session
    #+end_src
+
 2. After that podman can be installed:
    #+name: podman_install
    #+begin_src shell :dir /sudo:: :results silent
