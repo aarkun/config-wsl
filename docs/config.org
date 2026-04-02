@@ -430,30 +430,6 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
      DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock docker-compose up
    #+end_src
 
-*** TODO Needed for init containers
-#+begin_src shell
-  sudo apt-get install catatonit
-#+end_src
-
-*** TODO Later dependencies for podman
-#+begin_src shell
-  buildah
-  +dbus-user-session+
-  catatonit
-#+end_src
-
-*** TODO Stuff to docker-compose
-https://github.com/containers/podman-compose/blob/devel/README.md
-https://docs.oracle.com/en/learn/podman-compose/index.html
-https://github.com/containers/podman/issues/13396
-https://www.redhat.com/sysadmin/container-networking-podman
-https://github.com/containers/podman/pull/17578
-https://github.com/containers/podman/issues/17499
-https://github.com/containers/podman/issues/17731
-Wird benötigt, wenn Features von docker-compose benötigt werden, die nicht von Podman compose unterstützt werden. Kann aber zu Nebeneffekten bei Netzwerken führen, da hierduch CNI als Default-Netzwerk-Backend gesetzt wird, was wiederum nicht dem Podman-Reinen default von netavark.
-
-*** TODO Networking-Probleme
-https://github.com/containers/podman-compose/issues/541#issuecomment-1221417067
 
 ** Add NVIDIA Container Toolkit
 To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
