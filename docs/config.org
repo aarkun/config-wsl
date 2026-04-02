@@ -160,51 +160,45 @@ If the file is missing, follow these steps:
      wsl --shutdown
    #+end_src
 
-To have systemctl work properly and avoid error messages like the following
+3. [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] should be installed to have systemctl work properly and avoid error messages like the following:
+   : wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
 
+   It is also needed to have Podman function properly. Which it why it comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
+   #+name: systemd_install_dbus-user-session
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get install -y dbus-user-session
+   #+end_src
 
-[[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] should be installed to have systemctl work properly and avoid error messages like the following:
-: wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
+4. To verify, if ~systemctl~ works, execute:
+   #+begin_src shell
+     systemctl list-unit-files --type=service
+   #+end_src
 
-It is also needed to have Podman function properly. Which it why it comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
- #+name: systemd_install_dbus-user-session
- #+begin_src shell :dir /sudo:: :results silent
-   apt-get install -y dbus-user-session
- #+end_src
+   This should result to something like:
+   #+begin_example
+     UNIT FILE                              STATE           PRESET
+     apt-daily-upgrade.service              static          -
+     ...
+     x11-common.service                     masked          enabled
 
-To verify, if ~systemctl~ works, execute:
-#+begin_src shell :results verbatim
-  systemctl list-unit-files --type=service
-#+end_src
+     115 unit files listed.
+   #+end_example
 
-This should result to something like:
-#+begin_example
-  UNIT FILE                              STATE           PRESET
-  apt-daily-upgrade.service              static          -
-  ...
-  x11-common.service                     masked          enabled
-
-  115 unit files listed.
-#+end_example
-wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
-
-*Note*: If more than one distribution is installed, the following error might occur after logging into the distro:
-: wsl: Failed to start the systemd user session for 'kunde'. See journalctl for more details.
-
-and executing ~podman ps~ might result to something like:
-#+begin_example
-  WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
-  WARN[0000] For using systemd, you may need to login using an user session
-  WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
-  WARN[0000] Falling back to --cgroup-manager=cgroupfs
-  WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
-  WARN[0000] For using systemd, you may need to login using an user session
-  WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
-  WARN[0000] Falling back to --cgroup-manager=cgroupfs
-  CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
-#+end_example
-
-See seems to be an open issue: https://github.com/microsoft/WSL/issues/13826
+   *Note*: If more than one distribution is installed, the following error might still occur after logging into the distro:
+   : wsl: Failed to start the systemd user session for 'kunde'. See journalctl for more details.
+   and executing ~podman ps~ might result to something like:
+   #+begin_example
+     WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
+     WARN[0000] For using systemd, you may need to login using an user session
+     WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
+     WARN[0000] Falling back to --cgroup-manager=cgroupfs
+     WARN[0000] The cgroupv2 manager is set to systemd but there is no systemd user session available
+     WARN[0000] For using systemd, you may need to login using an user session
+     WARN[0000] Alternatively, you can enable lingering with: `loginctl enable-linger 1000` (possibly as root)
+     WARN[0000] Falling back to --cgroup-manager=cgroupfs
+     CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
+   #+end_example
+   This seems to be an open issue within WSL: https://github.com/microsoft/WSL/issues/13826
 
 ** Install Podman 4.3.1
 The current version of Podman in the current Debian stable distribution is 4.3.1.
