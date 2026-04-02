@@ -1,3 +1,6 @@
+:PROPERTIES:
+:header-args: :results verbatim
+:END:
 #+title: WSL 2 configuration
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
@@ -56,7 +59,7 @@ Regarding [[https://wiki.debian.org/ReduceDebian#Reconfigure_apt_so_that_it_does
 #+end_src
 
 To verify, execute:
-#+begin_src shell :results verbatim
+#+begin_src shell
   apt-config dump | grep -e 'APT::Install-'
 #+end_src
 
@@ -82,7 +85,7 @@ Based on  https://wiki.debian.org/TextEditor set the default editor globally to 
 #+end_src
 
 To verify, execute:
-#+begin_src shell :results verbatim
+#+begin_src shell
   update-alternatives --display editor | grep current
 #+end_src
 
@@ -101,7 +104,7 @@ This should return something like:
 : 1033             en-US            English (United States)
 
 The default locale should be /en_US.UTF-8/. The current locale of the WSL can be determined by executing:
-#+begin_src shell :results verbatim
+#+begin_src shell
   locale
 #+end_src
 
@@ -126,7 +129,7 @@ This should then result to:
 
 To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it must be installed, like it is described at https://wiki.debian.org/Locale:
 #+name: locale_install_de
-#+begin_src shell :dir /sudo:: :results verbatim
+#+begin_src shell :dir /sudo::
   sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
   locale-gen
 #+end_src
@@ -138,7 +141,7 @@ Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext
 To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. The current Debian distribution already contains a file =/etc/wsl.conf= with the needed entry to enable systemctl.
 
 Executing
-#+begin_src shell :results verbatim
+#+begin_src shell
   grep  -e '\[boot\]' -e 'systemd=true' /etc/wsl.conf
 #+end_src
 
@@ -262,7 +265,7 @@ Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/r
 
 *** Verify installation
 The installation for root and rootless environment can then be verified with:
-#+begin_src shell :results verbatim
+#+begin_src shell
   whoami
   mkdir -p ~/tst_dir
   podman network create tst_nw
@@ -322,7 +325,7 @@ To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose
 Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by Podman Compose are needed. This may lead to side-effects with networking.
 
 1. Verify, that Podman socket is active:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
       systemctl status podman.socket
    #+end_src
 
@@ -346,7 +349,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
    #+end_src
 
 3. Verify the communication with the Docker socket:
-   #+begin_src shell :dir /sudo:: :results verbatim
+   #+begin_src shell :dir /sudo::
      curl -H "Content-Type: application/json" --unix-socket /var/run/docker.sock http://localhost/_ping
    #+end_src
 
@@ -360,7 +363,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
    #+end_src
 
    Verify the creation of the socket:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      systemctl --user status podman.socket
    #+end_src
 
@@ -680,7 +683,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    #+end_src
 
 4. Verify installation. After relogin executing
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      type -a asdf
    #+end_src
 
@@ -736,7 +739,7 @@ For many configurations, [[https://direnv.net/][direnv]] is very useful. In gene
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      direnv --version
    #+end_src
 
@@ -768,7 +771,7 @@ In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      kubectl version
    #+end_src
 
@@ -797,7 +800,7 @@ In general, the latest version of [[https://helm.sh/][Helm]] is used for all pro
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      helm version
    #+end_src
 
@@ -823,7 +826,7 @@ Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoo
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      helm-docs --version
    #+end_src
 
@@ -842,7 +845,7 @@ In general, the latest version of [[https://www.gnu.org/software/make/][GNU make
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      make -v
    #+end_src
 
@@ -866,7 +869,7 @@ In general, the latest version of [[https://www.shellcheck.net/][ShellCheck]] is
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      shellcheck --version
    #+end_src
 
@@ -901,7 +904,7 @@ The actual used version of [[https://www.python.org/][Python]] may be project sp
    #+end_src
 
 4. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      python --version
    #+end_src
 
@@ -920,7 +923,7 @@ In general, the latest version of [[https://docs.astral.sh/uv/][uv]] is used for
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      uv --version
    #+end_src
 
@@ -931,7 +934,7 @@ In general, the latest version of [[https://docs.astral.sh/uv/][uv]] is used for
 In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/][Azure CLI]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=. At this moment, at least Python 3.10.11 is needed for an installation.
 
 1. Verify, Python is installed at least at version 3.10.11:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      python --version
    #+end_src
 
@@ -947,7 +950,7 @@ In general, the latest version of [[https://learn.microsoft.com/en-us/cli/azure/
    #+end_src
 
 3. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      az version
    #+end_src
 
@@ -971,7 +974,7 @@ In general, the latest version of [[https://minikube.sigs.k8s.io/][minikube]] is
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      minikube version
    #+end_src
 
@@ -1017,7 +1020,7 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
    #+end_src
 
 3. Verify installation in the project:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      go version
    #+end_src
 
@@ -1038,7 +1041,7 @@ The actual used version of a [[https://www.java.com/][Java]] JDK may be project 
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      java --version
    #+end_src
 
@@ -1059,7 +1062,7 @@ In general, the latest version of [[https://maven.apache.org/][Maven]] is used f
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      mvn --version
    #+end_src
 
@@ -1091,7 +1094,7 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    #+end_src
 
 4. Verify installation in the project:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      gradle --version
    #+end_src
 
@@ -1110,7 +1113,7 @@ The actual used version of [[https://nodejs.org/en][Node.js]] may be project spe
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      node --version
    #+end_src
 
@@ -1135,7 +1138,7 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
 3. Verify installation in the project:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      pnpm --version
    #+end_src
 
@@ -1154,7 +1157,7 @@ In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for al
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      pandoc --version
    #+end_src
 
@@ -1187,7 +1190,7 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      lua -v
    #+end_src
 
@@ -1365,7 +1368,7 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    #+end_src
 
 9. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      java -jar ~/opt/plantuml.jar -testdot
    #+end_src
 
@@ -1405,7 +1408,7 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
    #+end_src
 
 3. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      mmdc --version
    #+end_src
 
@@ -1417,7 +1420,7 @@ In general, the latest version of [[https://aider.chat/][aider]] is used for all
 According to the [[https://aider.chat/docs/install.html][Installation manual]], at least Python 3.8-3.13  is needed for an installation. The following is based on the [[https://aider.chat/docs/install.html#install-with-uv][installation with uv]]
 
 1. Verify, Python is installed at least at version 3.8:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      python --version
    #+end_src
 
@@ -1483,7 +1486,7 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
 3. Verify installation in the project:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      trivy --version
    #+end_src
 
@@ -1507,7 +1510,7 @@ Regarding https://openspec.dev/, OpenSpec needs to be installed globally. [[* In
 #+end_src
 
 3. Verify installation:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      openspec --version
    #+end_src
 
@@ -1530,7 +1533,7 @@ The actual used version of [[https://k6.io/][k6]] is project specific and not se
    #+end_src
 
 3. Verify installation in the project:
-   #+begin_src shell :results verbatim
+   #+begin_src shell
      k6 --version
    #+end_src
 
