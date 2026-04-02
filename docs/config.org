@@ -30,6 +30,7 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<podman_install_rootless_requirements>>
   <<podman-compose_install>>
 
+  <<nct_install_requirements>>
   <<nct_add_gpg-key>>
   <<nct_add_apt-sources>>
   <<nct_install>>
@@ -390,6 +391,7 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
 To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
 
 1. Install curl to proceed with the installation:
+   #+name: nct_install_requirements
    #+begin_src shell :results silent :dir /sudo::
      apt-get install -y --mark-auto curl
    #+end_src
@@ -406,7 +408,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    #+begin_src  shell :results silent :dir /sudo::
      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
 	 | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
-	 | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+	 > /etc/apt/sources.list.d/nvidia-container-toolkit.list
      apt-get update
    #+end_src
 
@@ -425,7 +427,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    : NVIDIA Container Toolkit CLI version 1.19.0
    : commit: ec7b4e2fa2caecad6d89be4a26029b831fe7503a
 
-6. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding =/etc/cdi/nvidia.yaml=:
+6. Currently, the automatic configuration of [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] does not trigger, because several conditions in =/etc/systemd/system/nvidia-cdi-refresh.service=, like path to =nvidia-smi= or modules, do not match on WSL. Therefore, Podman must be configured by adding a permanent CDI specification (=/etc/cdi/nvidia.yaml=) manually, like described for [[https://podman-desktop.io/docs/podman/gpu][Podman Desktop]]:
    #+name: nct_configure_podman
    #+begin_src shell :results silent :dir /sudo::
      nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
@@ -434,7 +436,8 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    Verify the configuration, by executing =nvidia-smi= inside a container:
    #+begin_src shell
      nvidia-ctk cdi list
-     podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L
+     podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable \
+	    ubuntu nvidia-smi -L
    #+end_src
 
    This should result to something like:
