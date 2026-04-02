@@ -27,7 +27,8 @@ rm -rf /var/lib/docker \
 apt-get install -y --mark-auto \
 	aardvark-dns \
 	ca-certificates \
-	dbus-user-session
+	dbus-user-session \
+	iptables
 apt-get install -y podman
 apt-get install -y --mark-auto \
 	uidmap \

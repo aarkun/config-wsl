@@ -233,12 +233,15 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
    - [[https://packages.debian.org/bookworm/ca-certificates][ca-certificates]] :: Needed to install the necessary certificates for downloading and using images.
    - [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] :: Like mentioned in [[* Activate systemd][systemd activation]], this package is needed even for root mode, to have Podman work properly. Otherwise the following error occurs after pod creation:
      : Error: crun: cannot open sd-bus: No such file or directory: OCI runtime attempted to invoke a command that was not found
+   - [[https://packages.debian.org/bookworm/iptables][iptables]] :: Needed by [[https://packages.debian.org/bookworm/netavark][netavark]] to create firewall rules. If not present, the following error occurs:
+     : Error: netavark (exit code 1): No such file or directory (os error 2)
    #+name: podman_install_global_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y --mark-auto \
 	     aardvark-dns \
 	     ca-certificates \
-	     dbus-user-session
+	     dbus-user-session \
+	     iptables
    #+end_src
 
 2. After that podman can be installed:
