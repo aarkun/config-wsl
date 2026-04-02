@@ -32,7 +32,6 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<nct_add_gpg-key>>
   <<nct_add_apt-sources>>
-  <<apt_update>>
   <<nct_install>>
   <<nct_configure_podman>>
 
@@ -169,7 +168,12 @@ If the file is missing, follow these steps:
      apt-get install -y dbus-user-session
    #+end_src
 
-4. To verify, if ~systemctl~ works, execute:
+4. The WSL has to be terminated to have the installation of dbus-user-session take effect:
+   #+begin_src powershell
+     wsl --terminate
+   #+end_src
+
+5. To verify, if ~systemctl~ works, execute:
    #+begin_src shell
      systemctl list-unit-files --type=service
    #+end_src
@@ -379,57 +383,59 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
      DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock docker-compose up
    #+end_src
 
-
-** Add NVIDIA Container Toolkit
+** Install NVIDIA Container Toolkit 1.19.0-1
 To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
 
-1. Download the GPG keys and add them to the keyring as ~/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg~:
+1. Install curl to proceed with the installation:
+   #+begin_src shell :results silent :dir /sudo::
+     apt-get install -y --mark-auto curl
+   #+end_src
+
+2. Download the GPG keys and add them to the keyring as ~/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg~:
    #+name: nct_add_gpg-key
    #+begin_src shell :results silent :dir /sudo::
      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
 	 | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
    #+end_src
 
-2. Add the sources for the toolkit as ~/etc/apt/sources.list.d/nvidia-container-toolkit.list~ to APT:
+3. Add the sources for the toolkit as ~/etc/apt/sources.list.d/nvidia-container-toolkit.list~ to APT and update APT:
    #+name: nct_add_apt-sources
    #+begin_src  shell :results silent :dir /sudo::
      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
 	 | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
 	 | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-   #+end_src
-
-3. Update APT:
-   #+name: apt_update
-   #+begin_src shell :dir /sudo:: :results silent
      apt-get update
    #+end_src
 
-4. Install the toolkit:
+5. Install the toolkit, based on [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html][installation guide]]:
    #+name: nct_install
-   #+begin_src shell :dir /sudo:: :results silent
+   #+begin_src shell :results silent :dir /sudo::
      apt-get install -y nvidia-container-toolkit
    #+end_src
 
    Verify the installation:
    #+begin_src shell
-     nvidia-ctk cdi list
+     nvidia-ctk -v
    #+end_src
 
    This should result to:
-   : nvidia.com/gpu=all
+   : NVIDIA Container Toolkit CLI version 1.19.0
+   : commit: ec7b4e2fa2caecad6d89be4a26029b831fe7503a
 
-5. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding ~/etc/cdi/nvidia.yaml~:
+6. Configure Podman by using [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html][CDI support]] and adding =/etc/cdi/nvidia.yaml=:
    #+name: nct_configure_podman
-   #+begin_src shell :results silen :dir /sudo::
+   #+begin_src shell :results silent :dir /sudo::
      nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
    #+end_src
 
-   Verify, by executing ~nvidia-smi~ inside a container:
+   Verify the configuration, by executing =nvidia-smi= inside a container:
    #+begin_src shell
+     nvidia-ctk cdi list
      podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable ubuntu nvidia-smi -L
    #+end_src
 
-   This should result to:
+   This should result to something like:
+   : nvidia.com/gpu=all
    : GPU 0: NVIDIA RTX A1000 Laptop GPU (UUID: GPU-67d3f5e6-b6f8-ecd8-b874-106d2fc38caf)
 
 ** Install additional software
