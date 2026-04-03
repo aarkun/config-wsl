@@ -130,7 +130,7 @@ This should then result to:
 To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it must be installed, like it is described at https://wiki.debian.org/Locale:
 #+name: locale_install_de
 #+begin_src shell :dir /sudo::
-  sed -iorig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
+  sed -i.orig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
   locale-gen
 #+end_src
 
