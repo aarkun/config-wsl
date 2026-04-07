@@ -1277,7 +1277,7 @@ The latest version can be installed from https://dbeaver.io/download/.
      find ~/opt -name idea -exec ln -sf {} ~/.local/bin/idea \;
    #+end_src
 
-** Install Visual Studio Code
+** Install Visual Studio Code 1.99.3
 1. Install necessary prerequisites for different features:
    #+name: vscode_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
