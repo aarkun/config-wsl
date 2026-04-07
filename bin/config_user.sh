@@ -118,18 +118,18 @@ mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
 find ~/opt -name idea -exec ln -sf {} ~/.local/bin/idea \;
 
-DBEAVER_VERSION=25.0.0
-DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
+DBEAVER_VERSION=25.1.0
+DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64-nojdk.tar.gz
 curl -L -O --output-dir /tmp \
-     https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
-curl -L -O --output-dir /tmp \
-     https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
-grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
-     /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+     https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+printf '%s %s\n' \
+       '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
+       /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+sha256sum -c /tmp/$DBEAVER_INSTALLATION_FILE.sha256
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
-mkdir -p ~/opt
-ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
+mkdir -p ~/.local/bin/
+ln -fs ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
 
 VSCODE_VERSION=1.99.3
 VSCODE_INSTALLATION_FILE=code-stable-$VSCODE_VERSION.tar.gz

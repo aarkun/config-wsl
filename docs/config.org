@@ -1202,23 +1202,25 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    This should result to something like:
    : Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 
-** Install DBeaver
-1. Download latest release files from https://dbeaver.io/download/:
+** Install DBeaver 25.1.0
+The latest version can be installed from https://dbeaver.io/download/.
+
+1. Download the specific release files without a JDK from the [[https://github.com/dbeaver/dbeaver/releases][GitHub mirror]], which offers a checksum. Checksums are available since 25.1.0:
    #+name: dbeaver_download
    #+begin_src shell :results silent
-     DBEAVER_VERSION=25.0.0
-     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz
+     DBEAVER_VERSION=25.1.0
+     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64-nojdk.tar.gz
      curl -L -O --output-dir /tmp \
-	  https://dbeaver.io/files/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
-     curl -L -O --output-dir /tmp \
-	  https://dbeaver.io/files/$DBEAVER_VERSION/checksum/$DBEAVER_INSTALLATION_FILE.sha256
+	  https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
    #+end_src
 
-2. Verify checksum:
+2. Create a checksum file and verify the installation file:
    #+name: dbeaver_verify
    #+begin_src shell :results silent
-     grep $(sha256sum /tmp/$DBEAVER_INSTALLATION_FILE | cut -d ' ' -f 1) \
-	  /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+     printf '%s %s\n' \
+	    '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
+	    /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+     sha256sum -c /tmp/$DBEAVER_INSTALLATION_FILE.sha256
    #+end_src
 
 3. Extract binary:
@@ -1231,8 +1233,8 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
 4. Create link:
    #+name: dbeaver_create_link
    #+begin_src shell :results silent
-     mkdir -p ~/opt
-     ln -s ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
+     mkdir -p ~/.local/bin/
+     ln -fs ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
    #+end_src
 
 ** Install IntelliJ
