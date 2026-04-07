@@ -665,7 +665,7 @@ To use the Firefox, which is installed on the host system, create the following 
 ** Install asdf
 Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]], using the Method /Download Pre-compiled binary/:
 
-1. Download latest release files from https://github.com/asdf-vm/asdf/releases:
+1. Download latest release files from [[https://github.com/asdf-vm/asdf/releases][asdf releases]]:
    #+name: asdf_download
    #+begin_src shell :results silent
      ASDF_VERSION=v0.16.4
