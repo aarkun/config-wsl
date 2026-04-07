@@ -1035,7 +1035,7 @@ The actual used version of [[https://go.dev/][Go]] is project specific and not s
    :  Consider adding one of the following versions in your config file at /home/kunde/work/tst-keycloak/.tool-versions
    :  golang 1.24.0
 
-** Install Java
+** Install Java 21.0.5
 The actual used version of a [[https://www.java.com/][Java]] JDK may be project specific. Because at leat one JRE is needed globally, the current LTS is defined globally:
 
 1. Add the asdf plugin and install a LTS version of the JRE with asdf:
