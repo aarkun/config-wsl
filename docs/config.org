@@ -567,7 +567,6 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<vscode_create_link>>
 
   <<plantuml_fetch_gpg-key>>
-  <<plantuml_sign_gpg-key>>
   <<plantuml_download>>
   <<plantuml_verify>>
   <<plantuml_remove_signature>>
@@ -1329,17 +1328,7 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
      gpg --recv-keys 019586D44BD80213
    #+end_src
 
-3. Make your GPG signing key available.
-
-4. Sign and mark as non-exportable without user interaction:
-   #+name: plantuml_sign_gpg-key
-   #+begin_src shell :results silent
-     gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
-   #+end_src
-
-   *Note*: This only works, if the signing key is present!
-
-5. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
+3. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
    #+name: plantuml_download
    #+begin_src shell :results silent
      PLANTUML_VERSION=1.2025.3
@@ -1349,7 +1338,7 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
 	  "https://github.com/plantuml/plantuml/releases/download/v$PLANTUML_VERSION/$PLANTUML_INSTALLATION_FILE{,.asc}"
    #+end_src
 
-6. Verify the installation file:
+4. Verify the installation file:
    #+name: plantuml_verify
    #+begin_src shell
      gpg --verify ~/opt/$PLANTUML_INSTALLATION_FILE.asc
@@ -1359,21 +1348,37 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2025.3.jar'
    : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
    : gpg:                using RSA key 019586D44BD80213
+   : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [unknown]
+   : gpg: WARNING: This key is not certified with a trusted signature!
+   : gpg:          There is no indication that the signature belongs to the owner.
+   : Primary key fingerprint: C08C 18EE 1706 DB37 8BD9  93C8 0195 86D4 4BD8 0213
+
+   To avoid the warning above, the key can be locally signed and marked as non-exportable:
+   #+begin_src shell :results silent
+     gpg --quick-lsign-key C08C18EE1706DB378BD993C8019586D44BD80213 plantuml@gmail.com
+   #+end_src
+
+   *Note*: This only works, if the signing key is present!
+
+   In this case, the verification above should result to something like:
+   : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2025.3.jar'
+   : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
+   : gpg:                using RSA key 019586D44BD80213
    : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [full]
 
-7. Delete the signature:
+5. Delete the signature:
    #+name: plantuml_remove_signature
    #+begin_src shell :results silent
      rm  ~/opt/$PLANTUML_INSTALLATION_FILE.asc
    #+end_src
 
-8. Create a version agnostic link in the installation directory:
+6. Create a version agnostic link in the installation directory:
    #+name: plantuml_create_link
    #+begin_src shell :results silent
      ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
    #+end_src
 
-9. Verify installation:
+7. Verify installation:
    #+begin_src shell
      java -jar ~/opt/plantuml.jar -testdot
    #+end_src
