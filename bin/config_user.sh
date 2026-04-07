@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ $(id -u) -eq 0 ]; then
+if [ "$(id -u)" -eq 0 ]; then
     echo "You should not be root"
     exit 1
 fi
@@ -11,9 +11,9 @@ cp /etc/skel/.bashrc ~
 
 PATH="$HOME/.local/bin:$PATH"
 
-echo '\nexport NO_AT_BRIDGE=1' >> ~/.profile
+printf '\nexport NO_AT_BRIDGE=1\n' >> ~/.profile
 
-echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
+printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
 
 cat <<'EOF' >> ~/.profile
 
@@ -37,31 +37,31 @@ ASDF_VERSION=v0.16.4
 ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
 curl -L -O --output-dir /tmp \
      "https://github.com/asdf-vm/asdf/releases/download/$ASDF_VERSION/$ASDF_INSTALLATION_FILE{,.md5}"
-grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) \
+grep "$(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1)" \
      /tmp/$ASDF_INSTALLATION_FILE.md5
 mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
-echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
+printf '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"\n' >> ~/.profile
+printf '\n. <(~/.local/bin/asdf completion bash)\n' >> ~/.bashrc
 echo 'legacy_version_file = yes' > ~/.asdfrc
 
 asdf plugin add direnv
 asdf install direnv latest
 asdf set -u direnv latest
-echo '\neval "$(direnv hook bash)"' >> ~/.profile
+printf '\neval "$(direnv hook bash)"\n' >> ~/.profile
 mkdir -p ~/.config/direnv
-echo '[global]\nload_dotenv = true' > ~/.config/direnv/direnv.toml
+printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
 
 asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
-echo '\n. <(kubectl completion bash)' >> ~/.profile
+printf '\n. <(kubectl completion bash)\n' >> ~/.profile
 
 asdf plugin add helm
 asdf install helm 3.17.1
 asdf set -u helm 3.17.1
-echo '\n. <(helm completion bash)' >> ~/.profile
+printf '\n. <(helm completion bash)\n' >> ~/.profile
 
 asdf plugin add helm-docs
 asdf install helm-docs latest
@@ -112,7 +112,7 @@ asdf set -u lua 5.4.7
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
 curl -O --output-dir /tmp \
      "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
-grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
+grep "$(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1)" \
      /tmp/$IDEA_INSTALLATION_FILE.sha256
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
@@ -136,10 +136,11 @@ VSCODE_INSTALLATION_FILE=code-stable-$VSCODE_VERSION.tar.gz
 curl -L -o /tmp/$VSCODE_INSTALLATION_FILE \
      "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
 curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
-    grep $(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)
+    grep "$(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)"
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$VSCODE_INSTALLATION_FILE
-ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
+mkdir -p ~/.local/bin
+ln -fs ~/opt/VSCode-linux-x64/code ~/.local/bin/code
 
 gpg --recv-keys 019586D44BD80213
 PLANTUML_VERSION=1.2025.3
@@ -154,25 +155,30 @@ ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
 asdf plugin add pandoc
 asdf install pandoc latest
 asdf set -u pandoc latest
-echo '\n. <(pandoc --bash-completion)' >> ~/.profile
+printf '\n. <(pandoc --bash-completion)\n' >> ~/.profile
 
-echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
-echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
+echo docker.host="unix://${XDG_RUNTIME_DIR}/podman/podman.sock" \
+     > "$HOME/.testcontainers.properties"
+printf '\nexport TESTCONTAINERS_RYUK_DISABLED=true\n' >> ~/.profile
 
+mkdir -p ~/opt
 npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
 mkdir -p ~/.local/bin
 ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
 
+mkdir -p ~/opt
 UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest
 
 asdf plugin add k6
 
+mkdir -p ~/opt
 npm install -g --prefix ~/opt/opencode opencode-ai
 mkdir -p ~/.local/bin
 ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
 
 asdf plugin add trivy
 
+mkdir -p ~/opt
 npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
 mkdir -p ~/.local/bin
 ln -fs ~/opt/openspec/bin/openspec ~/.local/bin/openspec

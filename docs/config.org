@@ -489,7 +489,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 #+begin_src shell :tangle ../bin/config_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
-  if [ $(id -u) -eq 0 ]; then
+  if [ "$(id -u)" -eq 0 ]; then
       echo "You should not be root"
       exit 1
   fi
@@ -600,14 +600,14 @@ GTK applications display the following error message, if the package [[https://p
 Since no accessibility is needed the package is not installed. The error message is disabled by setting the environment variable ~NO_AT_BRIDGE=1~ in ~$HOME/.profile~:
 #+name: disable_at-spi2-error
 #+begin_src shell :results silent
-  echo '\nexport NO_AT_BRIDGE=1' >> ~/.profile
+  printf '\nexport NO_AT_BRIDGE=1\n' >> ~/.profile
 #+end_src
 
 ** Configure GPG
 To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.profile~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
 #+name: gpg_add_tty
 #+begin_src shell :results silent
-  echo '\nexport GPG_TTY=$(tty)' >> ~/.profile
+  printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
 #+end_src
 
 ** Configure SSH agent
@@ -676,7 +676,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
 2. Verify checksum:
    #+name: asdf_verify
    #+begin_src shell :results silent
-     grep $(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1) \
+     grep "$(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1)" \
 	  /tmp/$ASDF_INSTALLATION_FILE.md5
    #+end_src
 
@@ -699,13 +699,13 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    #+name: asdf_add_shims
    #+begin_src shell :results silent
      PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-     echo '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"' >> ~/.profile
+     printf '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"\n' >> ~/.profile
    #+end_src
 
 6. To add shell completion, add the following line to ~$HOME/.bashrc~:
    #+name: asdf_add_shell_completions
    #+begin_src shell :results silent
-     echo '\n. <(~/.local/bin/asdf completion bash)' >> ~/.bashrc
+     printf '\n. <(~/.local/bin/asdf completion bash)\n' >> ~/.bashrc
    #+end_src
    Since =~/.bashrc= is sourced, before =~/.local/bin= is added to the =PATH= in =~/.profile=, ~asdf~ cannot be called without prefix. So the explicit path to asdf is used.
 
@@ -754,14 +754,14 @@ For many configurations, [[https://direnv.net/][direnv]] is very useful. In gene
 3. [[https://direnv.net/docs/hook.html][Hook]] direnv into the shell:
    #+name: direnv_hook_into_shell
    #+begin_src shell :results silent
-     echo '\neval "$(direnv hook bash)"' >> ~/.profile
+     printf '\neval "$(direnv hook bash)"\n' >> ~/.profile
    #+end_src
 
 4. Configure direnv by its [[https://direnv.net/man/direnv.toml.1.html][configuration file]] =$HOME/.config/direnv/direnv.toml= to accept =.env= files:
    #+name: direnv_config_accept_env
    #+begin_src shell :results silent
      mkdir -p ~/.config/direnv
-     echo '[global]\nload_dotenv = true' > ~/.config/direnv/direnv.toml
+     printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
    #+end_src
 
 ** Install kubectl
@@ -788,7 +788,7 @@ In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl
 3. Install autocompletion for bash. Based on [[https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/][Install bash-completion]], add a line to =$HOME/.profile=:
    #+name: kubectl_add_shell_completions
    #+begin_src shell :results silent
-     echo '\n. <(kubectl completion bash)' >> ~/.profile
+     printf '\n. <(kubectl completion bash)\n' >> ~/.profile
    #+end_src
 
    *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
@@ -815,7 +815,7 @@ In general, the latest version of [[https://helm.sh/][Helm]] is used for all pro
 3. Install autocompletion for bash. Based on [[https://helm.sh/docs/helm/helm_completion_bash/#helm][helm completion bash]], add a line to =$HOME/.profile=:
    #+name: helm_add_shell_completions
    #+begin_src shell :results silent
-     echo '\n. <(helm completion bash)' >> ~/.profile
+     printf '\n. <(helm completion bash)\n' >> ~/.profile
    #+end_src
 
    *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
@@ -1178,7 +1178,7 @@ In general, the latest version of [[https://pandoc.org/][Pandoc]] is used for al
 3. Install autocompletion for bash. Based on [[https://pandoc.org/MANUAL.html][Pandoc User's Guide]], add a line to =$HOME/.profile=:
    #+name: pandoc_add_shell_completions
    #+begin_src shell :results silent
-     echo '\n. <(pandoc --bash-completion)' >> ~/.profile
+     printf '\n. <(pandoc --bash-completion)\n' >> ~/.profile
    #+end_src
 
    *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
@@ -1260,7 +1260,7 @@ The latest version can be installed from https://dbeaver.io/download/.
 3. Verify checksum:
    #+name: idea_verify
    #+begin_src shell :results silent
-     grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
+     grep "$(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1)" \
 	  /tmp/$IDEA_INSTALLATION_FILE.sha256
    #+end_src
 
@@ -1300,7 +1300,7 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+name: vscode_verify
    #+begin_src shell :results silent
      curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
-	 grep $(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)
+	 grep "$(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)"
    #+end_src
 
 4. Extract binary:
@@ -1313,7 +1313,8 @@ The latest version can be installed from https://dbeaver.io/download/.
 5. Create link:
    #+name: vscode_create_link
    #+begin_src shell :results silent
-     ln -s ~/opt/VSCode-linux-x64/code ~/.local/bin/code
+     mkdir -p ~/.local/bin
+     ln -fs ~/opt/VSCode-linux-x64/code ~/.local/bin/code
    #+end_src
 
 ** Install PlantUML
@@ -1402,7 +1403,7 @@ The latest version can be installed from https://dbeaver.io/download/.
 2. Disable [[https://java.testcontainers.org/features/configuration][Ryuk]]. Since Podman is used in rootless mode, Ryuk must be disabled, by setting the following environment ~TESTCONTAINERS_RYUK_DISABLED=true~ in =$HOME/.profile=:
    #+name: testcontainers_disable_ryuk
    #+begin_src shell
-     echo '\nexport TESTCONTAINERS_RYUK_DISABLED=true' >> ~/.profile
+     printf '\nexport TESTCONTAINERS_RYUK_DISABLED=true\n' >> ~/.profile
    #+end_src
 
 ** Install mermaid-cli
@@ -1411,6 +1412,7 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
 1. Install mermaid, using [[https://www.npmjs.com/][npm]] into the local installation directory =~/opt/mermaid=:
    #+name: mermaid_install
    #+begin_src shell :results silent
+     mkdir -p ~/opt
      npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
    #+end_src
 
@@ -1444,6 +1446,7 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
 2. Install aider into =~/opt= with uv, adding a Python 3.13 if needed:
    #+name: aider_install
    #+begin_src shell :results silent
+     mkdir -p ~/opt
      UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest
    #+end_src
 
@@ -1472,6 +1475,7 @@ Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/
 1. Following [[https://opencode.ai/docs/de#installation][the installation manual]], using npm. Install OpenCode into the local installation directory =~/opt/opencode=:
    #+name: opencode_install
    #+begin_src shell :results silent
+     mkdir -p ~/opt
      npm install -g --prefix ~/opt/opencode opencode-ai
    #+end_src
 
@@ -1513,6 +1517,7 @@ Regarding https://openspec.dev/, OpenSpec needs to be installed globally. [[* In
 1. Install OpenSpec, using [[https://www.npmjs.com/][npm]] into the local installation directory =~/opt/openspec=:
 #+name: openspec_install
 #+begin_src shell :results silent
+  mkdir -p ~/opt
   npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
 #+end_src
 
