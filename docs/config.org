@@ -681,7 +681,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
 	  /tmp/$ASDF_INSTALLATION_FILE.md5
    #+end_src
 
-3. Extract binary:
+3. Extract binary into =~/.local/bin/=:
    #+name: asdf_extract
    #+begin_src shell :results silent
      mkdir -p ~/.local/bin
