@@ -1106,15 +1106,15 @@ The actual used version of [[https://gradle.org/][Gradle]] is project specific a
    This should result to something like:
    : gradle 8.12
 
-** Install Node.js 22.0.0
-The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. At least one version of Node.js greater or equal than 22 is needed globally for bash-language-server. So the version 22.0.0 is installed and defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =.tool-versions=:
+** Install Node.js 22.22.0
+The actual used version of [[https://nodejs.org/en][Node.js]] may be project specific. At least one version of Node.js greater or equal than 22.22.0 is needed globally for several tools. So the version 22.22.0 is installed and defined globally. It may be overridden for specific projects by an existing =.nvmrc= or =.tool-versions=:
 
 1. Add the asdf plugin:
    #+name: nodejs_install
    #+begin_src shell :results silent
      asdf plugin add nodejs
-     asdf install nodejs 22.0.0
-     asdf set -u nodejs 22.0.0
+     asdf install nodejs 22.22.0
+     asdf set -u nodejs 22.22.0
    #+end_src
 
 2. Verify installation:
@@ -1123,7 +1123,7 @@ The actual used version of [[https://nodejs.org/en][Node.js]] may be project spe
    #+end_src
 
    This should result to:
-   : v22.0.0
+   : v22.22.0
 
 ** Install pnpm
 The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
