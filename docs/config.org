@@ -1237,7 +1237,7 @@ The latest version can be installed from https://dbeaver.io/download/.
      ln -fs ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
    #+end_src
 
-** Install IntelliJ
+** Install IntelliJ 2024.3.3
 1. Install necessary prerequisites for different features:
    #+name: idea_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
