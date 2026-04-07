@@ -1391,7 +1391,8 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
 1. Set socket for Podman. According to [[https://podman-desktop.io/tutorial/testcontainers-with-podman][Testcontainers with Podman]], a file =$HOME/.testcontainers.properties= must be created:
    #+name: testcontainers_config
    #+begin_src shell
-     echo docker.host=unix://${XDG_RUNTIME_DIR}/podman/podman.sock > $HOME/.testcontainers.properties
+     echo docker.host="unix://${XDG_RUNTIME_DIR}/podman/podman.sock" \
+	  > "$HOME/.testcontainers.properties"
    #+end_src
 
    *Note*: If writing the entry without substituting the variable =$XDG_RUNTIME_DIR=, tests in SpringBoot might fail, because the variable is not substituted by default. To avoid this, the value is substituted, as long the directory does not change for the user.
