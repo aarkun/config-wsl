@@ -1,0 +1,14 @@
+.gitconfig
+.gnupg
+.m2/settings.xml
+.ssh
+.config/JetBrains
+.local/share/DBeaverData/workspace6
+.aspell.de.prepl
+.aspell.de.pws
+.aspell.en.prepl
+.aspell.en.pws
+.env
+.emacs.d/org-agenda-files
+.kube/config
+.npmrc

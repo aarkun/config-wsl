@@ -88,6 +88,7 @@ apt-get install -y \
 	libgbm1 libglx-mesa0
 
 apt-get install -y \
-	libgl1
+	libgl1 \
+	libnss3
 
 apt-get install -y graphviz

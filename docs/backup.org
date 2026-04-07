@@ -2,9 +2,12 @@
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
 
-This document describes methods and scripts to manage backups of the WSL 2 and is based on [[https://www.virtualizationhowto.com/2021/01/wsl2-backup-and-restore-images-using-import-and-export/][WSL2 Backup and Restore Images using Import and Export]].
+This document describes methods and scripts to manage backups of the WSL 2 and the user directory within the WSL.
 
-* Export / Create a backup
+* Backup the whole WSL
+Creating and restoring the whole WSL is based on [[https://www.virtualizationhowto.com/2021/01/wsl2-backup-and-restore-images-using-import-and-export/][WSL2 Backup and Restore Images using Import and Export]].
+
+** Create a backup
 :PROPERTIES:
 :CUSTOM_ID: backup
 :END:
@@ -31,10 +34,10 @@ To export an existing distro (e.g. /Debian/):
      wsl --export Debian "$backup_dir\backup.wsl2.debian.tar"
    #+end_src
 
-* Import / Restore from a backup
+** Restore from a backup
 Importing is different, whether a distro with this name already exists or not.
 
-** Import backup the first time
+*** Import backup the first time
 To import a backed up distro (e.g. /Debian/) in a fresh environment:
 
 1. Install a fresh distro:
@@ -49,7 +52,7 @@ To import a backed up distro (e.g. /Debian/) in a fresh environment:
        "$backup_dir\backup.wsl2.debian.tar"
     #+end_src
 
-** Reimport backup in an existing distro
+*** Import backup in an existing distro
 :PROPERTIES:
 :CUSTOM_ID: reimport
 :END:
@@ -76,3 +79,84 @@ To reimporting a backup of a distro in an already existing one (e.g. /Debian/):
    #+begin_src powershell
      wsl --manage Debian --set-default-user $env:USERNAME
    #+end_src
+
+* Backup user directory
+:PROPERTIES:
+:header-args:text: :tangle ../backup_user.txt :padline no
+:END:
+The following files and directories are not regenerated during the [[file:config.org::* Configure user environment][configuration]]. Therefore they must be backed up, to transfer the state of the user configuration from one instance of the WSL to another:
+#+begin_src shell :tangle ../bin/backup_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none :results silent
+  set -e
+
+  if [ $# -ne 1 ]; then
+      printf "ERROR: Wrong number of arguments!\nUsage: %s <backup_dir>\n" "${0}"
+      exit 1
+  fi
+  BACKUP_DIR="${1}"
+
+  mkdir -p "$BACKUP_DIR"
+  tar -C ~ -cf "$BACKUP_DIR/backup.wsl2.$USER.tar" \
+      -T "$(dirname "${0}")/../backup_user.txt"
+#+end_src
+
+** Git
+- =.gitconfig= (Could be regenerated)
+#+begin_src text
+  .gitconfig
+#+end_src
+
+** GPG
+Contains all GPG settings and keys:
+#+begin_src text
+  .gnupg
+#+end_src
+
+** Maven
+Contains Maven settings and secrets:
+#+begin_src text
+  .m2/settings.xml
+#+end_src
+
+** SSH
+#+begin_src text
+  .ssh
+#+end_src
+
+** IntelliJ
+#+begin_src text
+  .config/JetBrains
+#+end_src
+
+** DBeaver
+#+begin_src text
+  .local/share/DBeaverData/workspace6
+#+end_src
+
+** Aspell Dictionaries
+#+begin_src text
+  .aspell.de.prepl
+  .aspell.de.pws
+  .aspell.en.prepl
+  .aspell.en.pws
+#+end_src
+
+** Environment variables containing keys and secrets
+#+begin_src text
+  .env
+#+end_src
+
+** Emacs Org Agenda files
+#+begin_src text
+  .emacs.d/org-agenda-files
+#+end_src
+
+** Kubectl
+#+begin_src text
+  .kube/config
+#+end_src
+
+** NPM
+#+begin_src text
+  .npmrc
+#+end_src
+

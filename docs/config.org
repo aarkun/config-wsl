@@ -1279,13 +1279,16 @@ The latest version can be installed from https://dbeaver.io/download/.
 
 ** Install Visual Studio Code 1.99.3
 1. Install necessary prerequisites for different features:
+   - [[https://packages.debian.org/bookworm/libgl1][libgl1]] should be installed, to prevent the following error:
+     : Could not dlopen libGL.so.1: libGL.so.1: cannot open shared object file: No such file or directory
+   - [[https://packages.debian.org/bookworm/libnss3][libnss3]] must be installed, otherwise Visual Studio Code aborts startup with the following error:
+     : code: error while loading shared libraries: libnss3.so: cannot open shared object file: No such file or directory
    #+name: vscode_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
-	     libgl1
+	     libgl1 \
+	     libnss3
    #+end_src
-   [[https://packages.debian.org/bookworm/libgl1][libgl1]] needs to be installed, to prevent the following error:
-   : Could not dlopen libGL.so.1: libGL.so.1: cannot open shared object file: No such file or directory
 
 2. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
    #+name: vscode_download
