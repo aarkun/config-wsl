@@ -794,7 +794,7 @@ In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl
 
    *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
 
-** Install Helm
+** Install Helm 3.17.1
 In general, the latest version of [[https://helm.sh/][Helm]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
 1. The keyword ~latest~ is currently not supported by the asdf plugin. Therefore, a specific version of Helm is installed:
