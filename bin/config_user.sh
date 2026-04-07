@@ -116,7 +116,7 @@ grep $(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1) \
      /tmp/$IDEA_INSTALLATION_FILE.sha256
 mkdir -p ~/opt
 tar -C ~/opt -x -f /tmp/$IDEA_INSTALLATION_FILE
-find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
+find ~/opt -name idea -exec ln -sf {} ~/.local/bin/idea \;
 
 DBEAVER_VERSION=25.0.0
 DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64.tar.gz

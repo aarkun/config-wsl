@@ -1272,7 +1272,7 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
 5. Create link:
    #+name: idea_create_link
    #+begin_src shell :results silent
-     find opt/ -name idea -exec ln -s ~/{} ~/.local/bin/idea \;
+     find ~/opt -name idea -exec ln -sf {} ~/.local/bin/idea \;
    #+end_src
 
 ** Install Visual Studio Code
