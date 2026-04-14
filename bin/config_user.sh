@@ -67,6 +67,8 @@ asdf plugin add helm-docs
 asdf install helm-docs latest
 asdf set -u helm-docs latest
 
+helm plugin install https://github.com/dadav/helm-schema
+
 asdf plugin add make
 asdf install make latest
 asdf set -u make latest

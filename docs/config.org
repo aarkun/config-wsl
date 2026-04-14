@@ -527,6 +527,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<helm-docs_install>>
 
+  <<helm-schema_install>>
+
   <<make_install>>
 
   <<shellcheck_install>>
@@ -837,6 +839,15 @@ Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoo
 
    This should result to something like:
    : helm-docs version 1.14.2
+
+** Install helm-schema
+Like [[* Install Helm][Helm]], the latest version of [[https://github.com/dadav/helm-schema][helm-schema]] is used for all projects as a default.
+
+1. Installed as a plugin into the current Helm installation:
+   #+name: helm-schema_install
+   #+begin_src shell :results silent
+     helm plugin install https://github.com/dadav/helm-schema
+   #+end_src
 
 ** Install make
 In general, the latest version of [[https://www.gnu.org/software/make/][GNU make]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
