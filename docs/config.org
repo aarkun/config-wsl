@@ -95,7 +95,7 @@ To verify, execute:
 This should result to:
 :   link currently points to /usr/bin/vim.tiny
 
-** Add needed locales
+** Configure locales
 The default locale in WSL is determined by the locale of the Windows installation. This can be determined by executing in the powershell:
 #+begin_src powershell
   Get-WinSystemLocale
@@ -106,7 +106,7 @@ This should return something like:
 : ----             ----             -----------
 : 1033             en-US            English (United States)
 
-The default locale should be /en_US.UTF-8/. The current locale of the WSL can be determined by executing:
+The default locale should be /en_US.UTF-8/. The current locale can be determined by executing:
 #+begin_src shell
   locale
 #+end_src
@@ -137,8 +137,14 @@ To use the additional locale /de_DE.UTF-8/ in other programs (like Emacs), it mu
   locale-gen
 #+end_src
 
-** OPTIONAL: Set locale for scripts                                :optional:
-Like it is described in the [[https://www.gnu.org/savannah-checkouts/gnu/gettext/manual/html_node/Locale-Environment-Variables.html][gettext manual]] and at https://unix.stackexchange.com/questions/87745/what-does-lc-all-c-do, scripts use the variable ~LC_ALL~, which should be set as a fallback. For now, the default /en_EN.UTF-8/ is used.
+The available locales can be verified by executing:
+#+begin_src shell
+  grep -E '^[^#]+' /etc/locale.gen
+#+end_src
+
+This should result to:
+: de_DE.UTF-8 UTF-8
+: en_US.UTF-8 UTF-8
 
 ** Activate systemd
 To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. The current Debian distribution already contains a file =/etc/wsl.conf= with the needed entry to enable systemctl.
