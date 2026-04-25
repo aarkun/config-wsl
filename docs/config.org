@@ -606,7 +606,7 @@ Since no accessibility is needed the package is not installed. The error message
 #+end_src
 
 ** Configure GPG
-To enable signing of git commits using the commandline, add the following configuration to ~$HOME/.profile~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
+To enable signing and encryption using the command line, add the following configuration to ~$HOME/.profile~ like it is described in the [[https://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html#Invoking-GPG_002dAGENT][GnuPG manual:]]
 #+name: gpg_add_tty
 #+begin_src shell :results silent
   printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
