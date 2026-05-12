@@ -1,3 +1,4 @@
+# -*- eval: (flyspell-mode) -*-
 :PROPERTIES:
 :header-args: :results verbatim
 :END:
