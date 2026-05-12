@@ -84,8 +84,9 @@ apt-get install -y \
 apt-get install -y unzip
 
 apt-get install -y \
-	libxtst6 \
-	libgbm1 libglx-mesa0
+	libgbm1 \
+	libgl1 \
+	libnss3
 
 apt-get install -y \
 	libgl1 \
