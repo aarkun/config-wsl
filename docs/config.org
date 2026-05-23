@@ -39,6 +39,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<install_global_base_software>>
 
+  <<gpg_install_pinentry-x11>>
+
   <<latex_install>>
 
   <<python_install_requirements>>
@@ -611,6 +613,13 @@ To enable signing and encryption using the command line, add the following confi
 #+name: gpg_add_tty
 #+begin_src shell :results silent
   printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
+#+end_src
+
+** Install pinentry for X11
+The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-curses]]) does work in the terminal, but not within Emacs [[https://magit.vc/][Magit]]. As a workaround, a pinentry, which provides pinentry-x11 is installed:
+#+name: gpg_install_pinentry-x11
+#+begin_src shell :results silent :dir /sudo::
+  apt-get install -y pinentry-fltk
 #+end_src
 
 ** Configure SSH agent

@@ -70,6 +70,8 @@ apt-get install -y \
 	xorriso \
 	xz-utils
 
+apt-get install -y pinentry-fltk
+
 apt-get install -y \
 	auctex \
 	texlive-latex-recommended \
