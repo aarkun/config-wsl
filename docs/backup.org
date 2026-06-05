@@ -84,7 +84,8 @@ To reimporting a backup of a distro in an already existing one (e.g. /Debian/):
 :PROPERTIES:
 :header-args:text: :tangle ../backup_user.txt :padline no
 :END:
-The following files and directories are not regenerated during the [[file:config.org::* Configure user environment][configuration]]. Therefore they must be backed up, to transfer the state of the user configuration from one instance of the WSL to another:
+
+The following files and directories are not regenerated during the [[file:config.org::* Configure user environment][configuration]]. Therefore they must be backed up, to transfer the state of the user configuration from one instance of the WSL to another. The script [[file:~/work/config-wsl/bin/backup_user.sh][backup_user.sh]] creates a backup from a given [[file:~/work/config-wsl/backup_user.txt][list]] in the directory ~$BACKUP_DIR~. The directory is passed as an argument and created if necessary:
 #+begin_src shell :tangle ../bin/backup_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none :results silent
   set -e
 
