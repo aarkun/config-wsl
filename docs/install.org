@@ -72,7 +72,7 @@ This is an alternate approach, in which a base distro from a fresh installation 
 
 2. Verify, that no Debian distro exists:
    #+begin_src powershell
-     wsl --list
+     wsl -l
    #+end_src
 
    This should result to:
