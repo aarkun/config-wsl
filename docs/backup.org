@@ -160,3 +160,8 @@ Contains Maven settings and secrets:
   .npmrc
 #+end_src
 
+* Restore user directory
+To restore the backup, execute:
+#+begin_example
+  tar -C ~ -tf "$backup_dir/backup.wsl2.$USER.tar"
+#+end_example
