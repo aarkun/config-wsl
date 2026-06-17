@@ -45,6 +45,9 @@ apt-get update
 apt-get install -y nvidia-container-toolkit
 nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
+apt-get install -y gnupg
+apt-get install -y pinentry-fltk
+
 apt-get install -y \
 	aspell-de \
 	bash-completion \
@@ -56,7 +59,6 @@ apt-get install -y \
 	file \
 	git \
 	gitk \
-	gnupg \
 	gnuplot \
 	htop \
 	lsof \
@@ -69,8 +71,6 @@ apt-get install -y \
 	telnet \
 	xorriso \
 	xz-utils
-
-apt-get install -y pinentry-fltk
 
 apt-get install -y \
 	auctex \

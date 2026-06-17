@@ -8,6 +8,9 @@ The general installation is described at https://github.com/microsoft/WSL and ca
   wsl --install Debian
 #+end_src
 
+* Prerequisites
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][WSL release]] is initially installed.
+
 * Install multiple versions of Debian
 To install multiple Debian distros, several options exist:
 1. [[#official_distro][Use an official distro]]

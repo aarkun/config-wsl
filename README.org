@@ -2,4 +2,4 @@
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
 
-This project describes the [[file:docs/install.org][installation]], [[file:docs/config.org][configuration]] and [[file:docs/backup.org][backup]] of WSL 2.
+This project describes the [[file:docs/install.org][installation]], [[file:docs/config.org][configuration]] and [[file:docs/backup.org][backup]] of WSL 2 with Debian. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]]. This configuration is tested on a Debian (bookworm) distribution 12.9 with the WSL version 2.7.11.0.

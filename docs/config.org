@@ -6,12 +6,10 @@
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
 
-Settings and descriptions of the WSL 2 configuration.
-
-This project describes the configuration of the WSL 2 and scripts to set up this configuration.
+Description of the Debian configuration.
 
 * Prerequisites
-It is assumed, that an official [[https://github.com/microsoft/WSL/releases][release]] is initially installed and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution with the WSL version 2.4.11.0. This version should also support [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][Linux GUI apps]].
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][WSL release]] with an official Debian distribution is initially [[file:install.org][installed]] and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution 12.9.
 
 * Configure WSL Debian
 To automate the configuration the script [[file:~/work/config-wsl/bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as /root/.
@@ -37,9 +35,10 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<nct_install>>
   <<nct_configure_podman>>
 
-  <<install_global_base_software>>
-
+  <<gpg_install>>
   <<gpg_install_pinentry-x11>>
+
+  <<install_global_base_software>>
 
   <<latex_install>>
 
@@ -453,6 +452,20 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    : nvidia.com/gpu=all
    : GPU 0: NVIDIA RTX A1000 Laptop GPU (UUID: GPU-67d3f5e6-b6f8-ecd8-b874-106d2fc38caf)
 
+** Install GnuPG
+[[https://www.gnupg.org/][GnuPG]] is needed for several tasks, like encryption or signing. Therefore [[https://packages.debian.org/bookworm/gnupg][gnupg]] is installed:
+#+name: gpg_install
+#+begin_src shell :results silent :dir /sudo::
+  apt-get install -y gnupg
+#+end_src
+
+** Install pinentry for X11
+The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-curses]]) does work in the terminal, but not within Emacs [[https://magit.vc/][Magit]]. As a workaround, a pinentry, which provides pinentry-x11 is installed:
+#+name: gpg_install_pinentry-x11
+#+begin_src shell :results silent :dir /sudo::
+  apt-get install -y pinentry-fltk
+#+end_src
+
 ** Install additional software
 Install software for every day use:
 #+name: install_global_base_software
@@ -468,7 +481,6 @@ Install software for every day use:
 	  file \
 	  git \
 	  gitk \
-	  gnupg \
 	  gnuplot \
 	  htop \
 	  lsof \
@@ -625,13 +637,6 @@ To enable signing and encryption using the command line, add the following confi
 #+name: gpg_add_tty
 #+begin_src shell :results silent
   printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
-#+end_src
-
-** Install pinentry for X11
-The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-curses]]) does work in the terminal, but not within Emacs [[https://magit.vc/][Magit]]. As a workaround, a pinentry, which provides pinentry-x11 is installed:
-#+name: gpg_install_pinentry-x11
-#+begin_src shell :results silent :dir /sudo::
-  apt-get install -y pinentry-fltk
 #+end_src
 
 ** Configure SSH agent
