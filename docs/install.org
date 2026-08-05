@@ -131,7 +131,7 @@ Use the second distro with
 #+end_src
 
 * Fix terminal
-After creating a new Terminal, error messages occur, because no icon is set. To fix it, set a proper icon in Terminal. Set Icon to one of the following options:
+After creating a new Terminal, error messages occur, because no icon is set. To fix this, set a proper icon in Terminal. Set Icon to one of the following options:
 - Tux :: ~ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png~
 - Debian swirl :: ~C:\Users\%USERPROFILE%\Deb-Dir_1\shortcut.ico~
 
