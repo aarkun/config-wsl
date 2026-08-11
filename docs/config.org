@@ -1531,8 +1531,8 @@ Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/
      ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
    #+end_src
 
-** Update OpenCode
-If OpenCode was installed like described in [[* Install OpenCode][Install OpenCode]], the built in upgrade in OpenCode does not work. To update OpenCode execute the following:
+*** Upgrade OpenCode
+If OpenCode was installed like described above, the built in upgrade in OpenCode does not work. To update OpenCode execute the following:
 #+begin_src shell :results silent
   npm update -g --prefix ~/opt/opencode opencode-ai
 #+end_src
