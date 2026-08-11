@@ -1587,6 +1587,12 @@ Regarding https://openspec.dev/, OpenSpec needs to be installed globally. [[* In
    This should result to something like:
    : 1.2.0
 
+*** Upgrade OpenSpec
+If OpenSpec was installed, it can be upgraded by executing:
+#+begin_src shell :results silent
+  npm update -g --prefix ~/opt/openspec @fission-ai/openspec
+#+end_src
+
 ** Install k6
 The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
 
