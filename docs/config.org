@@ -21,10 +21,6 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<apt_update>>
 
-
-  <<install_global_base_software>>
-
-  <<latex_install>>
   <<systemd_install_dbus-user-session>>
 
   <<podman_purge_old_versions>>
@@ -38,6 +34,10 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<apt_update>>
   <<nct_install>>
   <<nct_configure_podman>>
+
+  <<install_global_base_software>>
+
+  <<latex_install>>
 
   <<python_install_requirements>>
 
@@ -211,46 +211,6 @@ and executing ~podman ps~ might result to something like:
 #+end_example
 
 See seems to be an open issue: https://github.com/microsoft/WSL/issues/13826
-
-** Install global software
-Install software for every day use:
-#+name: install_global_base_software
-#+begin_src shell :dir /sudo::
-  apt-get install -y \
-	  aspell-de \
-	  bash-completion \
-	  btop \
-	  curl \
-	  dos2unix \
-	  emacs \
-	  emacs-common-non-dfsg \
-	  file \
-	  git \
-	  gitk \
-	  gnupg \
-	  gnuplot \
-	  htop \
-	  lsof \
-	  man-db \
-	  net-tools \
-	  netcat-openbsd \
-	  markdown \
-	  openssh-client \
-	  patch \
-	  telnet \
-	  xorriso \
-	  xz-utils
-#+end_src
-
-Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
-#+name: latex_install
-#+begin_src shell :dir /sudo::
-  apt-get install -y \
-	  auctex \
-	  texlive-latex-recommended \
-	  texlive-latex-extra \
-	  texlive-plain-generic
-#+end_src
 
 ** Install Podman 4.3.1
 The current version of Podman in the current Debian stable distribution is 4.3.1.
@@ -482,6 +442,46 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
 
    This should result to:
    : GPU 0: NVIDIA RTX A1000 Laptop GPU (UUID: GPU-67d3f5e6-b6f8-ecd8-b874-106d2fc38caf)
+
+** Install additional software
+Install software for every day use:
+#+name: install_global_base_software
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  aspell-de \
+	  bash-completion \
+	  btop \
+	  curl \
+	  dos2unix \
+	  emacs \
+	  emacs-common-non-dfsg \
+	  file \
+	  git \
+	  gitk \
+	  gnupg \
+	  gnuplot \
+	  htop \
+	  lsof \
+	  man-db \
+	  net-tools \
+	  netcat-openbsd \
+	  markdown \
+	  openssh-client \
+	  patch \
+	  telnet \
+	  xorriso \
+	  xz-utils
+#+end_src
+
+Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
+#+name: latex_install
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  auctex \
+	  texlive-latex-recommended \
+	  texlive-latex-extra \
+	  texlive-plain-generic
+#+end_src
 
 * Configure user environment
 The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path =$HOME/.local/bin= is only added to =PATH=, if the directory exists. Because this is not the case, when executing this script initially, =$HOME/.local/bin= is added for this script execution explicitly:

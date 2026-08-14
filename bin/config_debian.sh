@@ -33,6 +33,16 @@ apt-get install -y podman
 apt-get install -y --mark-auto \
 	uidmap \
 	slirp4netns
+apt-get install -y podman-compose
+
+curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
+    | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+    | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+    | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+apt-get update
+apt-get install -y nvidia-container-toolkit
+nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 apt-get install -y \
 	aspell-de \
@@ -64,17 +74,6 @@ apt-get install -y \
 	texlive-latex-recommended \
 	texlive-latex-extra \
 	texlive-plain-generic
-
-apt-get install -y podman-compose
-
-curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
-    | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
-curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
-    | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
-    | tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-apt-get update
-apt-get install -y nvidia-container-toolkit
-nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 
 apt-get install -y \
 	gcc \
