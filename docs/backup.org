@@ -1,3 +1,4 @@
+# -*- eval: (flyspell-prog-mode) -*-
 #+title: WSL 2 backup
 #+author: Aaron Kunde
 #+email: aaron.kunde@web.de
