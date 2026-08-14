@@ -181,3 +181,5 @@ asdf plugin add k6
 npm install -g --prefix ~/opt/opencode opencode-ai
 mkdir -p ~/.local/bin
 ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
+
+asdf plugin add trivy

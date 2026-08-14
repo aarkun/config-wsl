@@ -532,6 +532,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<opencode_install>>
   <<opencode_add_link>>
+
+  <<trivy_install>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1441,6 +1443,31 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
      mkdir -p ~/.local/bin
      ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
    #+end_src
+
+** Install trivy
+Because of recent [[https://www.golem.de/news/supply-chain-attacke-trivy-scanner-und-140-npm-pakete-kompromittiert-2603-206808.html][security issues]], a fixed secure version of [[https://trivy.dev/][Trivy]] is used:
+
+The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
+
+1. Add the asdf plugin:
+   #+name: trivy_install
+   #+begin_src shell :results silent
+     asdf plugin add trivy
+   #+end_src
+
+2. Install the desired version of pnpm locally in the project. The version is usually defined in =package.json= and can be determined:
+   #+begin_src shell :results silent
+     asdf install trivy 0.69.3
+     asdf set trivy 0.69.3
+   #+end_src
+
+3. Verify installation in the project:
+   #+begin_src shell :results verbatim
+     trivy --version
+   #+end_src
+
+   This should result to something like:
+   : Version: 0.69.2
 
 ** Install k6
 The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
