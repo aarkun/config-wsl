@@ -89,6 +89,10 @@ asdf plugin add python
 asdf install python 3.10.11
 asdf set -u python 3.10.11
 
+asdf plugin add uv
+asdf install uv latest
+asdf set -u uv latest
+
 asdf plugin add azure-cli
 asdf install azure-cli latest
 asdf set -u azure-cli latest
@@ -177,7 +181,3 @@ aider-install
 asdf plugin add k6
 
 curl -fsSL https://opencode.ai/install | bash
-
-asdf plugin add uv
-asdf install uv latest
-asdf set -u uv latest
