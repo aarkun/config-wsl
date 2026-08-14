@@ -1479,7 +1479,7 @@ Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/
      ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
    #+end_src
 
-** Install trivy
+** Install trivy 0.69.3
 Because of recent [[https://www.golem.de/news/supply-chain-attacke-trivy-scanner-und-140-npm-pakete-kompromittiert-2603-206808.html][security issues]], a fixed secure version of [[https://trivy.dev/][Trivy]] is used:
 
 The actual used version of [[https://pnpm.io/][pnpm]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
@@ -1502,7 +1502,7 @@ The actual used version of [[https://pnpm.io/][pnpm]] is project specific and no
    #+end_src
 
    This should result to something like:
-   : Version: 0.69.2
+   : Version: 0.69.3
 
 ** Install OpenSpec
 Regarding https://openspec.dev/, OpenSpec needs to be installed globally. [[* Install Node.js][Node.js]] is required being installed before. 
