@@ -178,4 +178,6 @@ UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest
 
 asdf plugin add k6
 
-curl -fsSL https://opencode.ai/install | bash
+npm install -g --prefix ~/opt/opencode opencode-ai
+mkdir -p ~/.local/bin
+ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode

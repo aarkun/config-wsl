@@ -530,6 +530,7 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<k6_install>>
 
   <<opencode_install>>
+  <<opencode_add_link>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1427,13 +1428,18 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
    : aider 0.86.1
 
 ** Install OpenCode
-Following https://opencode.ai/docs/de#installation, execute:
-#+name: opencode_install
-#+begin_src shell :results silent
-  curl -fsSL https://opencode.ai/install | bash
-#+end_src
+1. Following [[https://opencode.ai/docs/de#installation][the installation manual]], using npm. Install OpenCode into the local installation directory =~/opt/opencode=:
+   #+name: opencode_install
+   #+begin_src shell :results silent
+     npm install -g --prefix ~/opt/opencode opencode-ai
+   #+end_src
 
-This installs the executable into =~/.opencode/bin= and adds it to the =PATH= in =~/.profile=.
+2. Create a link to the installed version in =~/.local/bin=, to add =opencode= to the =PATH=:
+   #+name: opencode_add_link
+   #+begin_src shell mermaid_add_link :results silent
+     mkdir -p ~/.local/bin
+     ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
+   #+end_src
 
 ** Install k6
 The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
