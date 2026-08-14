@@ -171,3 +171,5 @@ asdf reshim
 aider-install
 
 asdf plugin add k6
+
+curl -fsSL https://opencode.ai/install | bash
