@@ -531,6 +531,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<k6_install>>
 
   <<opencode_install>>
+
+  <<uv_install>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1453,3 +1455,22 @@ The actual used version of [[https://k6.io/][k6]] is project specific and not se
 
    This should result to something like:
    : k6 v1.6.1 (commit/2ac2bb560e, go1.25.7, linux/amd64)
+
+** Install uv
+In general, the latest version of [[https://docs.astral.sh/uv/][uv]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
+
+1. Add the asdf plugin and install the latest version of Maven with asdf:
+   #+name: uv_install
+   #+begin_src shell :results silent
+     asdf plugin add uv
+     asdf install uv latest
+     asdf set -u uv latest
+   #+end_src
+
+2. Verify installation:
+   #+begin_src shell :results verbatim
+     uv --version
+   #+end_src
+
+   This should result to something like:
+   : uv 0.10.9

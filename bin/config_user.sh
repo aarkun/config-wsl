@@ -180,3 +180,7 @@ aider-install
 asdf plugin add k6
 
 curl -fsSL https://opencode.ai/install | bash
+
+asdf plugin add uv
+asdf install uv latest
+asdf set -u uv latest
