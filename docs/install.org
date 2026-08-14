@@ -90,12 +90,13 @@ This approach creates a base distro from a fresh installation and reuses this fo
 This works like a normal [[file:backup.org::#reimport][reimport]].
 1. Remove the new distro:
    #+begin_src powershell
-     wsl --unregister Debian
+     wsl --unregister Debian-1
    #+end_src
 
 2. Reimport the base distro as second distro /Debian-1/:
    #+begin_src powershell
-     wsl --import Debian-1 Deb-Dir_1 "$backup_dir\backup.wsl2.debian.base.tar"
+     wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
+       "$backup_dir\backup.wsl2.debian.base.tar"
    #+end_src
 
 3. Set the default user to the current username:
