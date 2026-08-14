@@ -16,7 +16,9 @@ To install multiple Debian distros, several options exist:
 According to [[https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro][Build a Custom Linux Distribution for WSL]], a ~.wsl~ file is only a ~.tar~ archive, which can be imported with ~wsl -import~.
 
 *** Download a distro
-Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline install]] documentation, the URLs for a ~.wsl~ file can be found in the [[https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json][DistributionInfo.json]]:
+Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline install]] documentation, the URLs for a ~.wsl~ file can be found in the [[https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json][DistributionInfo.json]].
+
+The official WSL Repo for Debian is mentioned on [[https://wiki.debian.org/InstallingDebianOn/Microsoft/Windows/SubsystemForLinux][the Debian Wiki]] and can be found at [[https://salsa.debian.org/Debian/WSL][WSL Repo on Salsa]]. The actual ~-wsl~ files can be downloaded from the [[https://salsa.debian.org/debian/WSL/-/releases][releases]]:
 #+begin_src powershell
   Invoke-WebRequest -Uri `
     https://salsa.debian.org/debian/WSL/-/jobs/7949331/artifacts/raw/Debian_WSL_AMD64_v1.22.0.0.wsl `
@@ -24,29 +26,22 @@ Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline in
 #+end_src
 
 *** Import the new distro
-Import the distro as second distro:
+Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb-Dir_1%~:
 #+begin_src powershell
-  wsl --import Debian-1 Deb-Dir_1 `
+  wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
     "$target_dir\Debian_WSL_AMD64_v1.22.0.0.tar.gz"
 #+end_src
 
-*** Verify imports
-To verify the distros, execute:
-#+begin_src powershell
-  wsl -l
-#+end_src
-
-This should return:
-: Windows Subsystem for Linux Distributions:
-: Debian (Default)
-: Debian-1
-
 *** Create a user
-Create a user /kunde/ interactively and add it to the group ~sudo~:
-#+begin_src powershell
-  wsl -d Debian-1 wsl -d Debian-1 -u root adduser kunde
-  wsl -d Debian-1 wsl -d Debian-1 -u root adduser kunde sudo
-#+end_src
+1. Create a user interactively. The username is based on the current username:
+   #+begin_src powershell
+     wsl -d Debian-1 wsl -d Debian-1 -u root adduser $env:Username
+   #+end_src
+
+2. Add the user to the group ~sudo~:
+   #+begin_src powershell
+     wsl -d Debian-1 wsl -d Debian-1 -u root adduser $env:Username sudo
+   #+end_src
 
 ** Create a base distro
 This approach creates a base distro from a fresh installation and reuses this for multiple versions:
@@ -62,46 +57,52 @@ This approach creates a base distro from a fresh installation and reuses this fo
      wsl --list
    #+end_src
 
-   should return:
+   This should result to:
    : Windows Subsystem for Linux has no installed distributions.
 
-3. Reinstall a fresh Debian distro with a user /kunde/:
+3. Reinstall a fresh distro.
    #+begin_src powershell
      wsl --install Debian
    #+end_src
 
-4. Backup the fresh Debian distro as base distro and unregister it:
+4. [[file:backup.org::#backup][Create a backup]] of the fresh Debian distro as base distro:
     #+begin_src powershell
+      wsl -d Debian netstat -l
+      wsl -d Debian "ps hxo pid | xargs kill"
       wsl --shutdown
       wsl --export Debian "$backup_dir\backup.wsl2.debian.base.tar"
-      wsl --unregister Debian
     #+end_src
 
 *** Reimport the base distro
-Reimport the base distro as second distro:
-#+begin_src powershell
-  wsl --import Debian-1 Deb-Dir_1  "$backup_dir\backup.wsl2.debian.base.tar"
-#+end_src
+This works like a normal [[file:backup.org::#reimport][reimport]].
+1. Remove the new distro:
+   #+begin_src powershell
+     wsl --unregister Debian
+   #+end_src
 
-*** Verify imports
+2. Reimport the base distro as second distro /Debian-1/:
+   #+begin_src powershell
+     wsl --import Debian-1 Deb-Dir_1 "$backup_dir\backup.wsl2.debian.base.tar"
+   #+end_src
+
+3. Set the default user to the current username:
+   #+begin_src powershell
+     wsl --manage Debian-1 --set-default-user $env:USERNAME
+   #+end_src
+
+* Verify imports
 To verify the distros, execute:
 #+begin_src powershell
   wsl -l
 #+end_src
 
-This should return:
+This should result to:
 : Windows Subsystem for Linux Distributions:
 : Debian (Default)
 : Debian-1
 
-* Set default user
-The user /kunde/ has been created during the [[* Install multiple versions of Debian][installation]]. Set it as the default user:
-#+begin_src powershell
-  wsl --manage Debian-1 --set-default-user kunde
-#+end_src
-
 * Use the new distro
-Use the newly created distro with
+Use the second distro with
 #+begin_src powershell
   wsl -d Debian-1
 #+end_src
@@ -117,7 +118,7 @@ To [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][run Linux
   wsl --update
 #+end_src
 
-After that the WSL has to be restarted:
+After that, the WSL has to be restarted:
 #+begin_src powershell
   wsl --shutdown
 #+end_src

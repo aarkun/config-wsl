@@ -4,41 +4,75 @@
 
 This document describes methods and scripts to manage backups of the WSL 2 and is based on [[https://www.virtualizationhowto.com/2021/01/wsl2-backup-and-restore-images-using-import-and-export/][WSL2 Backup and Restore Images using Import and Export]].
 
-* Check for running processes with open sockets:
-#+begin_src shell
-  netstat -l
-#+end_src
+* Export / Create a backup
+:PROPERTIES:
+:CUSTOM_ID: backup
+:END:
 
-* Kill running processes
-Before making a backup, all running process should be terminated and not needed (like temporary) files should be deleted:
-#+begin_src shell
-  ps hxo pid | xargs kill
-#+end_src
+To export an existing distro (e.g. /Debian/):
 
-* Export / Backup
-Shut down the WSL and export it:
-#+begin_src powershell
-  wsl --shutdown
-  wsl --export Debian "$backup_dir\backup.wsl2.debian.tar"
-#+end_src
+1. Check for running processes with open sockets within the distro:
+   #+begin_src powershell
+     wsl -d Debian netstat -l
+   #+end_src
 
-* Import / Restore
-** Import the first time
-Importing in a fresh environment, first installs a fresh distro and then imports the backup into the distro:
-#+begin_src powershell
-  wsl --install -d Debian
-  wsl --import Debian `
-    $env:LOCALAPPDATA\Packages\TheDebianProject.DebianGNULinux_76v4gfsz19hv4\LocalState\ `
-    "$backup_dir\backup.wsl2.debian.tar"
-#+end_src
+2. Before making a backup, all running process should be terminated and not needed (like temporary) files should be deleted:
+   #+begin_src shell
+     wsl -d Debian "ps hxo pid | xargs kill"
+   #+end_src
 
-** Reimport
-Reimporting a backup needs to remove the distro, before reimporting it. After the import, the default distro and user must be set:
-#+begin_src powershell
-  wsl --unregister Debian
-  wsl --import Debian `
-    $env:LOCALAPPDATA\Packages\TheDebianProject.DebianGNULinux_76v4gfsz19hv4\LocalState\ `
-    "$backup_dir\backup.wsl2.debian.tar"
-  wsl --set-default Debian
-  wsl --manage Debian --set-default-user kunde
-#+end_src
+3. Shut down the WSL:
+   #+begin_src powershell
+     wsl --shutdown
+   #+end_src
+
+4. Export the distro:
+   #+begin_src powershell
+     wsl --export Debian "$backup_dir\backup.wsl2.debian.tar"
+   #+end_src
+
+* Import / Restore from a backup
+Importing is different, whether a distro with this name already exists or not.
+
+** Import backuo the first time
+To import a backed up distro (e.g. /Debian/) in a fresh environment:
+
+1. Install a fresh distro:
+   #+begin_src powershell
+     wsl --install Debian
+   #+end_src
+
+2. Import the backup as the fresh installed distro:
+   #+begin_src powershell
+     wsl --import Debian `
+       $env:LOCALAPPDATA\Packages\TheDebianProject.DebianGNULinux_76v4gfsz19hv4\LocalState\ `
+       "$backup_dir\backup.wsl2.debian.tar"
+    #+end_src
+
+** Reimport backup in an existing distro
+:PROPERTIES:
+:CUSTOM_ID: reimport
+:END:
+To reimporting a backup of a distro in an already existing one (e.g. /Debian/):
+
+1. Remove the existing distro:
+   #+begin_src powershell
+     wsl --unregister Debian
+   #+end_src
+
+2. Reimport the backup as the distro:
+   #+begin_src powershell
+     wsl --import Debian `
+       $env:LOCALAPPDATA\Packages\TheDebianProject.DebianGNULinux_76v4gfsz19hv4\LocalState\ `
+       "$backup_dir\backup.wsl2.debian.tar"
+   #+end_src
+
+3. Set the reimportet distro as the default one.
+   #+begin_src powershell
+     wsl --set-default Debian
+   #+end_src
+
+4. Set the default user to the current username:
+   #+begin_src powershell
+     wsl --manage Debian --set-default-user $env:USERNAME
+   #+end_src
