@@ -22,18 +22,22 @@ According to [[https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro
 *** Download a distro
 Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline install]] documentation, the URLs for a ~.wsl~ file can be found in the [[https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json][DistributionInfo.json]].
 
-The official WSL Repo for Debian is mentioned on [[https://wiki.debian.org/InstallingDebianOn/Microsoft/Windows/SubsystemForLinux][the Debian Wiki]] and can be found at [[https://salsa.debian.org/Debian/WSL][WSL Repo on Salsa]]. The actual ~-wsl~ files can be downloaded from the [[https://salsa.debian.org/debian/WSL/-/releases][releases]]:
+The official WSL Repo for Debian is mentioned on [[https://wiki.debian.org/InstallingDebianOn/Microsoft/Windows/SubsystemForLinux][the Debian Wiki]] and can be found at [[https://salsa.debian.org/Debian/WSL][WSL Repo on Salsa]]. Version 1.19.0.0 is the oldest [[https://salsa.debian.org/debian/WSL/-/releases][release]], that contains a relatively modern Debian version. According to the [[https://salsa.debian.org/debian/WSL/-/commits/master][commit history]], version 1.19.0.0 contains Debian 12.9, while version 1.22.0.0 contains the first version of Debian trixie (13.0).
+
+The actual ~-wsl~ files can be downloaded from the [[https://salsa.debian.org/debian/WSL/-/releases][releases]]:
 #+begin_src powershell
-  Invoke-WebRequest -Uri `
-    https://salsa.debian.org/debian/WSL/-/jobs/7949331/artifacts/raw/Debian_WSL_AMD64_v1.22.0.0.wsl `
-    -OutFile "$target_dir\Debian_WSL_AMD64_v1.22.0.0.tar.gz"
+  Invoke-WebRequest `
+    -Uri '"https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl"' `
+    -OutFile "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl" `
 #+end_src
+
+*Note*: The command above does not work, because ~Invoke-WebRequest~ seems to have difficulties with this URL. So download needs to be done with another tool, like a web-browser.
 
 *** Import the new distro
 Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb-Dir_1%~:
 #+begin_src powershell
   wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
-    "$target_dir\Debian_WSL_AMD64_v1.22.0.0.tar.gz"
+    "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
 #+end_src
 
 *** Create a user
@@ -57,7 +61,7 @@ Import the distro as second distro as /Debian-1/ with files at ~%USERPROFILE\Deb
 :CUSTOM_ID: base_distro
 :END:
 
-This approach creates a base distro from a fresh installation and reuses this for multiple versions:
+This is an alternate approach, in which a base distro from a fresh installation is reused for multiple versions.
 
 *** Create a base distro
 1. After making a backup of your current Debian distro, unregister it:
