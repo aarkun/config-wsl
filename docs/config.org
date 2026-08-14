@@ -1526,6 +1526,12 @@ Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/
      ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
    #+end_src
 
+** Update OpenCode
+If OpenCode was installed like described in [[* Install OpenCode][Install OpenCode]], the built in upgrade in OpenCode does not work. To update OpenCode execute the following:
+#+begin_src shell :results silent
+  npm update -g --prefix ~/opt/opencode opencode-ai
+#+end_src
+
 ** Install trivy 0.69.3
 Because of recent [[https://www.golem.de/news/supply-chain-attacke-trivy-scanner-und-140-npm-pakete-kompromittiert-2603-206808.html][security issues]], a fixed secure version of [[https://trivy.dev/][Trivy]] is used:
 
