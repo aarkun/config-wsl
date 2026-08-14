@@ -308,7 +308,6 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
 #+begin_src shell
   buildah
   +dbus-user-session+
-  fuse-overlayfs
   catatonit
 #+end_src
 
