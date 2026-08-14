@@ -721,7 +721,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
      type -a asdf
    #+end_src
 
-   This should result to:
+   This should result to something like:
    : asdf is /home/kunde/.local/bin/asdf
 
 5. The asdf shims directory must be added to =PATH= for the current and future sessions:
