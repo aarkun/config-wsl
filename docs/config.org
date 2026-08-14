@@ -525,7 +525,6 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<mermaid_install>>
   <<mermaid_add_link>>
 
-  <<aider_install_aider-install>>
   <<aider_install>>
 
   <<k6_install>>
@@ -1400,7 +1399,7 @@ To create images from [[https://mermaid.js.org/][mermaid]] diagrams, [[https://g
 
 ** Install aider
 In general, the latest version of [[https://aider.chat/][aider]] is used for all projects as a default.
-According to the [[https://aider.chat/docs/install.html][Installation manual]], at least Python 3.8-3.13  is needed for an installation.
+According to the [[https://aider.chat/docs/install.html][Installation manual]], at least Python 3.8-3.13  is needed for an installation. The following is based on the [[https://aider.chat/docs/install.html#install-with-uv][installation with uv]]
 
 1. Verify, Python is installed at least at version 3.8:
    #+begin_src shell :results verbatim
@@ -1410,36 +1409,25 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
    This should result to something like:
    : Python 3.10.11
 
-2. Install aider-install using pip:
-   #+name: aider_install_aider-install
-   #+begin_src shell :results silent
-     python -m pip install aider-install
-     asdf reshim
-   #+end_src
-
-   This results in =aider-install= being installed in =$HOME/.asdf/installs/python/3.10.11/bin/=.
-
-3. Install aider with aider-install:
+2. Install aider into =~/opt= with uv, adding a Python 3.13 if needed:
    #+name: aider_install
    #+begin_src shell :results silent
-     aider-install
+     UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest
    #+end_src
 
    This results in:
-   - uv installed in =$HOME/local/.local/share/uv=
-   - aider being installed in =$HOME/.local/share/uv/tools/aider-chat=
-   - Python 3.12 installed in =$HOME/.local/share/uv/python=
-   - =uv= being installed in =$HOME/.asdf/installs/python/3.10.11/bin=
-   - =aider= being installed in =$HOME/.local/bin=
+   - Python 3.12 installed in =~/.local/share/uv/python=
+   - aider being installed in =~/opt/aider-chat=
+   - A symlink =aider= being installed in =$HOME/.local/bin=
 
-4. Verify installation:
+3. Verify installation:
    #+begin_src shell
      aider --version
    #+end_src
 
    This should result into something like:
    : aider 0.86.1
-   
+
 ** Install OpenCode
 Following https://opencode.ai/docs/de#installation, execute:
 #+name: opencode_install

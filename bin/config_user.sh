@@ -174,9 +174,7 @@ mkdir -p ~/.local/bin
 npm install -g --prefix ~/opt/mermaid @mermaid-js/mermaid-cli
 ln -fs ~/opt/mermaid/bin/mmdc ~/.local/bin/mmdc
 
-python -m pip install aider-install
-asdf reshim
-aider-install
+UV_TOOL_DIR=~/opt uv tool install --python 3.12 aider-chat@latest
 
 asdf plugin add k6
 
