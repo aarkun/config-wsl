@@ -523,6 +523,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<aider_install_aider-install>>
   <<aider_install>>
+
+  <<k6_install>>
 #+end_src
 
 ** Disable AP-SPI warning message
@@ -1382,3 +1384,25 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
    This should result into something like:
    : aider 0.86.1
    
+** Install k6
+The actual used version of [[https://k6.io/][k6]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
+
+1. Add the asdf plugin:
+   #+name: k6_install
+   #+begin_src shell :results silent
+     asdf plugin add k6
+   #+end_src
+
+2. Install the desired version of k6 locally in the project.
+   #+begin_src shell :results silent
+     asdf install k6 latest
+     asdf set k6 latest
+   #+end_src
+
+3. Verify installation in the project:
+   #+begin_src shell :results verbatim
+     k6 --version
+   #+end_src
+
+   This should result to something like:
+   : k6 v1.6.1 (commit/2ac2bb560e, go1.25.7, linux/amd64)

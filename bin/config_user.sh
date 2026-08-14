@@ -169,3 +169,5 @@ asdf reshim
 python -m pip install aider-install
 asdf reshim
 aider-install
+
+asdf plugin add k6
