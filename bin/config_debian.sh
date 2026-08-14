@@ -30,6 +30,9 @@ apt-get install -y --mark-auto \
 	ca-certificates \
 	dbus-user-session
 apt-get install -y podman
+apt-get install -y --mark-auto \
+	uidmap \
+	slirp4netns
 
 apt-get install -y \
 	aspell-de \
@@ -62,10 +65,6 @@ apt-get install -y \
 	texlive-latex-extra \
 	texlive-plain-generic
 
-apt-get install -y --mark-auto \
-	uidmap \
-	slirp4netns \
-apt-get install -y --mark-auto fuse-overlayfs
 apt-get install -y podman-compose
 
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \

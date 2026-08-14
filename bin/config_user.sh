@@ -29,16 +29,6 @@ EOF
 mkdir -p ~/.ssh
 echo 'AddKeysToAgent yes' > ~/.ssh/config
 
-rm -f ~/.local/share/containers/storage/libpod/bolt_state.db
-mkdir -p ~/.config/containers
-cat <<EOF > ~/.config/containers/storage.conf
-[storage]
-  driver = "overlay"
-
-[storage.options]
-  mount_program = "/usr/bin/fuse-overlayfs"
-EOF
-
 mkdir -p ~/.local/bin
 ln -fs "/mnt/c/Users/$USER/AppData/Local/Microsoft/WindowsApps/firefox.exe" \
    ~/.local/bin/firefox

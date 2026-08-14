@@ -294,54 +294,63 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
      apt-get install -y podman
    #+end_src
 
-The installation for root can then be verified with:
-#+begin_src shell :dir /sudo::
+*** Enable rootless environment
+Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], several packages need to be installed:
+- [[https://packages.debian.org/bookworm/uidmap][uidmap]] :: To use Podman without errors in userspace, providing =newuidmap=.
+- [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] :: To use Podman in userspace without errors, providing =slirp4netns= (see: [[https://github.com/containers/podman/blob/v4.3/docs/tutorials/basic_networking.md#differences-between-rootful-and-rootless-container-networking][Differences between rootful and rootless container networking]]).
+  *Note*: According to https://podman.io/docs/installation, ~slirp4netns~ is not needed in newer versions of Podman anymore.
+#+name: podman_install_rootless_requirements
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get install -y --mark-auto \
+	  uidmap \
+	  slirp4netns
+#+end_src
+
+*Note*: According to https://www.redhat.com/en/blog/podman-rootless-overlay, [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] is not needed in newer versions of Podman anymore and is therefore not installed.
+
+*** Verify installation
+The installation for root and rootless environment can then be verified with:
+#+begin_src shell :results verbatim
+  whoami
+  mkdir -p ~/tst_dir
   podman network create tst_nw
 
-  podman run --name=sink -d --net tst_nw docker.io/subfuzion/netcat -k -l -p 1111
-
-  podman run --name=source -d --net tst_nw \
-	 --entrypoint '["sh", "-c", "while true; do echo \"Hello Podman\"; sleep 1; done | nc sink 1111"]' \
-	 docker.io/subfuzion/netcat
+  podman run --name=sink --net tst_nw \
+	 -v ~/tst_dir:/container/volume \
+	 -d \
+	 docker.io/subfuzion/netcat -k -l -p 1111
 
   podman run --name=source -d --net tst_nw \
 	 --entrypoint '["sh", "-c", "echo \"Hello Podman\" | nc sink 1111"]' \
 	 docker.io/subfuzion/netcat
 
   podman logs sink
+
+  podman exec sink whoami
+  podman exec sink touch /container/volume/test
+  podman exec sink ls -l /container/volume/test
+  ls -l ~/tst_dir
+
+  podman rm -f sink source
+  podman network rm tst_nw
+
+  rm -rf ~/tst_dir
 #+end_src
 
 This should result to something like:
-: Hello Podman
 #+begin_example
+  kunde
+  tst_nw
+  3ac6082a65e9153458028c2a7759f483fc4a93f898d55edf0a165b22906585ec
+  96a35d90787aee88dc4346006284699f72c78afd4e84d180139a7565aa6049d5
+  root
+  -rw-r--r--    1 root     root             0 Apr  2 10:11 /container/volume/test
+  total 0
+  -rw-r--r-- 1 kunde kunde 0 Apr  2 12:11 test
+  sink
+  source
+  tst_nw
 #+end_example
-The additional packages [[https://packages.debian.org/bookworm/uidmap][uidmap]] and [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] are required, to run podman without errors. The packages [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] and its dependency [[https://packages.debian.org/bookworm/netavark][netavark]] are necessary to let podman container communicate in their own networks:
-#+name: podman_install_rootless_requirements
-#+begin_src shell :dir /sudo:: :results silent
-  apt-get install -y --mark-auto \
-	  uidmap \
-	  slirp4netns \
-
-#+end_src
-
-*Note*: According to https://podman.io/docs/installation, ~slirp4netns~ is not needed in newer versions of Podman anymore.
-
-*** Install dependencies for rootless
-Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], the package [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] must be installed:
-#+name: podman_install_rootless_requirements
-#+begin_src shell :dir /sudo:: :results silent
-  apt-get install -y --mark-auto fuse-overlayfs
-#+end_src
-
-This has no effect, which can be verified with:
-#+begin_src shell
-  podman info | grep graphDriverName
-#+end_src
-
-Ususally this results to:
-: graphDriverName: vfs
-
-*Note*: Accoring to https://www.redhat.com/en/blog/podman-rootless-overlay, fuse-overlayfs is not needed in newer versions of Podman anymore.
 
 ** Use docker-compose files
 There are several alternatives to use Docker Compose files together with Podman:
@@ -520,8 +529,6 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
   <<ssh_add_start_ssh-agent_to_profile>>
   <<ssh_add_config>>
 
-  <<podman_enable_overlayfs>>
-
   <<firefox_create_link>>
 
   <<asdf_download>>
@@ -668,43 +675,6 @@ To always instruct a running SSH agent to add keys, add the following configurat
   mkdir -p ~/.ssh
   echo 'AddKeysToAgent yes' > ~/.ssh/config
 #+end_src
-
-** Configure Podman
-According to the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] should be installed and used as filesystem for rootless mode. To enable [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]], remove an already existing ~$HOME/.local/share/containers/storage/libpod/bolt_state.db~ and add a configuration file ~$HOME/.config/containers/storage.conf~ with the following entries
-#+name: podman_storage.conf
-#+begin_src conf
-  [storage]
-    driver = "overlay"
-
-  [storage.options]
-    mount_program = "/usr/bin/fuse-overlayfs"
-#+end_src
-
-by executing:
-#+name: podman_enable_overlayfs
-#+begin_src shell :noweb yes :exports none :results silent
-  rm -f ~/.local/share/containers/storage/libpod/bolt_state.db
-  mkdir -p ~/.config/containers
-  cat <<EOF > ~/.config/containers/storage.conf
-  <<podman_storage.conf>>
-  EOF
-#+end_src
-
-After that, executing
-#+begin_src shell
-  podman info | grep graphDriverName
-#+end_src
-
-should results to:
-: graphDriverName: overlay
-
-Based on https://docs.podman.io/en/latest/Introduction.html, execution of
-#+begin_src shell :results verbatim
-  podman run docker.io/library/busybox echo "hey there"
-#+end_src
-
-should restult in:
-: hey there
 
 ** Create link to Firefox
 To use the Firefox, which is installed on the host system, create the following link in =~/.local/bin/=:
