@@ -39,16 +39,24 @@ apt-get install -y \
 	texlive-plain-generic
 
 apt-get purge -y \
-	docker \
+	*docker* \
 	docker-compose \
-	containernetworking-plugins \
-	podman \
+	*container* \
+	*podman* \
 	podman-compose
 apt-get autopurge -y
+
+rm -rf /var/lib/docker \
+   /var/lib/containerd \
+   /etc/apt/sources.list.d/docker.list \
+   /etc/apt/keyrings/docker.asc \
+   /etc/containers
 apt-get install -y podman
-apt-get install --mark-auto \
+apt-get install -y --mark-auto fuse-overlayfs
+apt-get install -y --mark-auto \
 	uidmap \
-	slirp4netns
+	slirp4netns \
+	aardvark-dns
 apt-get install -y podman-compose
 
 apt-get install -y \

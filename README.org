@@ -24,6 +24,8 @@ To automate the configuration the script [[file:bin/config_debian.sh][config_deb
 
   <<purge_docker_and_podman>>
   <<install_podman>>
+  <<install_podman_rootless_requirements>>
+  <<install_podman_global_requirements>>
   <<install_podman-compose>>
 
   <<install_global_python-requirements>>
@@ -163,18 +165,25 @@ should result in something like:
 #+end_src
 
 ** Install Podman 4.3.1
+The current version of Podman in the current Debian stable distribution is 4.3.1.
 
 *** Deinstall old versions
-If an older version of podman or docker is installed, it should be purged:
+Based on the [[https://docs.docker.com/engine/install/debian/][Docker installation manual]], uninstall old versions of docker and podman and everything, which might have been installed before:
 #+name: purge_docker_and_podman
 #+begin_src shell :dir /sudo:: :results silent
   apt-get purge -y \
-	  docker \
+	  ,*docker* \
 	  docker-compose \
-	  containernetworking-plugins \
-	  podman \
+	  ,*container* \
+	  ,*podman* \
 	  podman-compose
   apt-get autopurge -y
+
+  rm -rf /var/lib/docker \
+     /var/lib/containerd \
+     /etc/apt/sources.list.d/docker.list \
+     /etc/apt/keyrings/docker.asc \
+     /etc/containers
 #+end_src
 
 *** Install Podman
@@ -182,19 +191,35 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
 #+name: install_podman
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman
-  apt-get install --mark-auto \
+#+end_src
+
+The additional packages [[https://packages.debian.org/bookworm/uidmap][uidmap]] and [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] are required, to run podman without errors. The packages [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] and its dependency [[https://packages.debian.org/bookworm/netavark][netavark]] are necessary to let podman container communicate in their own networks:
+#+name: install_podman_global_requirements
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get install -y --mark-auto \
 	  uidmap \
-	  slirp4netns
+	  slirp4netns \
+	  aardvark-dns
 #+end_src
 
-*** Verify
-Based on https://docs.podman.io/en/latest/Introduction.html, execution of
-#+begin_src shell :results verbatim
-  podman run docker.io/library/busybox echo "hey there"
+*Note*: According to https://podman.io/docs/installation, ~slirp4netns~ is not needed in newer versions of Podman anymore.
+
+*** Install dependencies for rootless
+Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], the package [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] must be installed:
+#+name: install_podman_rootless_requirements
+#+begin_src shell :dir /sudo:: :results silent
+  apt-get install -y --mark-auto fuse-overlayfs
 #+end_src
 
-should restult in:
-: hey there
+This has no effect, which can be verified with:
+#+begin_src shell
+  podman info | grep graphDriverName
+#+end_src
+
+Ususally this results to:
+: graphDriverName: vfs
+
+*Note*: Accoring to https://www.redhat.com/en/blog/podman-rootless-overlay, ~fuse-overlayfs~ is not needed in newer versions of Podman anymore.
 
 ** Use docker-compose files
 There are several alternatives to use Docker Compose files together with Podman:
@@ -281,7 +306,6 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
 
 *** TODO Later dependencies for podman
 #+begin_src shell
-  netavark aardvark-dns
   buildah
   +dbus-user-session+
   fuse-overlayfs
@@ -327,6 +351,8 @@ The script [[file:bin/config_user.sh][config_user.sh]] includes all necessary st
 
   <<ssh_add_start_ssh-agent_to_profile>>
   <<ssh_add_config>>
+
+  <<podman_enable_overlayfs>>
 
   <<firefox_create_link>>
 
@@ -420,6 +446,43 @@ To always instruct a running SSH agent to add keys, add the following configurat
   mkdir -p ~/.ssh
   echo 'AddKeysToAgent yes' > ~/.ssh/config
 #+end_src
+
+** Configure Podman
+According to the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] should be installed and used as filesystem for rootless mode. To enable [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]], remove an already existing ~$HOME/.local/share/containers/storage/libpod/bolt_state.db~ and add a configuration file ~$HOME/.config/containers/storage.conf~ with the following entries
+#+name: podman_storage.conf
+#+begin_src conf
+  [storage]
+    driver = "overlay"
+
+  [storage.options]
+    mount_program = "/usr/bin/fuse-overlayfs"
+#+end_src
+
+by executing:
+#+name: podman_enable_overlayfs
+#+begin_src shell :noweb yes :exports none :results silent
+  rm -f ~/.local/share/containers/storage/libpod/bolt_state.db
+  mkdir -p ~/.config/containers
+  cat <<EOF > ~/.config/containers/storage.conf
+  <<podman_storage.conf>>
+  EOF
+#+end_src
+
+After that, executing
+#+begin_src shell
+  podman info | grep graphDriverName
+#+end_src
+
+should results to:
+: graphDriverName: overlay
+
+Based on https://docs.podman.io/en/latest/Introduction.html, execution of
+#+begin_src shell :results verbatim
+  podman run docker.io/library/busybox echo "hey there"
+#+end_src
+
+should restult in:
+: hey there
 
 ** Create link to Firefox
 To use the Firefox, which is installed on the host system, create the following link in =~/.local/bin/=:
