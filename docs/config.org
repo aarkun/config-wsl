@@ -1433,6 +1433,14 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
    This should result into something like:
    : aider 0.86.1
 
+** Configure aider
+
+*** Add AGENTS.md
+Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/][AGENTS.md]] is done project specific by adding a =.aider.conf.yml=, containing:
+#+begin_src yaml
+  read: AGENTS.md
+#+end_src
+
 ** Install OpenCode
 1. Following [[https://opencode.ai/docs/de#installation][the installation manual]], using npm. Install OpenCode into the local installation directory =~/opt/opencode=:
    #+name: opencode_install
