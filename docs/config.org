@@ -42,6 +42,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<git_install>>
 
+  <<emacs_install>>
+
 
   <<latex_install>>
 
@@ -482,6 +484,15 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
 	  gitk \
 #+end_src
 
+** Install Emacs
+[[https://www.gnu.org/savannah-checkouts/gnu/emacs/emacs.html][GNU Emacs]] is used as the primary text editor and IDE. So it is installed with its documentations:
+#+name: emacs_install
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  emacs \
+	  emacs-common-non-dfsg \
+#+end_src
+
 ** Install additional software
 Install software for every day use:
 #+name: install_global_base_software
@@ -492,8 +503,6 @@ Install software for every day use:
 	  btop \
 	  curl \
 	  dos2unix \
-	  emacs \
-	  emacs-common-non-dfsg \
 	  file \
 	  gnuplot \
 	  htop \

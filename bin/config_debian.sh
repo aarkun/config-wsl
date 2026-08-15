@@ -54,13 +54,15 @@ apt-get install -y \
 	aspell-de \
 	git \
 	gitk \
+
+apt-get install -y \
+	emacs \
+	emacs-common-non-dfsg \
 apt-get install -y \
 	bash-completion \
 	btop \
 	curl \
 	dos2unix \
-	emacs \
-	emacs-common-non-dfsg \
 	file \
 	gnuplot \
 	htop \
