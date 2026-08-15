@@ -537,7 +537,6 @@ Install software for every day use:
 	  xz-utils
 #+end_src
 
-
 * OPTIONAL: Restore user directory from backup                     :optional:
 It might be necessary, to restore the user directory from the [[file:backup.org::Restore user directory][backup]], before configuring the user environment:
 #+begin_src shell
