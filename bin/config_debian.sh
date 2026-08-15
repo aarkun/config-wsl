@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+echo 'Start Debian configuration'
+
 echo 'APT::Install-Recommends "0";' > /etc/apt/apt.conf.d/10get
 sed /etc/apt/sources.list -e \
     's/\(deb.* \)main/\1non-free non-free-firmware/' \
@@ -95,3 +97,5 @@ apt-get install -y \
 	libnss3
 
 apt-get install -y graphviz
+
+echo 'Finished Debian configuration'

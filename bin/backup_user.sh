@@ -7,6 +7,10 @@ if [ $# -ne 1 ]; then
 fi
 BACKUP_DIR="${1}"
 
+echo "Start backup user environment into: $BACKUP_DIR"
+
 mkdir -p "$BACKUP_DIR"
 tar -C ~ -cf "$BACKUP_DIR/backup.wsl2.$USER.tar" \
     -T "$(dirname "${0}")/../backup_user.txt"
+
+echo 'Finished backup user environment'

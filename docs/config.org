@@ -16,6 +16,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 #+begin_src shell :tangle ../bin/config_debian.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none
   set -e
 
+  echo 'Start Debian configuration'
+
   <<apt_disable_recs>>
   <<apt_add_non-free>>
   <<alternatives_set_editor>>
@@ -51,6 +53,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<vscode_install_requirements>>
 
   <<plantuml_install_requirements>>
+
+  echo 'Finished Debian configuration'
 #+end_src
 
 ** Disable recommended packages
@@ -517,9 +521,11 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
   set -e
 
   if [ "$(id -u)" -eq 0 ]; then
-      echo "You should not be root"
+      echo 'You should not be root'
       exit 1
   fi
+
+  echo 'Start user environment configuration'
 
   cp /etc/skel/.profile ~
   cp /etc/skel/.bashrc ~
@@ -621,6 +627,8 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
 
   <<openspec_install>>
   <<openspec_add_link>>
+
+  echo 'Finished user environment configuration'
 #+end_src
 
 ** Disable AP-SPI warning message

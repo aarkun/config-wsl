@@ -2,9 +2,11 @@
 set -e
 
 if [ "$(id -u)" -eq 0 ]; then
-    echo "You should not be root"
+    echo 'You should not be root'
     exit 1
 fi
+
+echo 'Start user environment configuration'
 
 cp /etc/skel/.profile ~
 cp /etc/skel/.bashrc ~
@@ -184,3 +186,5 @@ mkdir -p ~/opt
 npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
 mkdir -p ~/.local/bin
 ln -fs ~/opt/openspec/bin/openspec ~/.local/bin/openspec
+
+echo 'Finished user environment configuration'
