@@ -40,9 +40,12 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<gpg_install>>
   <<gpg_install_pinentry-x11>>
 
-  <<install_global_base_software>>
+  <<git_install>>
+
 
   <<latex_install>>
+
+  <<install_global_base_software>>
 
   <<python_install_requirements>>
 
@@ -470,6 +473,15 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
   apt-get install -y pinentry-fltk
 #+end_src
 
+** Install Git
+[[https://git-scm.com/][Git]] is used as the primary VCS. So it is installed, along with graphical branch viewer:
+#+name: git_install
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  git \
+	  gitk \
+#+end_src
+
 ** Install additional software
 Install software for every day use:
 #+name: install_global_base_software
@@ -483,8 +495,6 @@ Install software for every day use:
 	  emacs \
 	  emacs-common-non-dfsg \
 	  file \
-	  git \
-	  gitk \
 	  gnuplot \
 	  htop \
 	  lsof \

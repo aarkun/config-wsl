@@ -52,6 +52,9 @@ apt-get install -y pinentry-fltk
 
 apt-get install -y \
 	aspell-de \
+	git \
+	gitk \
+apt-get install -y \
 	bash-completion \
 	btop \
 	curl \
@@ -59,8 +62,6 @@ apt-get install -y \
 	emacs \
 	emacs-common-non-dfsg \
 	file \
-	git \
-	gitk \
 	gnuplot \
 	htop \
 	lsof \
