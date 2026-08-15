@@ -35,6 +35,10 @@ mkdir -p ~/.local/bin
 ln -fs "/mnt/c/Users/$USER/AppData/Local/Microsoft/WindowsApps/firefox.exe" \
    ~/.local/bin/firefox
 
+mkdir -p ~/.emacs.d
+curl -o ~/.emacs.d/init.el \
+     https://raw.githubusercontent.com/aarkun/config-emacs/refs/heads/main/init.el
+
 ASDF_VERSION=v0.16.4
 ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
 curl -L -O --output-dir /tmp \

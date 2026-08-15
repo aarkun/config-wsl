@@ -570,6 +570,8 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
 
   <<firefox_create_link>>
 
+  <<emacs_create_config>>
+
   <<asdf_download>>
   <<asdf_verify>>
   <<asdf_extract>>
@@ -725,6 +727,15 @@ To use the Firefox, which is installed on the host system, create the following 
   mkdir -p ~/.local/bin
   ln -fs "/mnt/c/Users/$USER/AppData/Local/Microsoft/WindowsApps/firefox.exe" \
      ~/.local/bin/firefox
+#+end_src
+
+** Configure Emacs
+Emacs is configured in https://github.com/aarkun/config-emacs. After the configuration directory is created, the configuration file is downloaded into it:
+#+name: emacs_create_config
+#+begin_src shell
+  mkdir -p ~/.emacs.d
+  curl -o ~/.emacs.d/init.el \
+       https://raw.githubusercontent.com/aarkun/config-emacs/refs/heads/main/init.el
 #+end_src
 
 ** Install asdf
