@@ -44,6 +44,7 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<emacs_install>>
 
+  <<aspell_install_de>>
 
   <<latex_install>>
 
@@ -493,12 +494,19 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
 	  emacs-common-non-dfsg \
 #+end_src
 
+** Install Aspell
+[[http://aspell.net/][GNU Aspell]] is the default spell checker in Emacs. So the German dictionaries should be installed:
+#+name: aspell_install_de
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+  	  aspell-de \
+#+end_src
+
 ** Install additional software
 Install software for every day use:
 #+name: install_global_base_software
 #+begin_src shell :dir /sudo::
   apt-get install -y \
-	  aspell-de \
 	  bash-completion \
 	  btop \
 	  curl \

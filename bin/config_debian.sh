@@ -51,13 +51,16 @@ apt-get install -y gnupg
 apt-get install -y pinentry-fltk
 
 apt-get install -y \
-	aspell-de \
 	git \
 	gitk \
 
 apt-get install -y \
 	emacs \
 	emacs-common-non-dfsg \
+
+apt-get install -y \
+  	aspell-de \
+
 apt-get install -y \
 	bash-completion \
 	btop \
