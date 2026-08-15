@@ -538,10 +538,7 @@ Install software for every day use:
 #+end_src
 
 * OPTIONAL: Restore user directory from backup                     :optional:
-It might be necessary, to restore the user directory from the [[file:backup.org::Restore user directory][backup]], before configuring the user environment:
-#+begin_src shell
-  ../bin/restore_user.sh
-#+end_src
+It might be necessary, to restore the user directory from the [[file:backup.org::Restore user directory][backup]], before configuring the user environment.
 
 * Configure user environment
 The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] includes all necessary steps, to setup the user environment. It has to be executed as a non-root user. The path =$HOME/.local/bin= is only added to =PATH=, if the directory exists. Because this is not the case, when executing this script initially, =$HOME/.local/bin= is added for this script execution explicitly:
