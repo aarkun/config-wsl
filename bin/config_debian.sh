@@ -7,7 +7,7 @@ sed /etc/apt/sources.list -e \
     > /etc/apt/sources.list.d/debian.non-free.list
 apt-get update
 update-alternatives --set editor /usr/bin/vim.tiny
-sed -i.orig -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
+sed -i -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
 apt-get install -y dbus-user-session
