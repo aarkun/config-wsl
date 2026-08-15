@@ -29,9 +29,15 @@ Based on the [[https://learn.microsoft.com/en-us/windows/wsl/install][Offline in
 
 The official WSL Repo for Debian is mentioned on [[https://wiki.debian.org/InstallingDebianOn/Microsoft/Windows/SubsystemForLinux][the Debian Wiki]] and can be found at [[https://salsa.debian.org/Debian/WSL][WSL Repo on Salsa]]. Version 1.19.0.0 is the oldest [[https://salsa.debian.org/debian/WSL/-/releases][release]], that contains a relatively modern Debian version. According to the [[https://salsa.debian.org/debian/WSL/-/commits/master][commit history]], version 1.19.0.0 contains Debian 12.9, while version 1.22.0.0 contains the first version of Debian trixie (13.0).
 
-The actual =.wsl= files can be downloaded from the [[https://salsa.debian.org/debian/WSL/-/releases][releases]] into the preferred target directory ~$target_dir~, which is passed as a parameter:
+The actual =.wsl= files can be downloaded from the [[https://salsa.debian.org/debian/WSL/-/releases][releases]] into the preferred target directory ~$target_dir~, which can be passed as a parameter. If no argument is given, the default target directory is ~$env:USERPROFILE\Downloads~:
 #+begin_src powershell
-  $target_dir = $args[0]
+  Param (
+      $target_dir = "$env:USERPROFILE\Downloads"
+  )
+#+end_src
+
+If the target directory does not exist, it is created:
+#+begin_src powershell
   New-Item -Path "$target_dir" -ItemType Directory -Force
 #+end_src
 

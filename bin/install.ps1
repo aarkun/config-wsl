@@ -1,4 +1,7 @@
-$target_dir = $args[0]
+Param (
+    $target_dir = "$env:USERPROFILE\Downloads"
+)
+
 New-Item -Path "$target_dir" -ItemType Directory -Force
 
 $wsl_file = "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
