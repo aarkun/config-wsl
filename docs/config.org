@@ -1556,8 +1556,6 @@ According to the [[https://aider.chat/docs/install.html][Installation manual]], 
    : aider 0.86.1
 
 ** Configure aider
-
-*** Add AGENTS.md
 Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/][AGENTS.md]] is done project specific by adding a =.aider.conf.yml=, containing:
 #+begin_src yaml
   read: AGENTS.md
