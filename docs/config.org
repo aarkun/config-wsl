@@ -502,6 +502,17 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
   	  aspell-de \
 #+end_src
 
+** Install LaTex
+Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
+#+name: latex_install
+#+begin_src shell :dir /sudo::
+  apt-get install -y \
+	  auctex \
+	  texlive-latex-recommended \
+	  texlive-latex-extra \
+	  texlive-plain-generic
+#+end_src
+
 ** Install additional software
 Install software for every day use:
 #+name: install_global_base_software
@@ -526,15 +537,6 @@ Install software for every day use:
 	  xz-utils
 #+end_src
 
-Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
-#+name: latex_install
-#+begin_src shell :dir /sudo::
-  apt-get install -y \
-	  auctex \
-	  texlive-latex-recommended \
-	  texlive-latex-extra \
-	  texlive-plain-generic
-#+end_src
 
 * OPTIONAL: Restore user directory from backup                     :optional:
 It might be necessary, to restore the user directory from the [[file:backup.org::Restore user directory][backup]], before configuring the user environment:

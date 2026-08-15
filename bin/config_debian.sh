@@ -62,6 +62,12 @@ apt-get install -y \
   	aspell-de \
 
 apt-get install -y \
+	auctex \
+	texlive-latex-recommended \
+	texlive-latex-extra \
+	texlive-plain-generic
+
+apt-get install -y \
 	bash-completion \
 	btop \
 	curl \
@@ -79,12 +85,6 @@ apt-get install -y \
 	telnet \
 	xorriso \
 	xz-utils
-
-apt-get install -y \
-	auctex \
-	texlive-latex-recommended \
-	texlive-latex-extra \
-	texlive-plain-generic
 
 apt-get install -y \
 	gcc \
