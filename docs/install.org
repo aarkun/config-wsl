@@ -37,10 +37,14 @@ The actual =.wsl= files can be downloaded from the [[https://salsa.debian.org/de
 
 If the user agent seems to be a browser the URL of ~salsa.debian.org~ demands some JavaScript code to be executed. So the user agent is set to something which does not look like a browser:
 #+begin_src powershell
-  Invoke-WebRequest `
-    -OutFile "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl" `
-    -UserAgent 'foo' `
-    -Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
+  $wsl_file = "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
+
+  if (-Not (Test-Path $wsl_file)) {
+      Invoke-WebRequest `
+	-OutFile "$wsl_file" `
+	-UserAgent 'foo' `
+	-Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
+  }
 #+end_src
 
 *** Import the new distro
