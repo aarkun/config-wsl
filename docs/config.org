@@ -915,11 +915,20 @@ Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoo
 ** Install helm-schema
 Like [[* Install Helm][Helm]], the latest version of [[https://github.com/dadav/helm-schema][helm-schema]] is used for all projects as a default.
 
-1. Installed as a plugin into the current Helm installation:
+1. Installed as a Helm plugin into the current Helm installation, if it is not already installed:
    #+name: helm-schema_install
    #+begin_src shell :results silent
-     helm plugin install https://github.com/dadav/helm-schema
+     helm plugin list | grep schema ||
+	 helm plugin install https://github.com/dadav/helm-schema
    #+end_src
+
+2. Verify installation:
+   #+begin_src shell
+     helm schema --version
+   #+end_src
+
+   This should result to something like:
+   : helm-schema version 0.23.4
 
 ** Install make
 In general, the latest version of [[https://www.gnu.org/software/make/][GNU make]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
