@@ -418,7 +418,8 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    #+name: nct_add_gpg-key
    #+begin_src shell :results silent :dir /sudo::
      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
-	 | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+	 | gpg --yes --dearmor \
+	       -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
    #+end_src
 
 3. Add the sources for the toolkit as ~/etc/apt/sources.list.d/nvidia-container-toolkit.list~ to APT and update APT:
