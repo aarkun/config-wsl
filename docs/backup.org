@@ -96,20 +96,29 @@ The following files and directories are not regenerated during the [[file:config
       exit 1
   fi
   BACKUP_DIR="${1}"
+  ARCHIVE_TAR="$BACKUP_DIR/backup_wsl2_$USER.tar"
 
-  echo "Start backup user environment into: $BACKUP_DIR"
+  echo "Start backup user environment: $ARCHIVE_TAR"
 
   mkdir -p "$BACKUP_DIR"
-  tar -C ~ -cf "$BACKUP_DIR/backup_wsl2_$USER.tar" \
+  tar -C ~ -cf $ARCHIVE_TAR \
       -T "$(dirname "${0}")/../backup_user.txt"
+  <<tar_add_gitconfig_includes>>
 
   echo 'Finished backup user environment'
 #+end_src
 
 ** Git
-- =.gitconfig= (Could be regenerated)
+The global Git config file:
 #+begin_src text
   .gitconfig
+#+end_src
+
+Append gitconfig includes from within directory =~/work= to the archive. Also strip the prefix for the HOME directory from the file paths within the archive:
+#+name: tar_add_gitconfig_includes
+#+begin_src shell :results silent
+  find ~/work -name 'gitconfig*.inc' -exec \
+       tar --transform "s|home/$USER/||" -rf $ARCHIVE_TAR {} \;
 #+end_src
 
 ** GPG
