@@ -108,6 +108,33 @@ The following files and directories are not regenerated during the [[file:config
   echo 'Finished backup user environment'
 #+end_src
 
+** Global dotenv file
+Global dotenv file, containing environment variables and secrets. These are used by direnv and other tools:
+#+begin_src text
+  .env
+#+end_src
+
+** Aspell Dictionaries
+The local dictionaries:
+#+begin_src text
+  .aspell.de.prepl
+  .aspell.de.pws
+  .aspell.en.prepl
+  .aspell.en.pws
+#+end_src
+
+** DBeaver
+Configuration of IntelliJ:
+#+begin_src text
+  .local/share/DBeaverData/workspace6
+#+end_src
+
+** Emacs Org agenda file
+The local Org agenda files, which are configured within [[https://github.com/aarkun/config-emacs/blob/main/init.org#define-agenda-files][Emacs]]:
+#+begin_src text
+  .emacs.d/org-agenda-files
+#+end_src
+
 ** Git
 The global Git config file:
 #+begin_src text
@@ -121,59 +148,40 @@ Append gitconfig includes from within directory =~/work= to the archive. Also st
        tar --transform "s|home/$USER/||" -rf $ARCHIVE_TAR {} \;
 #+end_src
 
-** GPG
-Contains all GPG settings and keys:
+** GnuPG
+All GPG settings and keys:
 #+begin_src text
   .gnupg
 #+end_src
 
-** Maven
-Contains Maven settings and secrets:
-#+begin_src text
-  .m2/settings.xml
-#+end_src
-
-** SSH
-#+begin_src text
-  .ssh
-#+end_src
-
 ** IntelliJ
+Configuration of IntelliJ:
 #+begin_src text
   .config/JetBrains
 #+end_src
 
-** DBeaver
-#+begin_src text
-  .local/share/DBeaverData/workspace6
-#+end_src
-
-** Aspell Dictionaries
-#+begin_src text
-  .aspell.de.prepl
-  .aspell.de.pws
-  .aspell.en.prepl
-  .aspell.en.pws
-#+end_src
-
-** Environment variables containing keys and secrets
-#+begin_src text
-  .env
-#+end_src
-
-** Emacs Org Agenda files
-#+begin_src text
-  .emacs.d/org-agenda-files
-#+end_src
-
 ** Kubectl
+The current configuration and secrets for kubectl:
 #+begin_src text
   .kube/config
 #+end_src
 
 ** NPM
+The global configuration and secrets for NPM:
 #+begin_src text
   .npmrc
+#+end_src
+
+** Maven
+Maven settings and secrets:
+#+begin_src text
+  .m2/settings.xml
+#+end_src
+
+** SSH
+SSH keys and settings:
+#+begin_src text
+  .ssh
 #+end_src
 
 * Restore user directory
