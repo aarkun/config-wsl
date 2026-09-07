@@ -23,6 +23,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<alternatives_set_editor>>
   <<locale_install_de>>
 
+  <<kernel_install_meta>>
+
   <<systemd_install_dbus-user-session>>
 
   <<podman_purge_old_versions>>
@@ -154,6 +156,23 @@ The available locales can be verified by executing:
 This should result to:
 : de_DE.UTF-8 UTF-8
 : en_US.UTF-8 UTF-8
+
+** Install a kernel metapackage
+It is generally recommended to install a Linux kernel metapackage:
+#+name: kernel_install_meta
+#+begin_src shell :dir /sudo::
+  apt-get install -y linux-image-amd64
+#+end_src
+
+#+RESULTS: kernel_install_meta
+
+The installation can be verified, by executing:
+#+begin_src shell
+  dpkg -l 'linux-image*' | grep ^ii | grep -i meta
+#+end_src
+
+This should result to something like:
+: ii  linux-image-amd64                   6.1.180-1    amd64        Linux for 64-bit PCs (meta-package)
 
 ** Activate systemd
 To use Podman or Docker properly, [[https://packages.debian.org/bookworm/systemctl][systemctl]] is needed. Therefore the [[https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/][systemd support on WSL]] has to be activated. The current Debian distribution already contains a file =/etc/wsl.conf= with the needed entry to enable systemctl.

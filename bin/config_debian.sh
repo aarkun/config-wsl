@@ -12,6 +12,8 @@ update-alternatives --set editor /usr/bin/vim.tiny
 sed -i -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
+apt-get install -y linux-image-amd64
+
 apt-get install -y dbus-user-session
 
 apt-get autopurge -y \
