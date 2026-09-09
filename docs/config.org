@@ -20,7 +20,18 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<apt_disable_recs>>
   <<apt_add_non-free>>
+
+  <<upgrade_2_trixie_fix_apt-sources>>
+  <<apt_dist_upgrade>>
+  <<clean_old_configs>>
+  <<apt_purge_obsolete>>
+  <<upgrade_2_trixie_update_apt-sources>>
+  <<apt_dist_upgrade>>
+  <<clean_old_configs>>
+  <<apt_purge_obsolete>>
+
   <<alternatives_set_editor>>
+
   <<locale_install_de>>
 
   <<kernel_install_meta>>
@@ -556,6 +567,95 @@ Install software for every day use:
 	  xorriso \
 	  xz-utils
 #+end_src
+
+* Upgrade to Debian 13 (Trixie)
+The upgrade process is based on [[https://www.debian.org/releases/stable/release-notes/upgrading.html][Upgrades from Debian 12 (bookworm)]]:
+
+1. Create a [[file:backup.org::Backup user directory][backup]] of the user directory:
+   #+begin_example shell
+     ../bin/backup_user <backup-dir>
+   #+end_example
+
+2. Follow the steps, described in [[https://www.debian.org/releases/stable/release-notes/upgrading.html#start-from-pure-debian][Start from “pure” Debian]]. Since the new deb822 style is not enforced and the old ~*.list~ files are still used as a default, no migration is done yet.
+
+   1. According to [[https://www.debian.org/releases/stable/release-notes/upgrading.en.html#prepare-the-package-database][Prepare the package database]], follow the steps, described at [[https://www.debian.org/releases/stable/release-notes/old-stuff.en.html#checking-your-apt-configuration][Checking your APT configuration]]:
+
+      1. Replace all occurrences of ~stable~ with ~bookworm~. Because the sources of [[* Install NVIDIA Container Toolkit][NVIDIA Container Toolkit]] uses the word ~stable~ differently, it must be excluded:
+	 #+name: upgrade_2_trixie_fix_apt-sources
+	 #+begin_src shell :results silent :dir /sudo::
+	   find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
+	 #+end_src
+
+      2. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#upgrade-to-latest-point-release][Upgrade to latest point release]]:
+	 #+name: apt_dist_upgrade
+	 #+begin_src shell :results silent :dir /sudo::
+	   apt-get update && \
+	       apt-get dist-upgrade --purge -y
+	 #+end_src
+
+      3. [[https://www.debian.org/releases/stable/release-notes/old-stuff.en.html#removing-obsolete-configuration-files][Removing obsolete configuration files]]:
+	 #+name: clean_old_configs
+	 #+begin_src shell :results silent :dir /sudo::
+	   find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
+	 #+end_src
+
+   2. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#obsolete-packages][Remove obsolete packages]]
+      Compare all installed (~ii~) packages to all available packages. Packages, which are installed but not available anymore are obsolete:
+      #+name: apt_purge_obsolete
+      #+begin_src shell :results silent :dir /sudo::
+	installed_packages="$(mktemp)"
+	dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
+
+	unavailable_packages="$(mktemp)"
+	apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' | sort -u > "$unavailable_packages"
+
+	comm -23 "$installed_packages" "$unavailable_packages" | xargs apt-get purge -y
+
+	rm "$installed_packages"
+	rm "$unavailable_packages"
+
+	unset installed_packages
+	unset unavailable_packages
+      #+end_src
+      Alternatively it can be done with:
+      #+begin_example shell
+	apt list '?obsolete'
+	apt purge '?obsolete'
+      #+end_example
+
+   3. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#remove-non-debian-packages][Removing non-Debian packages]] should not be necessary, because the [[* Install NVIDIA Container Toolkit][NVIDIA Container Toolkit]] is the only one and should not be removed. The following command lists non-Debian packages:
+       #+begin_src shell
+	 apt list '?narrow(?installed, ?not(?origin(Debian)))'
+       #+end_src
+
+       This should result to something like:
+       #+begin_example
+	 Listing...
+	 libnvidia-container-tools/unknown,now 1.20.0-1 amd64 [installed,automatic]
+	 libnvidia-container1/unknown,now 1.20.0-1 amd64 [installed,automatic]
+	 nvidia-container-toolkit-base/unknown,now 1.20.0-1 amd64 [installed,automatic]
+	 nvidia-container-toolkit/unknown,now 1.20.0-1 amd64 [installed]
+       #+end_example
+
+   4. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#check-package-status][4.2.12. Check package status]]
+      #+begin_src shell
+	dpkg --audit && echo "Audit went fine"
+      #+end_src
+
+      This should return:
+      : Audit went fine
+
+   5. Change version:
+      #+name: upgrade_2_trixie_update_apt-sources
+      #+begin_src shell :results silent :dir /sudo::
+	find /etc/apt -name '*.list' -exec sed -i -e 's/bookworm/trixie/g' {} \;
+      #+end_src
+
+   6. Upgrade to latest point release like [[apt_dist_upgrade][before]].
+
+   7. Remove old configs again like [[clean_old_configs][before]].
+
+   8. Remove obsolete packages again like [[apt_purge_obsolete][before]].
 
 * OPTIONAL: Restore user directory from backup                     :optional:
 It might be necessary, to restore the user directory from the [[file:backup.org::Restore user directory][backup]], before configuring the user environment.

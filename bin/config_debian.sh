@@ -8,7 +8,44 @@ sed /etc/apt/sources.list -e \
     's/\(deb.* \)main/\1non-free non-free-firmware/' \
     > /etc/apt/sources.list.d/debian.non-free.list
 apt-get update
+
+find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
+apt-get update && \
+    apt-get dist-upgrade --purge -y
+find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
+installed_packages="$(mktemp)"
+dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
+
+unavailable_packages="$(mktemp)"
+apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' | sort -u > "$unavailable_packages"
+
+comm -23 "$installed_packages" "$unavailable_packages" | xargs apt-get purge -y
+
+rm "$installed_packages"
+rm "$unavailable_packages"
+
+unset installed_packages
+unset unavailable_packages
+find /etc/apt -name '*.list' -exec sed -i -e 's/bookworm/trixie/g' {} \;
+apt-get update && \
+    apt-get dist-upgrade --purge -y
+find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
+installed_packages="$(mktemp)"
+dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
+
+unavailable_packages="$(mktemp)"
+apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' | sort -u > "$unavailable_packages"
+
+comm -23 "$installed_packages" "$unavailable_packages" | xargs apt-get purge -y
+
+rm "$installed_packages"
+rm "$unavailable_packages"
+
+unset installed_packages
+unset unavailable_packages
+
 update-alternatives --set editor /usr/bin/vim.tiny
+
 sed -i -e 's/# de_DE\.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 
