@@ -208,7 +208,7 @@ If the file is missing, follow these steps:
      wsl --shutdown
    #+end_src
 
-3. [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] should be installed to have systemctl work properly and avoid error messages like the following:
+3. [[https://packages.debian.org/trixie/dbus-user-session][dbus-user-session]] should be installed to have systemctl work properly and avoid error messages like the following:
    : wsl: Failed to start the systemd user session for 'root'. See journalctl for more details.
 
    It is also needed to have Podman function properly. Which it why it comes as a dependency of [[https://packages.debian.org/bookworm/podman][podman]] or [[https://packages.debian.org/bookworm/gnupg][gnupg]]:
