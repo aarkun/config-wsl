@@ -68,12 +68,11 @@ rm -rf /var/lib/docker \
 apt-get install -y --mark-auto \
 	aardvark-dns \
 	ca-certificates \
-	dbus-user-session \
-	iptables
+	dbus-user-session
 apt-get install -y podman
 apt-get install -y --mark-auto \
 	uidmap \
-	slirp4netns
+	passt
 apt-get install -y podman-compose
 
 apt-get install -y --mark-auto curl

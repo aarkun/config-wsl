@@ -253,8 +253,8 @@ If the file is missing, follow these steps:
    #+end_example
    This seems to be an open issue within WSL: https://github.com/microsoft/WSL/issues/13826
 
-** Install Podman 4.3.1
-The current version of Podman in the current Debian stable distribution is 4.3.1.
+** Install Podman 5.4.2
+The current version of Podman in the current Debian stable distribution is 5.4.2.
 
 *** Deinstall old versions
 Based on the [[https://docs.docker.com/engine/install/debian/][Docker installation manual]], uninstall old versions of docker and podman and everything, which might have been installed before:
@@ -278,19 +278,16 @@ Based on the [[https://docs.docker.com/engine/install/debian/][Docker installati
 Based on https://podman.io/docs/installation, install [[https://packages.debian.org/bookworm/podman][podman]] and its necessary dependencies:
 
 1. Some packages are required to have Podman function properly, like:
-   - [[https://packages.debian.org/bookworm/aardvark-dns][aardvark-dns]] :: Necessary for creating networks and for DNS resolution inside networks between containers.
-   - [[https://packages.debian.org/bookworm/ca-certificates][ca-certificates]] :: Needed to install the necessary certificates for downloading and using images.
-   - [[https://packages.debian.org/bookworm/dbus-user-session][dbus-user-session]] :: Like mentioned in [[* Activate systemd][systemd activation]], this package is needed even for root mode, to have Podman work properly. Otherwise the following error occurs after pod creation:
+   - [[https://packages.debian.org/trixie/aardvark-dns][aardvark-dns]] :: Necessary for creating networks and for DNS resolution inside networks between containers.
+   - [[https://packages.debian.org/trixie/ca-certificates][ca-certificates]] :: Needed to install the necessary certificates for downloading and using images.
+   - [[https://packages.debian.org/trixie/dbus-user-session][dbus-user-session]] :: Like mentioned in [[* Activate systemd][systemd activation]], this package is needed even for root mode, to have Podman work properly. Otherwise the following error occurs after pod creation:
      : Error: crun: cannot open sd-bus: No such file or directory: OCI runtime attempted to invoke a command that was not found
-   - [[https://packages.debian.org/bookworm/iptables][iptables]] :: Needed by [[https://packages.debian.org/bookworm/netavark][netavark]] to create firewall rules. If not present, the following error occurs:
-     : Error: netavark (exit code 1): No such file or directory (os error 2)
    #+name: podman_install_global_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y --mark-auto \
 	     aardvark-dns \
 	     ca-certificates \
-	     dbus-user-session \
-	     iptables
+	     dbus-user-session
    #+end_src
 
 2. After that podman can be installed:
@@ -300,15 +297,14 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
    #+end_src
 
 *** Enable rootless environment
-Based on the [[https://github.com/containers/podman/blob/v4.3.1/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], several packages need to be installed:
-- [[https://packages.debian.org/bookworm/uidmap][uidmap]] :: To use Podman without errors in userspace, providing =newuidmap=.
-- [[https://packages.debian.org/bookworm/slirp4netns][slirp4netns]] :: To use Podman in userspace without errors, providing =slirp4netns= (see: [[https://github.com/containers/podman/blob/v4.3/docs/tutorials/basic_networking.md#differences-between-rootful-and-rootless-container-networking][Differences between rootful and rootless container networking]]).
-  *Note*: According to https://podman.io/docs/installation, ~slirp4netns~ is not needed in newer versions of Podman anymore.
+Based on the [[https://github.com/containers/podman/blob/v5.4.2/docs/tutorials/rootless_tutorial.md][Podman rootless tutorial]], several packages need to be installed:
+- [[https://packages.debian.org/trixie/uidmap][uidmap]] :: To use Podman without errors in userspace, providing =newuidmap=.
+- [[https://packages.debian.org/trixie/passt][passt]] :: To use Podman in userspace without errors, providing =slirp4netns= (see: [[https://github.com/containers/podman/blob/v5.2/docs/tutorials/basic_networking.md#differences-between-rootful-and-rootless-container-networking][Differences between rootful and rootless container networking]]).
 #+name: podman_install_rootless_requirements
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y --mark-auto \
 	  uidmap \
-	  slirp4netns
+	  passt
 #+end_src
 
 *Note*: According to https://www.redhat.com/en/blog/podman-rootless-overlay, [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] is not needed in newer versions of Podman anymore and is therefore not installed.
