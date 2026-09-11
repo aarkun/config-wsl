@@ -359,9 +359,9 @@ There are several alternatives to use Docker Compose files together with Podman:
 2. [[* OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman][Use Docker Compose]]
 3. Use Podman Pods and generate Kubernetes files, like described on https://www.redhat.com/en/blog/compose-podman-pods
 
-*** Use Podman Compose 1.0.3
+*** Use Podman Compose  1.3.0
 This is based on https://github.com/containers/podman-compose. Since this is the simplest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
-To install [[https://packages.debian.org/bookworm/podman-compose][podman-compose]], execute:
+To install [[https://packages.debian.org/trixie/podman-compose][podman-compose]], execute:
 #+name: podman-compose_install
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman-compose
@@ -430,6 +430,78 @@ Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestra
    #+begin_src shell
      DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock docker-compose up
    #+end_src
+
+*** Verify installation
+The installation for root and rootless environment can then be verified with the following example compose file:
+#+name: example-compose.yaml
+#+begin_example docker-compose
+  services:
+    sink:
+      image: docker.io/subfuzion/netcat
+      command: -k -l -p 1111
+      networks:
+      - tst_nw
+      volumes:
+      - ~/tst_dir:/container/volume
+
+    source:
+      image: docker.io/subfuzion/netcat
+      entrypoint:
+      - "sh"
+      - "-c"
+      - "echo \"Hello Podman\" | nc sink 1111"
+      networks:
+      - tst_nw
+
+  networks:
+    tst_nw:
+#+end_example
+
+Execute the following:
+#+begin_src shell :var compose=example-compose.yaml
+  compose_file="$(mktemp)"
+  echo "$compose" > "$compose_file"
+  podman-compose -f "$compose_file" up -d
+  podman-compose -f "$compose_file" logs
+  podman-compose -f "$compose_file" down
+  rm "$compose_file"
+  unset compose_file
+#+end_src
+
+This should result to something like:
+#+begin_example
+  3b0af772374006b8a6d0f61fb351717fbc7baf0978cdd046a31eef064273f1ab
+  6ce39d39577c45980a36b7ea13d234ac72ad8f651833809576473e538799d5db
+  ['podman', '--version', '']
+  using podman version: 4.3.1
+  ,** excluding:  set()
+  ['podman', 'network', 'exists', 'tmp_tst_nw']
+  podman run --name=tmp_sink_1 -d --label io.podman.compose.config-hash=123 --label io.podman.compose.project=tmp --label io.podman.compose.version=0.0.1 --label com.docker.compose.project=tmp --label com.docker.compose.project.working_dir=/tmp --label com.docker.compose.project.config_files=/tmp/tmp.5rgLiyWmsq --label com.docker.compose.container-number=1 --label com.docker.compose.service=sink -v /home/kunde/tst_dir:/container/volume --net tmp_tst_nw --network-alias sink docker.io/subfuzion/netcat -k -l -p 1111
+  exit code: 0
+  ['podman', 'network', 'exists', 'tmp_tst_nw']
+  podman run --name=tmp_source_1 -d --label io.podman.compose.config-hash=123 --label io.podman.compose.project=tmp --label io.podman.compose.version=0.0.1 --label com.docker.compose.project=tmp --label com.docker.compose.project.working_dir=/tmp --label com.docker.compose.project.config_files=/tmp/tmp.5rgLiyWmsq --label com.docker.compose.container-number=1 --label com.docker.compose.service=source --net tmp_tst_nw --network-alias source --entrypoint ["sh", "-c", "echo \"Hello Podman\" | nc sink 1111"] docker.io/subfuzion/netcat
+  exit code: 0
+  3b0af7723740 Hello Podman
+  ['podman', '--version', '']
+  using podman version: 4.3.1
+  podman logs tmp_sink_1 tmp_source_1
+  exit code: 0
+  tmp_source_1
+  tmp_sink_1
+  tmp_source_1
+  tmp_sink_1
+  ['podman', '--version', '']
+  using podman version: 4.3.1
+  ,** excluding:  set()
+  podman stop -t 10 tmp_source_1
+  exit code: 0
+  podman stop -t 10 tmp_sink_1
+  exit code: 0
+  podman rm tmp_source_1
+  exit code: 0
+  podman rm tmp_sink_1
+  exit code: 0
+#+end_example
 
 ** Install NVIDIA Container Toolkit 1.19.0-1
 To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
