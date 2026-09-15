@@ -22,7 +22,7 @@ To export an existing distro (e.g. /Debian/):
 
 2. Before making a backup, all running process should be terminated and not needed (like temporary) files should be deleted:
    #+begin_src shell
-     wsl -d Debian "ps hxo pid | xargs kill"
+     wsl -d Debian ps hxo pid "|" xargs kill
    #+end_src
 
 3. Shut down the WSL:
