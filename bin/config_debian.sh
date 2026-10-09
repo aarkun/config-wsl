@@ -104,6 +104,7 @@ apt-get install -y \
 	texlive-plain-generic
 
 apt-get install -y \
+	asciidoctor \
 	bash-completion \
 	btop \
 	curl \

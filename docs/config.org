@@ -616,6 +616,7 @@ Install software for every day use:
 #+name: install_global_base_software
 #+begin_src shell :dir /sudo::
   apt-get install -y \
+  	asciidoctor \
   	bash-completion \
   	btop \
   	curl \
