@@ -501,7 +501,7 @@ This should result to something like:
   exit code: 0
 #+end_example
 
-** Install NVIDIA Container Toolkit 1.20.0
+** Install NVIDIA Container Toolkit
 To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/index.html][NVIDIA Container Toolkit]] must be installed, like described for the [[https://hub.docker.com/r/ollama/ollama][Ollama Docker image]]:
 
 1. Install curl to proceed with the installation:
@@ -538,7 +538,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
      nvidia-ctk -v
    #+end_src
 
-   This should result to:
+   This should result to something like:
    : NVIDIA Container Toolkit CLI version 1.20.0
    : commit: 5505e2f94d9aaa08561490db974ba3cd676af209
 
