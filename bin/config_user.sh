@@ -39,6 +39,14 @@ mkdir -p ~/.emacs.d
 curl -o ~/.emacs.d/init.el \
      https://raw.githubusercontent.com/aarkun/config-emacs/refs/heads/main/init.el
 
+XDG_CONFIG_HOME="$HOME/.config"
+PODMAN_CONFIG_DIR="$XDG_CONFIG_HOME/containers/containers.conf.d/"
+mkdir -p "$PODMAN_CONFIG_DIR"
+tee "$PODMAN_CONFIG_DIR/compose.conf"<<EOF
+[engine]
+compose_providers=['podman-compose']
+EOF
+
 ASDF_VERSION=v0.16.4
 ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
 curl -L -O --output-dir /tmp \

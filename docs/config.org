@@ -753,6 +753,8 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
 
   <<emacs_create_config>>
 
+  <<podman-compose_set_default_provider>>
+
   <<asdf_download>>
   <<asdf_verify>>
   <<asdf_extract>>
@@ -918,6 +920,44 @@ Emacs is configured in https://github.com/aarkun/config-emacs. After the configu
   curl -o ~/.emacs.d/init.el \
        https://raw.githubusercontent.com/aarkun/config-emacs/refs/heads/main/init.el
 #+end_src
+
+** Configure podman compose
+As it is described on https://docs.podman.io/en/v5.2.4/markdown/podman-compose.1.html, the official Docker Compose is the default backend, when executing ~podman compose~, because of compatibility reasons.
+
+To have ~podman-compose~ the default backend, add the following configuration file in the local config folder:
+#+name: compose.conf
+#+begin_src toml
+  [engine]
+  compose_providers=['podman-compose']
+#+end_src
+
+Create the folder ~$XDG_CONFIG_HOME/containers/containers.conf.d~ and create the configuration file ~compose.conf~:
+#+name: podman-compose_set_default_provider
+#+begin_src shell :noweb yes :results silent
+  XDG_CONFIG_HOME="$HOME/.config"
+  PODMAN_CONFIG_DIR="$XDG_CONFIG_HOME/containers/containers.conf.d/"
+  mkdir -p "$PODMAN_CONFIG_DIR"
+  tee "$PODMAN_CONFIG_DIR/compose.conf"<<EOF
+  <<compose.conf>>
+  EOF
+#+end_src
+
+Verify, by executing:
+#+begin_src shell
+  podman compose version
+#+end_src
+
+This should return to something like:
+: podman version 5.4.2
+: podman-compose version 1.3.0
+
+To use the official Docker Compose in a project, set the variable ~PODMAN_COMPOSE_PROVIDER~ in the project, like in the following example:
+#+begin_src shell
+  PODMAN_COMPOSE_PROVIDER=/usr/libexec/docker/cli-plugins/docker-compose podman compose version
+#+end_src
+
+This should then return something like:
+: Docker Compose version v5.6.0
 
 ** Install asdf
 Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]], using the Method /Download Pre-compiled binary/:
