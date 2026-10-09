@@ -1142,7 +1142,8 @@ Like [[* Install Helm][Helm]], the latest version of [[https://github.com/dadav/
 1. Installed as a Helm plugin into the current Helm installation, if it is not already installed:
    #+name: helm-schema_install
    #+begin_src shell :results silent
-     helm plugin install https://github.com/dadav/helm-schema
+     helm plugin list | grep schema ||
+         helm plugin install https://github.com/dadav/helm-schema
    #+end_src
 
 2. Verify installation:
