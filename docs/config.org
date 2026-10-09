@@ -253,8 +253,8 @@ If the file is missing, follow these steps:
    #+end_example
    This seems to be an open issue within WSL: https://github.com/microsoft/WSL/issues/13826
 
-** Install Podman 5.4.2
-The current version of Podman in the current Debian stable distribution is 5.4.2.
+** Install Podman
+Install the current version of Podman for the current Debian distribution.
 
 *** Deinstall old versions
 Based on the [[https://docs.docker.com/engine/install/debian/][Docker installation manual]], uninstall old versions of docker and podman and everything, which might have been installed before:
