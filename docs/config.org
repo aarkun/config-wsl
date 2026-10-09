@@ -44,6 +44,11 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   <<podman_install_rootless_requirements>>
   <<podman-compose_install>>
 
+  <<docker-compose_install_requirements>>
+  <<docker-compose_add_gpg-key>>
+  <<docker-compose_add_apt-sources>>
+  <<docker-compose_install>>
+
   <<nct_install_requirements>>
   <<nct_add_gpg-key>>
   <<nct_add_apt-sources>>
@@ -354,82 +359,75 @@ This should result to something like:
 #+end_example
 
 ** Use docker-compose files
-There are several alternatives to use Docker Compose files together with Podman:
-1. [[* Use Podman Compose 1.0.3][Use Podman Compose]]
-2. [[* OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman][Use Docker Compose]]
-3. Use Podman Pods and generate Kubernetes files, like described on https://www.redhat.com/en/blog/compose-podman-pods
+There are several options to [[https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/][use Docker compose files with Podman]], including:
 
-*** Use Podman Compose  1.3.0
-This is based on https://github.com/containers/podman-compose. Since this is the simplest and nearest method to Podman, it is also the preferred one, even if it is not fully compatible with all features of Docker Compose.
-To install [[https://packages.debian.org/trixie/podman-compose][podman-compose]], execute:
+1. Use [[* Install podman-compose][podman-compose]]
+2. Use the official [[* Install official docker compose][docker compose]]
+3. Use Podman Pods and generate Kubernetes files, like described on https://www.redhat.com/en/blog/compose-podman-pods
+4. Use docker-compose
+
+In general, Podman should always be used in rootless mode. The first method is set as the default, while the second is a fallback for projects, where a better compatibility is needed.
+
+*** Install podman-compose
+This uses https://github.com/containers/podman-compose as a backend. It is the nearest method to Podman, but it is not fully compatible with all features of [[https://docs.docker.com/compose/][Docker Compose]] and the [[https://docs.docker.com/reference/compose-file][Compose file]] specification. To  install [[https://packages.debian.org/trixie/podman-compose][podman-compose]], execute:
 #+name: podman-compose_install
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y podman-compose
 #+end_src
 
-*** OPTIONAL: Use Docker Compose 1.29.2 with rootless Podman       :optional:
-Based on  https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/, this setup can be used to use the ~docker-compose~ command. This may be necessary, if features unsupported by Podman Compose are needed. This may lead to side-effects with networking.
+*** Install official docker compose
+The installation is based on https://docs.docker.com/compose/install. Since Docker Desktop shall not be used, only the [[ https://docs.docker.com/compose/install/linux/#install-using-the-repository][Docker Compose plugin]] is installed.
 
-1. Verify, that Podman socket is active:
+**** Set up the repository
+1. Install required packages:
+   #+name: docker-compose_install_requirements
+   #+begin_src shell :results silent :dir /sudo::
+     apt-get install -y \
+     	ca-certificates \
+     	curl
+   #+end_src
+
+2. Add Docker's official GPG key:
+   #+name: docker-compose_add_gpg-key
+   #+begin_src shell :results silent :dir /sudo::
+     DOCKER_KEY_FILE=/usr/share/keyrings/docker.asc
+     curl -fsSL https://download.docker.com/linux/debian/gpg -o "$DOCKER_KEY_FILE"
+     chmod 0644 "$DOCKER_KEY_FILE"
+   #+end_src
+
+3. Add the repository to apt sources and update apt:
+   #+name: docker-compose_add_apt-sources
+   #+begin_src shell :results silent :dir /sudo::
+     tee /etc/apt/sources.list.d/docker.sources <<EOF
+     Types: deb
+     URIs: https://download.docker.com/linux/debian
+     Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+     Components: stable
+     Architectures: $(dpkg --print-architecture)
+     Signed-By: $DOCKER_KEY_FILE
+     EOF
+     apt-get update
+   #+end_src
+
+5. Install Docker CLI and Docker Compose plugin:
+   #+name: docker-compose_install
+   #+begin_src shell :results silent :dir /sudo::
+     apt-get install -y \
+     	docker-ce-cli \
+     	docker-compose-plugin
+   #+end_src
+
+6. To verify, execute:
    #+begin_src shell
-      systemctl status podman.socket
+     docker compose version
    #+end_src
 
    This should result to something like:
-   #+begin_example
-     ● podman.socket - Podman API Socket
-	  Loaded: loaded (/lib/systemd/system/podman.socket; enabled; preset: enabled)
-	  Active: active (listening) since Mon 2025-02-17 08:59:30 CET; 2 days ago
-	Triggers: ● podman.service
-	    Docs: man:podman-system-service(1)
-	  Listen: /run/podman/podman.sock (Stream)
-	  CGroup: /system.slice/podman.socket
+   : Docker Compose version v5.6.0
 
-     Feb 17 08:59:30 6RBVJR3 systemd[1]: Listening on podman.socket - Podman API Socket.
-   #+end_example
-
-2. Install [[https://packages.debian.org/bookworm/docker-compose][docker-compose]] and [[https://packages.debian.org/bookworm/podman-docker][podman-docker]] as dependency:
-   #+begin_src shell :dir /sudo:: :results silent
-       apt-get install -y docker-compose
-       apt-get install -y --mark-auto podman-docker
-   #+end_src
-
-3. Verify the communication with the Docker socket:
-   #+begin_src shell :dir /sudo::
-     curl -H "Content-Type: application/json" --unix-socket /var/run/docker.sock http://localhost/_ping
-   #+end_src
-
-   This should result to:
-   : OK
-
-4. Start Podman socket for regular user:
-   #+begin_src shell :results silent
-     systemctl --user enable podman.socket
-     systemctl --user start podman.socket
-   #+end_src
-
-   Verify the creation of the socket:
-   #+begin_src shell
-     systemctl --user status podman.socket
-   #+end_src
-
-   This should return something like:
-   #+begin_example
-     ● podman.socket - Podman API Socket
-	  Loaded: loaded (/usr/lib/systemd/user/podman.socket; enabled; preset: enabled)
-	  Active: active (listening) since Wed 2025-02-19 17:10:37 CET; 7s ago
-	Triggers: ● podman.service
-	    Docs: man:podman-system-service(1)
-	  Listen: /run/user/1000/podman/podman.sock (Stream)
-	  CGroup: /user.slice/user-1000.slice/user@1000.service/app.slice/podman.socket
-
-     Feb 19 17:10:37 6RBVJR3 systemd[205]: Listening on podman.socket - Podman API Socket.
-   #+end_example
-
-5. Verify by executing ~docker-compose~ after setting the environment variable ~DOCKER_HOST~
-   #+begin_src shell
-     DOCKER_HOST=unix:///run/user/$UID/podman/podman.sock docker-compose up
-   #+end_src
+**** Known issues
+- Logins are not shared between Docker and Podman. Even the login command works, there may be errors, using ~docker login~, like:
+   : Error response from daemon: {"message":"cannot use the multiple credential sources"}
 
 *** Verify installation
 The installation for root and rootless environment can then be verified with the following example compose file:

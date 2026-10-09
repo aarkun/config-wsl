@@ -73,6 +73,25 @@ apt-get install -y --mark-auto \
 	passt
 apt-get install -y podman-compose
 
+apt-get install -y \
+	ca-certificates \
+	curl
+DOCKER_KEY_FILE=/usr/share/keyrings/docker.asc
+curl -fsSL https://download.docker.com/linux/debian/gpg -o "$DOCKER_KEY_FILE"
+chmod 0644 "$DOCKER_KEY_FILE"
+tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: $DOCKER_KEY_FILE
+EOF
+apt-get update
+apt-get install -y \
+	docker-ce-cli \
+	docker-compose-plugin
+
 apt-get install -y --mark-auto curl
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
     | gpg --yes --dearmor \
