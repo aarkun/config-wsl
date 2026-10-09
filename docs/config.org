@@ -261,11 +261,11 @@ Based on the [[https://docs.docker.com/engine/install/debian/][Docker installati
 #+name: podman_purge_old_versions
 #+begin_src shell :dir /sudo:: :results silent
   apt-get autopurge -y \
-	  '*docker*' \
-	  docker-compose \
-	  '*container*' \
-	  '*podman*' \
-	  podman-compose
+  	'*docker*' \
+  	docker-compose \
+  	'*container*' \
+  	'*podman*' \
+  	podman-compose
 
   rm -rf /var/lib/docker \
      /var/lib/containerd \
@@ -285,9 +285,9 @@ Based on https://podman.io/docs/installation, install [[https://packages.debian.
    #+name: podman_install_global_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y --mark-auto \
-	     aardvark-dns \
-	     ca-certificates \
-	     dbus-user-session
+     	aardvark-dns \
+     	ca-certificates \
+     	dbus-user-session
    #+end_src
 
 2. After that podman can be installed:
@@ -303,8 +303,8 @@ Based on the [[https://github.com/containers/podman/blob/v5.4.2/docs/tutorials/r
 #+name: podman_install_rootless_requirements
 #+begin_src shell :dir /sudo:: :results silent
   apt-get install -y --mark-auto \
-	  uidmap \
-	  passt
+  	uidmap \
+  	passt
 #+end_src
 
 *Note*: According to https://www.redhat.com/en/blog/podman-rootless-overlay, [[https://packages.debian.org/bookworm/fuse-overlayfs][fuse-overlayfs]] is not needed in newer versions of Podman anymore and is therefore not installed.
@@ -317,13 +317,13 @@ The installation for root and rootless environment can then be verified with:
   podman network create tst_nw
 
   podman run --name=sink --net tst_nw \
-	 -v ~/tst_dir:/container/volume \
-	 -d \
-	 docker.io/subfuzion/netcat -k -l -p 1111
+         -v ~/tst_dir:/container/volume \
+         -d \
+         docker.io/subfuzion/netcat -k -l -p 1111
 
   podman run --name=source -d --net tst_nw \
-	 --entrypoint '["sh", "-c", "echo \"Hello Podman\" | nc sink 1111"]' \
-	 docker.io/subfuzion/netcat
+         --entrypoint '["sh", "-c", "echo \"Hello Podman\" | nc sink 1111"]' \
+         docker.io/subfuzion/netcat
 
   podman logs sink
 
@@ -516,16 +516,16 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    #+name: nct_add_gpg-key
    #+begin_src shell :results silent :dir /sudo::
      curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
-	 | gpg --yes --dearmor \
-	       -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+         | gpg --yes --dearmor \
+     	  -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
    #+end_src
 
 3. Add the sources for the toolkit as ~/etc/apt/sources.list.d/nvidia-container-toolkit.list~ with the reference to the GPG keys to APT and update APT afterwards:
    #+name: nct_add_apt-sources
    #+begin_src  shell :results silent :dir /sudo::
      curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
-	 | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
-	 > /etc/apt/sources.list.d/nvidia-container-toolkit.list
+         | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
+     	  > /etc/apt/sources.list.d/nvidia-container-toolkit.list
      apt-get update
    #+end_src
 
@@ -554,7 +554,7 @@ To give Podman containers access to the NVIDIA GPU, the [[https://docs.nvidia.co
    #+begin_src shell
      nvidia-ctk cdi list
      podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable \
-	    ubuntu nvidia-smi -L
+            ubuntu nvidia-smi -L
    #+end_src
 
    This should result to something like:
@@ -580,8 +580,8 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
 #+name: git_install
 #+begin_src shell :dir /sudo::
   apt-get install -y \
-	  git \
-	  gitk \
+  	git \
+  	gitk
 #+end_src
 
 ** Install Emacs
@@ -589,27 +589,26 @@ The default pinentry ([[https://packages.debian.org/pinentry-curses][pinentry-cu
 #+name: emacs_install
 #+begin_src shell :dir /sudo::
   apt-get install -y \
-	  emacs \
-	  emacs-common-non-dfsg \
+  	emacs \
+  	emacs-common-non-dfsg
 #+end_src
 
 ** Install Aspell
 [[http://aspell.net/][GNU Aspell]] is the default spell checker in Emacs. So the German dictionaries should be installed:
 #+name: aspell_install_de
 #+begin_src shell :dir /sudo::
-  apt-get install -y \
-  	  aspell-de \
+  apt-get install -y aspell-de
 #+end_src
 
-** Install LaTex
+** Install LaTeX
 Install packages for working with LaTeX. Emacs is already installed or will be as a dependency:
 #+name: latex_install
 #+begin_src shell :dir /sudo::
   apt-get install -y \
-	  auctex \
-	  texlive-latex-recommended \
-	  texlive-latex-extra \
-	  texlive-plain-generic
+  	auctex \
+  	texlive-latex-recommended \
+  	texlive-latex-extra \
+  	texlive-plain-generic
 #+end_src
 
 ** Install additional software
@@ -617,23 +616,23 @@ Install software for every day use:
 #+name: install_global_base_software
 #+begin_src shell :dir /sudo::
   apt-get install -y \
-	  bash-completion \
-	  btop \
-	  curl \
-	  dos2unix \
-	  file \
-	  gnuplot \
-	  htop \
-	  lsof \
-	  man-db \
-	  net-tools \
-	  netcat-openbsd \
-	  markdown \
-	  openssh-client \
-	  patch \
-	  telnet \
-	  xorriso \
-	  xz-utils
+  	bash-completion \
+  	btop \
+  	curl \
+  	dos2unix \
+  	file \
+  	gnuplot \
+  	htop \
+  	lsof \
+  	man-db \
+  	net-tools \
+  	netcat-openbsd \
+  	markdown \
+  	openssh-client \
+  	patch \
+  	telnet \
+  	xorriso \
+  	xz-utils
 #+end_src
 
 * Upgrade to Debian 13 (Trixie)
@@ -657,8 +656,7 @@ The upgrade process is based on [[https://www.debian.org/releases/stable/release
       2. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#upgrade-to-latest-point-release][Upgrade to latest point release]]:
 	 #+name: apt_dist_upgrade
 	 #+begin_src shell :results silent :dir /sudo::
-	   apt-get update && \
-	       apt-get dist-upgrade --purge -y
+	   apt-get update && apt-get dist-upgrade --purge -y
 	 #+end_src
 
       3. [[https://www.debian.org/releases/stable/release-notes/old-stuff.en.html#removing-obsolete-configuration-files][Removing obsolete configuration files]]:
@@ -931,14 +929,14 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
      ASDF_VERSION=v0.16.4
      ASDF_INSTALLATION_FILE=asdf-$ASDF_VERSION-linux-amd64.tar.gz
      curl -L -O --output-dir /tmp \
-	  "https://github.com/asdf-vm/asdf/releases/download/$ASDF_VERSION/$ASDF_INSTALLATION_FILE{,.md5}"
+          "https://github.com/asdf-vm/asdf/releases/download/$ASDF_VERSION/$ASDF_INSTALLATION_FILE{,.md5}"
    #+end_src
 
 2. Verify checksum:
    #+name: asdf_verify
    #+begin_src shell :results silent
      grep "$(md5sum /tmp/$ASDF_INSTALLATION_FILE | cut -d ' ' -f 1)" \
-	  /tmp/$ASDF_INSTALLATION_FILE.md5
+          /tmp/$ASDF_INSTALLATION_FILE.md5
    #+end_src
 
 3. Extract binary into =~/.local/bin/=:
@@ -1105,8 +1103,7 @@ Like [[* Install Helm][Helm]], the latest version of [[https://github.com/dadav/
 1. Installed as a Helm plugin into the current Helm installation, if it is not already installed:
    #+name: helm-schema_install
    #+begin_src shell :results silent
-     helm plugin list | grep schema ||
-	 helm plugin install https://github.com/dadav/helm-schema
+     helm plugin install https://github.com/dadav/helm-schema
    #+end_src
 
 2. Verify installation:
@@ -1170,9 +1167,9 @@ The actual used version of [[https://www.python.org/][Python]] may be project sp
    #+name: python_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
-	     gcc \
-	     zlib1g-dev \
-	     libssl-dev
+     	gcc \
+     	zlib1g-dev \
+     	libssl-dev
    #+end_src
 
    *Note*: These are the minimum required packages, to complete the installation. For later use, further packages may be needed.
@@ -1490,15 +1487,15 @@ The latest version can be installed from https://dbeaver.io/download/.
      DBEAVER_VERSION=25.1.0
      DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64-nojdk.tar.gz
      curl -L -O --output-dir /tmp \
-	  https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+          https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
    #+end_src
 
 2. Create a checksum file and verify the installation file:
    #+name: dbeaver_verify
    #+begin_src shell :results silent
      printf '%s %s\n' \
-	    '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
-	    /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+            '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
+            /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
      sha256sum -c /tmp/$DBEAVER_INSTALLATION_FILE.sha256
    #+end_src
 
@@ -1527,9 +1524,9 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+name: idea_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
-	     libgbm1 \
-	     libgl1 \
-	     libnss3
+     	libgbm1 \
+     	libgl1 \
+     	libnss3
    #+end_src
 
 2. Download latest release files from https://www.jetbrains.com/idea/download/?section=linux:
@@ -1537,14 +1534,14 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+begin_src shell :results silent
      IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
      curl -O --output-dir /tmp \
-	  "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
+          "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
    #+end_src
 
 3. Verify checksum:
    #+name: idea_verify
    #+begin_src shell :results silent
      grep "$(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1)" \
-	  /tmp/$IDEA_INSTALLATION_FILE.sha256
+          /tmp/$IDEA_INSTALLATION_FILE.sha256
    #+end_src
 
 4. Extract binary:
@@ -1569,8 +1566,8 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+name: vscode_install_requirements
    #+begin_src shell :dir /sudo:: :results silent
      apt-get install -y \
-	     libgl1 \
-	     libnss3
+     	libgl1 \
+     	libnss3
    #+end_src
 
 2. Download latest release files from https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions. The version ~latest~ is not supported by the API-URL below, which is needed to get the checksums. Therefore fixed versions are used:
@@ -1579,14 +1576,14 @@ The latest version can be installed from https://dbeaver.io/download/.
      VSCODE_VERSION=1.99.3
      VSCODE_INSTALLATION_FILE=code-stable-$VSCODE_VERSION.tar.gz
      curl -L -o /tmp/$VSCODE_INSTALLATION_FILE \
-	  "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
+          "https://update.code.visualstudio.com/$VSCODE_VERSION/linux-x64/stable"
    #+end_src
 
 3. Verify checksum:
    #+name: vscode_verify
    #+begin_src shell :results silent
      curl "https://update.code.visualstudio.com/api/versions/$VSCODE_VERSION/linux-x64/stable" |
-	 grep "$(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)"
+         grep "$(sha256sum /tmp/$VSCODE_INSTALLATION_FILE | cut -d ' ' -f 1)"
    #+end_src
 
 4. Extract binary:
@@ -1624,7 +1621,7 @@ The latest version can be installed from https://dbeaver.io/download/.
      PLANTUML_INSTALLATION_FILE=plantuml-$PLANTUML_VERSION.jar
      mkdir -p ~/opt
      curl -L -O --output-dir ~/opt \
-	  "https://github.com/plantuml/plantuml/releases/download/v$PLANTUML_VERSION/$PLANTUML_INSTALLATION_FILE{,.asc}"
+          "https://github.com/plantuml/plantuml/releases/download/v$PLANTUML_VERSION/$PLANTUML_INSTALLATION_FILE{,.asc}"
    #+end_src
 
 4. Verify the installation file:
@@ -1681,7 +1678,7 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+name: testcontainers_config
    #+begin_src shell
      echo docker.host="unix://${XDG_RUNTIME_DIR}/podman/podman.sock" \
-	  > "$HOME/.testcontainers.properties"
+          > "$HOME/.testcontainers.properties"
    #+end_src
 
    *Note*: If writing the entry without substituting the variable =$XDG_RUNTIME_DIR=, tests in SpringBoot might fail, because the variable is not substituted by default. To avoid this, the value is substituted, as long the directory does not change for the user.

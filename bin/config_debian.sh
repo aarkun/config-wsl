@@ -10,8 +10,7 @@ sed /etc/apt/sources.list -e \
 apt-get update
 
 find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
-apt-get update && \
-    apt-get dist-upgrade --purge -y
+apt-get update && apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
 dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
@@ -27,8 +26,7 @@ rm "$unavailable_packages"
 unset installed_packages
 unset unavailable_packages
 find /etc/apt -name '*.list' -exec sed -i -e 's/bookworm/trixie/g' {} \;
-apt-get update && \
-    apt-get dist-upgrade --purge -y
+apt-get update && apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
 dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
@@ -81,7 +79,7 @@ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey \
 	  -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
 curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
     | sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' \
-    > /etc/apt/sources.list.d/nvidia-container-toolkit.list
+	  > /etc/apt/sources.list.d/nvidia-container-toolkit.list
 apt-get update
 apt-get install -y nvidia-container-toolkit
 nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
@@ -91,14 +89,13 @@ apt-get install -y pinentry-fltk
 
 apt-get install -y \
 	git \
-	gitk \
+	gitk
 
 apt-get install -y \
 	emacs \
-	emacs-common-non-dfsg \
+	emacs-common-non-dfsg
 
-apt-get install -y \
-  	aspell-de \
+apt-get install -y aspell-de
 
 apt-get install -y \
 	auctex \
