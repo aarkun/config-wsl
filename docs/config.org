@@ -176,11 +176,9 @@ This should result to:
 ** Install a kernel metapackage
 It is generally recommended to install a Linux kernel metapackage:
 #+name: kernel_install_meta
-#+begin_src shell :dir /sudo::
+#+begin_src shell :dir /sudo:: :results silent
   apt-get install -y linux-image-amd64
 #+end_src
-
-#+RESULTS: kernel_install_meta
 
 The installation can be verified, by executing:
 #+begin_src shell
