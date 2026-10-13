@@ -57,7 +57,7 @@ mkdir -p ~/.local/bin
 tar -C ~/.local/bin -x -f /tmp/$ASDF_INSTALLATION_FILE
 PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 printf '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"\n' >> ~/.profile
-printf '\n. <(~/.local/bin/asdf completion bash)\n' >> ~/.bashrc
+printf '\n. <(%s completion bash)\n' "$(which asdf)" >> ~/.bashrc
 echo 'legacy_version_file = yes' > ~/.asdfrc
 
 asdf plugin add direnv

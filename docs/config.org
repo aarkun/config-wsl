@@ -1000,12 +1000,12 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
      printf '\nPATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"\n' >> ~/.profile
    #+end_src
 
-6. To add shell completion, add the following line to ~$HOME/.bashrc~:
+6. To add shell completion, add the following line to ~$HOME/.bashrc~.
+   Since =~/.bashrc= is sourced before =~/.local/bin= is added to the =PATH= in =~/.profile=, ~asdf~ cannot be called without prefix. To get the current Path of =asdf=, ~which~ is used, which should result to =~/.local/bin/asdf=:
    #+name: asdf_add_shell_completions
    #+begin_src shell :results silent
-     printf '\n. <(~/.local/bin/asdf completion bash)\n' >> ~/.bashrc
+     printf '\n. <(%s completion bash)\n' "$(which asdf)" >> ~/.bashrc
    #+end_src
-   Since =~/.bashrc= is sourced, before =~/.local/bin= is added to the =PATH= in =~/.profile=, ~asdf~ cannot be called without prefix. So the explicit path to asdf is used.
 
 ** Install asdf (legacy)                                           :obsolete:
 Based on [[https://asdf-vm.com/guide/getting-started-legacy.html][asdf Getting started (pre-0.16.0)]]:
