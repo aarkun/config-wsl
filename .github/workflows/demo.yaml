@@ -11,6 +11,15 @@ jobs:
         run: echo "Moin"
       - name: Print WD
         run: pwd
-      - name: List files
+      - name: List files on Host
+        run: ls -l .
+      - name: Some stuff in WSL Debian-13
+        uses: Vampire/setup-wsl@v7
+        with:
+          distribution: Debian-13
+      - shell: wsl-bash {0}
+        run: id
+      - name: List files in WSL
+        shell: wsl-bash {0}
         run: ls -l .
 
