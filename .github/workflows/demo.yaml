@@ -2,17 +2,11 @@ name: Test WSL configuration
 run-name: Testing WSL configuration for Debian 13
 on: [push]
 jobs:
-  checkout_code:
+  test:
     runs-on: windows-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
-      - name: Greetings
-        run: echo "Moin"
-      - name: Print WD
-        run: pwd
-      - name: List files on Host
-        run: ls -l .
       - name: Some stuff in WSL Debian-13
         uses: Vampire/setup-wsl@v7
         with:
