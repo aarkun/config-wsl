@@ -632,7 +632,7 @@ Install software for every day use:
   	xz-utils
 #+end_src
 
-* Upgrade to Debian 13 (Trixie)
+* Upgrade to latest Debian 13 (Trixie)
 The upgrade process is based on [[https://www.debian.org/releases/stable/release-notes/upgrading.html][Upgrades from Debian 12 (bookworm)]]:
 
 1. Create a [[file:backup.org::Backup user directory][backup]] of the user directory:
