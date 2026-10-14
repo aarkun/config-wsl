@@ -71,7 +71,6 @@ printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
 asdf plugin add kubectl
 asdf install kubectl latest
 asdf set -u kubectl latest
-printf '\n. <(kubectl completion bash)\n' >> ~/.profile
 
 asdf plugin add helm
 asdf install helm 3.17.1
