@@ -4,6 +4,9 @@ on: [push]
 jobs:
   Setup-Debian-13:
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: wsl-bash {0}
     steps:
       - uses: Vampire/setup-wsl@v7
         with:
