@@ -9,7 +9,7 @@
 Description of the Debian configuration.
 
 * Prerequisites
-It is assumed, that an official [[https://github.com/microsoft/WSL/releases][WSL release]] with an official Debian distribution is initially [[file:install.org][installed]] and the default user is not /root/. This configuration is tested on a Debian (bookworm) distribution 12.9.
+It is assumed, that an official [[https://github.com/microsoft/WSL/releases][WSL release]] with an official Debian distribution is initially [[file:install.org][installed]] and the default user is not /root/. This configuration is tested on a Debian (Bookworm) distribution 12.9.
 
 * Configure WSL Debian
 To automate the configuration the script [[file:~/work/config-wsl/bin/config_debian.sh][config_debian.sh]] includes all necessary steps, which has to be executed as /root/.
