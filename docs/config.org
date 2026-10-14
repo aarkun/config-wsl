@@ -36,6 +36,8 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<kernel_install_meta>>
 
+  <<bash-completion_install>>
+
   <<systemd_install_dbus-user-session>>
 
   <<podman_purge_old_versions>>
@@ -255,6 +257,13 @@ If the file is missing, follow these steps:
      CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
    #+end_example
    This seems to be an open issue within WSL: https://github.com/microsoft/WSL/issues/13826
+
+** Install Bash completions
+To have autocompletion for several commands in Bash, [[https://packages.debian.org/trixie/bash-completion][bash-completion]] is installed:
+#+name: bash-completion_install
+#+begin_src shell :dir /sudo:: :results silent
+    apt-get install -y bash-completion
+#+end_src
 
 ** Install Podman
 Install the current version of Podman for the current Debian distribution.
@@ -613,7 +622,6 @@ Install software for every day use:
 #+begin_src shell :dir /sudo::
   apt-get install -y \
   	asciidoctor \
-  	bash-completion \
   	btop \
   	curl \
   	dos2unix \

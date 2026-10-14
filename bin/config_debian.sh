@@ -49,6 +49,8 @@ locale-gen
 
 apt-get install -y linux-image-amd64
 
+apt-get install -y bash-completion
+
 apt-get install -y dbus-user-session
 
 apt-get autopurge -y \
@@ -124,7 +126,6 @@ apt-get install -y \
 
 apt-get install -y \
 	asciidoctor \
-	bash-completion \
 	btop \
 	curl \
 	dos2unix \
