@@ -75,7 +75,6 @@ asdf set -u kubectl latest
 asdf plugin add helm
 asdf install helm 3.17.1
 asdf set -u helm 3.17.1
-printf '\n. <(helm completion bash)\n' >> ~/.profile
 
 asdf plugin add helm-docs
 asdf install helm-docs latest

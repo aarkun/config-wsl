@@ -775,7 +775,6 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
   <<kubectl_install>>
 
   <<helm_install>>
-  <<helm_add_shell_completions>>
 
   <<helm-docs_install>>
 
@@ -1111,13 +1110,7 @@ In general, the latest version of [[https://helm.sh/][Helm]] is used for all pro
    This should result to something like:
    : version.BuildInfo{Version:"v3.17.1", GitCommit:"980d8ac1939e39138101364400756af2bdee1da5", GitTreeState:"clean", GoVersion:"go1.23.5"}
 
-3. Install autocompletion for bash. Based on [[https://helm.sh/docs/helm/helm_completion_bash/#helm][helm completion bash]], add a line to =$HOME/.profile=:
-   #+name: helm_add_shell_completions
-   #+begin_src shell :results silent
-     printf '\n. <(helm completion bash)\n' >> ~/.profile
-   #+end_src
-
-   *Note*: =~/.bashrc= is sourced before =~/.asdf/shims= is added to the =PATH= in =~/.profile=. The shim =~/.asdf/shims/kubectl= itself uses the command ~asdf~ without a prefix. Therefore the shim cannot be used within =~/.bashrc=. As a workaround, the completion is sourced in =~/.profile=, until the shims may be fixed.
+In Debian 13 [[https://helm.sh/de/docs/helm/helm_completion/][helm completion]] is included in the [[* Install Bash completions][installation of Bash completions]]. An installation in user space is not necessary anymore.
 
 ** Install helm-docs
 Like [[* Install Helm][Helm]], the latest version of [[https://github.com/norwoodj/helm-docs][helm-docs]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
