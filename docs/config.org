@@ -1007,7 +1007,7 @@ Based on [[https://asdf-vm.com/guide/getting-started.html][asdf Getting started]
    #+end_src
 
 6. To add shell completion, add the following line to ~$HOME/.bashrc~.
-   Since =~/.bashrc= is sourced before =~/.local/bin= is added to the =PATH= in =~/.profile=, ~asdf~ cannot be called without prefix. To get the current Path of =asdf=, ~which~ is used, which should result to =~/.local/bin/asdf=:
+   =~/.bashrc= is sourced into =~.profile= before =~/.local/bin= is added to the =PATH= in =~/.profile=. Therefore, ~asdf~ cannot be called without a prefix. To get the current path of =asdf=, ~which~ is used, which should result to =~/.local/bin/asdf=:
    #+name: asdf_add_shell_completions
    #+begin_src shell :results silent
      printf '\n. <(%s completion bash)\n' "$(which asdf)" >> ~/.bashrc
