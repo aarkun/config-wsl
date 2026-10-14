@@ -1512,41 +1512,6 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    This should result to something like:
    : Lua 5.4.7  Copyright (C) 1994-2024 Lua.org, PUC-Rio
 
-** Install DBeaver 25.1.0
-The latest version can be installed from https://dbeaver.io/download/.
-
-1. Download the specific release files without a JDK from the [[https://github.com/dbeaver/dbeaver/releases][GitHub mirror]], which offers a checksum. Checksums are available since 25.1.0:
-   #+name: dbeaver_download
-   #+begin_src shell :results silent
-     DBEAVER_VERSION=25.1.0
-     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64-nojdk.tar.gz
-     curl -L -O --output-dir /tmp \
-          https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
-   #+end_src
-
-2. Create a checksum file and verify the installation file:
-   #+name: dbeaver_verify
-   #+begin_src shell :results silent
-     printf '%s %s\n' \
-            '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
-            /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
-     sha256sum -c /tmp/$DBEAVER_INSTALLATION_FILE.sha256
-   #+end_src
-
-3. Extract binary:
-   #+name: dbeaver_extract
-   #+begin_src shell :results silent
-     mkdir -p ~/opt
-     tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
-   #+end_src
-
-4. Create link:
-   #+name: dbeaver_create_link
-   #+begin_src shell :results silent
-     mkdir -p ~/.local/bin/
-     ln -fs ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
-   #+end_src
-
 ** Install IntelliJ 2024.3.3
 1. Install necessary prerequisites for different features:
    - [[https://packages.debian.org/bookworm/libgbm1][libgbm1]] must be installed to enable rendering previews for Markdown files and OpenAPI specifications.
@@ -1589,6 +1554,41 @@ The latest version can be installed from https://dbeaver.io/download/.
    #+name: idea_create_link
    #+begin_src shell :results silent
      find ~/opt -name idea -exec ln -sf {} ~/.local/bin/idea \;
+   #+end_src
+
+** Install DBeaver 25.1.0
+The latest version can be installed from https://dbeaver.io/download/.
+
+1. Download the specific release files without a JDK from the [[https://github.com/dbeaver/dbeaver/releases][GitHub mirror]], which offers a checksum. Checksums are available since 25.1.0:
+   #+name: dbeaver_download
+   #+begin_src shell :results silent
+     DBEAVER_VERSION=25.1.0
+     DBEAVER_INSTALLATION_FILE=dbeaver-ce-$DBEAVER_VERSION-linux.gtk.x86_64-nojdk.tar.gz
+     curl -L -O --output-dir /tmp \
+          https://github.com/dbeaver/dbeaver/releases/download/$DBEAVER_VERSION/$DBEAVER_INSTALLATION_FILE
+   #+end_src
+
+2. Create a checksum file and verify the installation file:
+   #+name: dbeaver_verify
+   #+begin_src shell :results silent
+     printf '%s %s\n' \
+            '069738a7a58d15d73a9f055e648e131c44f33837cd523d92a2e1203a10c54e49' \
+            /tmp/$DBEAVER_INSTALLATION_FILE > /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+     sha256sum -c /tmp/$DBEAVER_INSTALLATION_FILE.sha256
+   #+end_src
+
+3. Extract binary:
+   #+name: dbeaver_extract
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     tar -C ~/opt -x -f /tmp/$DBEAVER_INSTALLATION_FILE
+   #+end_src
+
+4. Create link:
+   #+name: dbeaver_create_link
+   #+begin_src shell :results silent
+     mkdir -p ~/.local/bin/
+     ln -fs ~/opt/dbeaver/dbeaver ~/.local/bin/dbeaver
    #+end_src
 
 ** Install Visual Studio Code 1.99.3
