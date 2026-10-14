@@ -882,7 +882,7 @@ Therefore, based on https://superuser.com/questions/1808572/how-to-automate-star
 by executing:
 #+name: ssh_add_start_ssh-agent_to_profile
 #+begin_src shell :noweb yes :exports none :results silent
-  cat <<'EOF' >> ~/.profile
+  tee -a ~/.profile<<'EOF'
 
   <<start_ssh-agent.sh>>
   EOF

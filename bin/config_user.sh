@@ -17,7 +17,7 @@ printf '\nexport NO_AT_BRIDGE=1\n' >> ~/.profile
 
 printf '\nexport GPG_TTY=$(tty)\n' >> ~/.profile
 
-cat <<'EOF' >> ~/.profile
+tee -a ~/.profile<<'EOF'
 
 SSH_AGENT_ENV_FILE="$HOME/.ssh/agent-env"
 
