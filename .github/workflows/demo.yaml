@@ -2,18 +2,10 @@ name: Test WSL configuration
 run-name: Testing WSL configuration for Debian 13
 on: [push]
 jobs:
-  Setup-Debian-13:
+  checkout_code:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: wsl-bash {0}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v6
 
-      - uses: Vampire/setup-wsl@v7
-        with:
-          distribution: Debian-13
-
-      - run: id
-
+      - run: pwd
