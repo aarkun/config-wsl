@@ -126,8 +126,8 @@ ASDF_LUA_LUAROCKS_VERSION=3.12.2 asdf install lua 5.4.7
 asdf set -u lua 5.4.7
 
 IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
-curl -O --output-dir /tmp \
-     "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
+curl -L -O --output-dir /tmp \
+     "https://download.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
 grep "$(sha256sum /tmp/$IDEA_INSTALLATION_FILE | cut -d ' ' -f 1)" \
      /tmp/$IDEA_INSTALLATION_FILE.sha256
 mkdir -p ~/opt

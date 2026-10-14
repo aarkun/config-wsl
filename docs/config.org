@@ -1532,8 +1532,8 @@ The actual used version of [[https://www.lua.org/][Lua]] may be project specific
    #+name: idea_download
    #+begin_src shell :results silent
      IDEA_INSTALLATION_FILE=ideaIU-2024.3.3.tar.gz
-     curl -O --output-dir /tmp \
-          "https://download-cdn.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
+     curl -L -O --output-dir /tmp \
+          "https://download.jetbrains.com/idea/$IDEA_INSTALLATION_FILE{,.sha256}"
    #+end_src
 
 3. Verify checksum:
