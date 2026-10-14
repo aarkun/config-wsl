@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Test WSL configuration
+run-name: Testing WSL configuration for Debian 13
 on: [push]
 jobs:
   Setup-Debian-13:
