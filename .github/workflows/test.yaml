@@ -1,5 +1,5 @@
 name: Test WSL configuration
-run-name: Testing WSL configuration for Debian 13
+run-name: Test WSL configuration for Debian 13
 on: [push]
 jobs:
   test:
@@ -7,17 +7,16 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
-      - name: Some stuff in WSL Debian-13
+
+      - run: id
+
+      - name: Configure Debian as non-root
         uses: Vampire/setup-wsl@v7
         with:
           distribution: Debian-13
           wsl-shell-user: test
+          additional-packages:
+            file
       - shell: wsl-bash {0}
-        run: id
-      - name: Print WD in WSL
-        shell: wsl-bash {0}
-        run: pwd
-      - name: List files in WSL
-        shell: wsl-bash {0}
-        run: ls -l .
+        run: file ./bin/config_debian.sh
 
