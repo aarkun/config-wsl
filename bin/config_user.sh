@@ -171,7 +171,8 @@ ln -fs ~/opt/$PLANTUML_INSTALLATION_FILE ~/opt/plantuml.jar
 asdf plugin add pandoc
 asdf install pandoc latest
 asdf set -u pandoc latest
-printf '\n. <(pandoc --bash-completion)\n' >> ~/.profile
+printf '\n. <(PATH="$HOME/.local/bin:$PATH" %s --completion bash)\n' \
+       "$(which pandoc)" >> ~/.bashrc
 
 echo docker.host="unix://${XDG_RUNTIME_DIR}/podman/podman.sock" \
      > "$HOME/.testcontainers.properties"
