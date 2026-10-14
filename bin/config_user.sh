@@ -63,7 +63,8 @@ echo 'legacy_version_file = yes' > ~/.asdfrc
 asdf plugin add direnv
 asdf install direnv latest
 asdf set -u direnv latest
-printf '\neval "$(PATH="$HOME/.local/bin:$PATH" %s hook bash)"\n' "$(which direnv)" >> ~/.bashrc
+printf '\n. <(PATH="$HOME/.local/bin:$PATH" %s hook bash)\n' "$(which direnv)" \
+       >> ~/.bashrc
 mkdir -p ~/.config/direnv
 printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
 
