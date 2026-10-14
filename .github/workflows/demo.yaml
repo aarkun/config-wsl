@@ -5,7 +5,12 @@ jobs:
   checkout_code:
     runs-on: windows-latest
     steps:
-      - name: Check out repository code
+      - name: Check out repository
         uses: actions/checkout@v6
+      - name: Greetings
+        run: echo "Moin"
+      - name: Print WD
+        run: pwd
+      - name: List files
+        run: ls -l .
 
-      - run: pwd
