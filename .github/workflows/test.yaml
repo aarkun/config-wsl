@@ -1,12 +1,10 @@
 name: Test WSL configuration
-run-name: Test WSL configuration for Debian 13
 on: [push]
 jobs:
   test:
     runs-on: windows-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
       - run: id
 
@@ -19,4 +17,6 @@ jobs:
             file
       - shell: wsl-bash {0}
         run: file ./bin/config_debian.sh
+      - shell: wsl-bash {0}
+        run: cat ./bin/config_debian.sh
 
