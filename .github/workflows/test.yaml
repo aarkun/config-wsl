@@ -1,22 +1,32 @@
 name: Test WSL configuration
 on: [push]
 jobs:
-  test:
+  test_in_linux:
+    name: Test in native Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout repository
+      - run: |
+            ./bin/config_debian.sh || \
+            (if [ $? -eq 2 ]; \
+            then echo Should fail with \'Permission denied\'; \
+            else echo Should not fail with unexpected error code; \
+            fi)
+        name: Call configure script as non-root
+
+  test_in_wsl:
+    name: Test in WSL
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
-
+        name: Checkout repository
       - run: id
-
-      - name: Configure Debian as non-root
-        uses: Vampire/setup-wsl@v7
+      - uses: Vampire/setup-wsl@v7
         with:
           distribution: Debian-13
           wsl-shell-user: test
-          additional-packages:
-            file
       - shell: wsl-bash {0}
-        run: file ./bin/config_debian.sh
-      - shell: wsl-bash {0}
-        run: cat ./bin/config_debian.sh
+        run: ./bin/config_debian.sh
+        name: Call configure script as root
 
