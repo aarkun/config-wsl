@@ -12,8 +12,17 @@ jobs:
             (if [ $? -eq 2 ]; \
             then echo Should fail with \'Permission denied\'; \
             else echo Should not fail with unexpected error code; \
+            exit 1; \
             fi)
-        name: Call configure script as non-root
+        name: Configure Debian as non-root
+      - run: |
+            sudo ./bin/config_user.sh || \
+            (if [ $? -eq 1 ]; \
+            then echo Should fail with \'You should not be root\'; \
+            else echo Should not fail with unexpected error code; \
+            exit 1; \
+            fi)
+        name: Configure user as root
 
   test_deb_12_in_wsl:
     name: Test Debian 12 in WSL
