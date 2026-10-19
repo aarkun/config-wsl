@@ -969,6 +969,8 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
   <<openspec_install>>
   <<openspec_add_link>>
 
+  <<bats_install>>
+
   echo 'Finished user environment configuration'
 #+end_src
 
@@ -2029,3 +2031,25 @@ The actual used version of [[https://k6.io/][k6]] is project specific and not se
    This should result to something like:
    : k6 v1.6.1 (commit/2ac2bb560e, go1.25.7, linux/amd64)
 
+** Install Bats
+The actual used version of [[https://bats-core.readthedocs.io/en/stable/][Bats]] is project specific and not set globally. It is determined locally by an existing =.tool-versions=.
+
+1. Add the asdf plugin:
+   #+name: bats_install
+   #+begin_src shell :results silent
+     asdf plugin add bats
+   #+end_src
+
+2. Install the desired version of k6 locally in the project.
+   #+begin_src shell :results silent
+     asdf install bats latest
+     asdf set bats latest
+   #+end_src
+
+3. Verify installation in the project:
+   #+begin_src shell
+     bats --version
+   #+end_src
+
+   This should result to something like:
+   : Bats 1.14.0

@@ -202,4 +202,6 @@ npm install -g --prefix ~/opt/openspec @fission-ai/openspec@latest
 mkdir -p ~/.local/bin
 ln -fs ~/opt/openspec/bin/openspec ~/.local/bin/openspec
 
+asdf plugin add bats
+
 echo 'Finished user environment configuration'
