@@ -15,8 +15,28 @@ jobs:
             fi)
         name: Call configure script as non-root
 
-  test_in_wsl:
-    name: Test in WSL
+  test_deb_12_in_wsl:
+    name: Test Debian 12 in WSL
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout repository
+      - run: id
+      - uses: Vampire/setup-wsl@v7
+        with:
+          distribution: Debian-12
+      - shell: wsl-bash {0}
+        run: id
+      - shell: wsl-bash {0}
+        run: cat /etc/debian_version
+      - shell: wsl-bash {0}
+        run: ls -l /etc/apt
+      - shell: wsl-bash {0}
+        run: ./bin/config_debian.sh
+        name: Call configure script as root
+
+  test_deb_13_in_wsl:
+    name: Test Debian 13 in WSL
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -34,4 +54,3 @@ jobs:
       - shell: wsl-bash {0}
         run: ./bin/config_debian.sh
         name: Call configure script as root
-
