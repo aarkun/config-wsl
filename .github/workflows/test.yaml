@@ -25,7 +25,12 @@ jobs:
       - uses: Vampire/setup-wsl@v7
         with:
           distribution: Debian-13
-          wsl-shell-user: test
+      - shell: wsl-bash {0}
+        run: id
+      - shell: wsl-bash {0}
+        run: cat /etc/debian_version
+      - shell: wsl-bash {0}
+        run: ls -l /etc/apt
       - shell: wsl-bash {0}
         run: ./bin/config_debian.sh
         name: Call configure script as root
