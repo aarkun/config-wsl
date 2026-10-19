@@ -3,7 +3,7 @@ on: [push]
 jobs:
   test_in_linux:
     name: Test in native Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v6
         name: Checkout repository
