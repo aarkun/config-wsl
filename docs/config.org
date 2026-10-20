@@ -659,9 +659,11 @@ The upgrade process is based on [[https://www.debian.org/releases/stable/release
 	 #+end_src
 
       2. [[https://www.debian.org/releases/stable/release-notes/upgrading.html#upgrade-to-latest-point-release][Upgrade to latest point release]]:
+	 After updating apt, the upgrade is executed with an non-interactive frontend, to prevent being asked for restarting services (s. [[https://manpages.debian.org/trixie/debconf-doc/debconf.7.html][debconf manpage]]):
 	 #+name: apt_dist_upgrade
 	 #+begin_src shell :results silent :dir /sudo::
-	   apt-get update && apt-get dist-upgrade --purge -y
+	   apt-get update && \
+	       DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --purge -y
 	 #+end_src
 
       3. [[https://www.debian.org/releases/stable/release-notes/old-stuff.en.html#removing-obsolete-configuration-files][Removing obsolete configuration files]]:

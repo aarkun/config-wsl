@@ -10,7 +10,8 @@ sed /etc/apt/sources.list -e \
 apt-get update
 
 find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
-apt-get update && apt-get dist-upgrade --purge -y
+apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
 dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
@@ -26,7 +27,8 @@ rm "$unavailable_packages"
 unset installed_packages
 unset unavailable_packages
 find /etc/apt -name '*.list' -exec sed -i -e 's/bookworm/trixie/g' {} \;
-apt-get update && apt-get dist-upgrade --purge -y
+apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
 dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
