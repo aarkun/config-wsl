@@ -35,14 +35,12 @@ jobs:
         with:
           distribution: Debian-12
       - shell: wsl-bash {0}
-        run: id
-      - shell: wsl-bash {0}
         run: cat /etc/debian_version
       - shell: wsl-bash {0}
-        run: ls -l /etc/apt
+        run: ./bin/config_debian.sh
+        name: Configure Debian as root
       - shell: wsl-bash {0}
-        run: 'echo FXME: ./bin/config_debian.sh'
-        name: 'FIXME: Call configure script as root'
+        run: cat /etc/debian_version
 
   test_deb_13_in_wsl:
     name: Test Debian 13 in WSL
@@ -55,11 +53,9 @@ jobs:
         with:
           distribution: Debian-13
       - shell: wsl-bash {0}
-        run: id
-      - shell: wsl-bash {0}
         run: cat /etc/debian_version
       - shell: wsl-bash {0}
-        run: ls -l /etc/apt
-      - shell: wsl-bash {0}
         run: 'echo FIXME: ./bin/config_debian.sh'
-        name: 'FIXME: Call configure script as root'
+        name: 'FIXME: Configure Debian as root'
+      - shell: wsl-bash {0}
+        run: cat /etc/debian_version
