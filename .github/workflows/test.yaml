@@ -41,6 +41,8 @@ jobs:
         name: Configure Debian as root
       - shell: wsl-bash {0}
         run: cat /etc/debian_version
+      - shell: wsl-bash {0}
+        run: nvidia-ctk cdi list
 
   test_deb_13_in_wsl:
     name: Test Debian 13 in WSL
