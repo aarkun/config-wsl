@@ -55,7 +55,7 @@ jobs:
       - shell: wsl-bash {0}
         run: cat /etc/debian_version
       - shell: wsl-bash {0}
-        run: 'echo FIXME: ./bin/config_debian.sh'
+        run: ./bin/config_debian.sh
         name:  Configure Debian as root
       - shell: wsl-bash {0}
         run: cat /etc/debian_version
