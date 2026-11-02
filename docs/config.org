@@ -110,7 +110,7 @@ Starting from WSL 1.25, the new deb822 format for APT sources is used. The comma
          apt-get install -y ca-certificates
    #+end_src
 
-2. Remove the old =sources.list= and make a backup:
+2. Remove the old =sources.list= and make a backup, if it exists:
    #+begin_src shell :dir /sudo:: :results silent
      test -f /etc/apt/sources.list && \
          mv /etc/apt/sources.list /etc/apt/sources.list.bak
@@ -131,23 +131,24 @@ Starting from WSL 1.25, the new deb822 format for APT sources is used. The comma
      Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
    #+end_example
 
-  The keyrings in Debian Bookworm are stored as =*.gpg= files. During the [[* Upgrade to latest Debian 13 (Trixie)][upgrade to Debian Trixie]], =*.pgp= files are created instead along with =*.gpg= symlinks.
-  To prevent problems during an upgrade, no additional files are created in =/usr/share/keyrings/=. The following =/etc/apt/sources.list.d/0000debian.sources= is created, which references =*.gpg= files instead, to be compatible to upcoming WSL distributions:
-  #+begin_src shell :dir /sudo:: :results silent
-    tee /etc/apt/sources.list.d/0000debian.sources <<EOF
-    Types: deb
-    URIs: https://deb.debian.org/debian
-    Suites: bookworm bookworm-updates bookworm-backports
-    Components: main
-    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+   The keyrings in Debian Bookworm are stored as =*.gpg= files. During the [[* Upgrade to latest Debian 13 (Trixie)][upgrade to Debian Trixie]], =*.pgp= files are created instead along with =*.gpg= symlinks.
+   To prevent problems during an upgrade, no additional files are created in =/usr/share/keyrings/=. The following =/etc/apt/sources.list.d/0000debian.sources= is created, if it not exists. It references =*.gpg= files instead of =*.pgp=, to be compatible to upcoming WSL distributions:
+   #+begin_src shell :dir /sudo:: :results silent
+     test ! -f /etc/apt/sources.list.d/0000debian.sources && \
+         tee /etc/apt/sources.list.d/0000debian.sources <<EOF
+     Types: deb
+     URIs: https://deb.debian.org/debian
+     Suites: bookworm bookworm-updates bookworm-backports
+     Components: main
+     Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 
-    Types: deb
-    URIs: https://security.debian.org/debian-security
-    Suites: bookworm-security
-    Components: main
-    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
-    EOF
-  #+end_src
+     Types: deb
+     URIs: https://security.debian.org/debian-security
+     Suites: bookworm-security
+     Components: main
+     Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+     EOF
+   #+end_src
 
 4. To verify, check the files in =/etc/apt/=:
    #+begin_src shell :noweb-ref nil

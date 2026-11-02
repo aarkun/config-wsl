@@ -8,7 +8,8 @@ apt-get update && \
     apt-get install -y ca-certificates
 test -f /etc/apt/sources.list && \
     mv /etc/apt/sources.list /etc/apt/sources.list.bak
-tee /etc/apt/sources.list.d/0000debian.sources <<EOF
+test ! -f /etc/apt/sources.list.d/0000debian.sources && \
+    tee /etc/apt/sources.list.d/0000debian.sources <<EOF
 Types: deb
 URIs: https://deb.debian.org/debian
 Suites: bookworm bookworm-updates bookworm-backports
