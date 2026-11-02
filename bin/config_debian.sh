@@ -4,6 +4,24 @@ set -e
 echo 'Start Debian configuration'
 
 echo 'APT::Install-Recommends "0";' > /etc/apt/apt.conf.d/10get
+apt-get update && \
+    apt-get install -y ca-certificates
+test -f /etc/apt/sources.list && \
+    mv /etc/apt/sources.list /etc/apt/sources.list.bak
+tee /etc/apt/sources.list.d/0000debian.sources <<EOF
+Types: deb
+URIs: https://deb.debian.org/debian
+Suites: bookworm bookworm-updates bookworm-backports
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Types: deb
+URIs: https://security.debian.org/debian-security
+Suites: bookworm-security
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+EOF
+apt-get update
 sed /etc/apt/sources.list -e \
     's/\(deb.* \)main/\1non-free non-free-firmware/' \
     > /etc/apt/sources.list.d/debian.non-free.list

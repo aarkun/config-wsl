@@ -19,6 +19,7 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
   echo 'Start Debian configuration'
 
   <<apt_disable_recs>>
+  <<apt_modernize_apt-sources>>
   <<apt_add_non-free>>
 
   <<upgrade_2_trixie_fix_apt-sources>>
@@ -94,6 +95,74 @@ To verify, execute:
 This should result to:
 : APT::Install-Recommends "0";
 : APT::Install-Suggests "0";
+
+** Migrate sources to deb822-style
+:PROPERTIES:
+:header-args+: :noweb-ref apt_modernize_apt-sources
+:END:
+
+Starting from WSL 1.25, the new deb822 format for APT sources is used. The command ~apt modernize-sources~, which is described in the [[https://www.debian.org/doc/manuals/debian-reference/ch02#_debian_archive_basics][Debian Reference manual]], is available since [[https://salsa.debian.org/apt-team/apt/-/commit/9d7a660611e9e134cd6d74a594bde59cad77c8d8][apt version 2.9.26]]. This version is not yet available in Debian Bookworm. Therefore the migration has to be done manually.
+
+1. When using the deb822 format, the package [[https://packages.debian.org/trixie/ca-certificates][ca-certificates]] needs to be installed, so that the sources can be validated during ~apt-get update~ via [[https://manpages.debian.org/trixie/apt/apt-secure.8.en.html][aot-secure]]:
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get update && \
+         apt-get install -y ca-certificates
+   #+end_src
+
+2. Remove the old =sources.list= and make a backup:
+   #+begin_src shell :dir /sudo:: :results silent
+     test -f /etc/apt/sources.list && \
+         mv /etc/apt/sources.list /etc/apt/sources.list.bak
+   #+end_src
+
+3. The default =/etc/apt/sources.list.d/0000debian.sources=, which is shipped with WSL 1.25, differs from =/etc/apt/sources.list.d/debian.sources=, which is described as the default in the Debian Reference manual and the one, which would be created by ~apt modernize-sources~:
+   #+begin_example
+     Types: deb
+     URIs: https://deb.debian.org/debian
+     Suites: trixie trixie-updates trixie-backports
+     Components: main
+     Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
+
+     Types: deb
+     URIs: https://security.debian.org/debian-security
+     Suites: trixie-security
+     Components: main
+     Signed-By: /usr/share/keyrings/debian-archive-keyring.pgp
+   #+end_example
+
+  The keyrings in Debian Bookworm are stored as =*.gpg= files. During the [[* Upgrade to latest Debian 13 (Trixie)][upgrade to Debian Trixie]], =*.pgp= files are created instead along with =*.gpg= symlinks.
+  To prevent problems during an upgrade, no additional files are created in =/usr/share/keyrings/=. The following =/etc/apt/sources.list.d/0000debian.sources= is created, which references =*.gpg= files instead, to be compatible to upcoming WSL distributions:
+  #+begin_src shell :dir /sudo:: :results silent
+    tee /etc/apt/sources.list.d/0000debian.sources <<EOF
+    Types: deb
+    URIs: https://deb.debian.org/debian
+    Suites: bookworm bookworm-updates bookworm-backports
+    Components: main
+    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+    Types: deb
+    URIs: https://security.debian.org/debian-security
+    Suites: bookworm-security
+    Components: main
+    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+    EOF
+  #+end_src
+
+4. To verify, check the files in =/etc/apt/=:
+   #+begin_src shell :noweb-ref nil
+     ls /etc/apt/sources.list*
+   #+end_src
+
+   This should result to something like
+   : /etc/apt/sources.list.bak
+   :
+   : /etc/apt/sources.list.d:
+   : 0000debian.sources
+
+5. After that, updating apt is necessary:
+   #+begin_src shell :dir /sudo:: :results silent
+     apt-get update
+   #+end_src
 
 ** Add non-free packages
 To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file =/etc/apt/sources.list.d/debian.non-free.list= and update APT:
