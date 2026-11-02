@@ -27,15 +27,20 @@ sed /etc/apt/sources.list.d/0000debian.sources -e \
     > /etc/apt/sources.list.d/debian.non-free.sources
 apt-get update
 
-find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
+find /etc/apt -name '*.list' -a ! -name '*nvidia*' \
+     -exec sed -i -e 's/stable/bookworm/g' {} \;
+find /etc/apt/sources.list.d -name '*.sources' -a ! -name '*docker*' \
+     -exec sed -i -e '/^Suites: /s/stable/bookworm/g' {} \;
 apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
-dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
+dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' \
+    | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
 
 unavailable_packages="$(mktemp)"
-apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' | sort -u > "$unavailable_packages"
+apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' \
+    | sort -u > "$unavailable_packages"
 
 comm -23 "$installed_packages" "$unavailable_packages" | xargs apt-get purge -y
 
@@ -45,14 +50,18 @@ rm "$unavailable_packages"
 unset installed_packages
 unset unavailable_packages
 find /etc/apt -name '*.list' -exec sed -i -e 's/bookworm/trixie/g' {} \;
+find /etc/apt/sources.list.d -name '*.sources' \
+     -exec sed -i -e '/^Suites: /s/bookworm/trixie/g' {} \;
 apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade --purge -y
 find /etc/ -regex '.*\.dpkg-\(old\|new\)' -delete
 installed_packages="$(mktemp)"
-dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
+dpkg-query -W -f '${db:Status-Abbrev}\t${Package}\n' \
+    | grep '^.[^nc]' | cut -f2 | sort > "$installed_packages"
 
 unavailable_packages="$(mktemp)"
-apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' | sort -u > "$unavailable_packages"
+apt-cache dumpavail | sed -rn 's/^Package: (.*)/\1/p' \
+    | sort -u > "$unavailable_packages"
 
 comm -23 "$installed_packages" "$unavailable_packages" | xargs apt-get purge -y
 
@@ -61,6 +70,8 @@ rm "$unavailable_packages"
 
 unset installed_packages
 unset unavailable_packages
+find /etc/apt/sources.list.d -name '*.sources' \
+     -exec sed -i -E 's/^(Signed-By: .*)\.gpg/\1.pgp/g' {} \;
 
 update-alternatives --set editor /usr/bin/vim.tiny
 
