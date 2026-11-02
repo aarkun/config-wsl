@@ -20,7 +20,7 @@ To automate the configuration the script [[file:~/work/config-wsl/bin/config_deb
 
   <<apt_disable_recs>>
   <<apt_modernize_apt-sources>>
-  <<apt_add_non-free>>
+  <<apt_add_non-free_apt-sources>>
 
   <<upgrade_2_trixie_fix_apt-sources>>
   <<apt_dist_upgrade>>
@@ -165,14 +165,35 @@ Starting from WSL 1.25, the new deb822 format for APT sources is used. The comma
    #+end_src
 
 ** Add non-free packages
-To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file =/etc/apt/sources.list.d/debian.non-free.list= and update APT:
-#+name: apt_add_non-free
+To install non-free packages, like [[https://packages.debian.org/bookworm/emacs-common-non-dfsg][emacs-common-non-dfsg]], add a file =/etc/apt/sources.list.d/debian.non-free.sources= and update apt:
+https://www.debian.org/releases/stable/release-notes/upgrading.html#adding-apt-internet-sources
+#+name: apt_add_non-free_apt-sources
 #+begin_src shell :dir /sudo:: :results silent
-  sed /etc/apt/sources.list -e \
-      's/\(deb.* \)main/\1non-free non-free-firmware/' \
-      > /etc/apt/sources.list.d/debian.non-free.list
+  sed /etc/apt/sources.list.d/0000debian.sources -e \
+      's/\(Components: \)main/\1non-free non-free-firmware/' \
+      > /etc/apt/sources.list.d/debian.non-free.sources
   apt-get update
 #+end_src
+
+To verify, execute the following:
+#+begin_src shell
+  cat /etc/apt/sources.list.d/debian.non-free.sources
+#+end_src
+
+This should result to:
+#+begin_example
+  Types: deb
+  URIs: https://deb.debian.org/debian
+  Suites: bookworm bookworm-updates bookworm-backports
+  Components: non-free non-free-firmware
+  Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+  Types: deb
+  URIs: https://security.debian.org/debian-security
+  Suites: bookworm-security
+  Components: non-free non-free-firmware
+  Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+#+end_example
 
 ** Set default editor
 Based on  https://wiki.debian.org/TextEditor set the default editor globally to the already installed [[https://packages.debian.org/bookworm/vim-tiny][vim.tiny]]:

@@ -22,9 +22,9 @@ Components: main
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 EOF
 apt-get update
-sed /etc/apt/sources.list -e \
-    's/\(deb.* \)main/\1non-free non-free-firmware/' \
-    > /etc/apt/sources.list.d/debian.non-free.list
+sed /etc/apt/sources.list.d/0000debian.sources -e \
+    's/\(Components: \)main/\1non-free non-free-firmware/' \
+    > /etc/apt/sources.list.d/debian.non-free.sources
 apt-get update
 
 find /etc/apt -name '*.list' -a ! -name '*nvidia*' -exec sed -i -e 's/stable/bookworm/g' {} \;
