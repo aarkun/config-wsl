@@ -451,7 +451,7 @@ This should result to something like:
   tst_nw
 #+end_example
 
-** Use docker-compose files
+** Use Docker Compose files
 There are several options to [[https://fedoramagazine.org/use-docker-compose-with-podman-to-orchestrate-containers-on-fedora/][use Docker compose files with Podman]], including:
 
 1. Use [[* Install podman-compose][podman-compose]]
@@ -468,7 +468,7 @@ This uses https://github.com/containers/podman-compose as a backend. It is the n
   apt-get install -y podman-compose
 #+end_src
 
-*** Install official docker compose
+*** Install official Docker Compose
 The installation is based on https://docs.docker.com/compose/install. Since Docker Desktop shall not be used, only the [[ https://docs.docker.com/compose/install/linux/#install-using-the-repository][Docker Compose plugin]] is installed.
 
 **** Set up the repository
