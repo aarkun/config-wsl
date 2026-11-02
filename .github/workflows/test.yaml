@@ -22,7 +22,7 @@ jobs:
             else echo Should not fail with unexpected error code; \
             exit 1; \
             fi)
-        name: Configure user as root
+        name: Configure user environment as root
 
   test_deb_12_in_wsl:
     name: Test Debian 12 in WSL
@@ -30,7 +30,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         name: Checkout repository
-      - run: id
       - uses: Vampire/setup-wsl@v7
         with:
           distribution: Debian-12
@@ -48,14 +47,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         name: Checkout repository
-      - run: id
       - uses: Vampire/setup-wsl@v7
         with:
           distribution: Debian-13
+          wsl-shell-user: test
       - shell: wsl-bash {0}
         run: cat /etc/debian_version
-      - shell: wsl-bash {0}
+      - shell: wsl-bash -u root {0}
         run: ./bin/config_debian.sh
         name:  Configure Debian as root
       - shell: wsl-bash {0}
         run: cat /etc/debian_version
+      - shell: wsl-bash {0}
+        run: ./bin/config_user.sh
+        name: Configure user environment as non-root
+      - shell: wsl-bash {0}
+        run: ls -la ~
