@@ -97,7 +97,7 @@ This should result to:
 : APT::Install-Recommends "0";
 : APT::Install-Suggests "0";
 
-** Migrate sources to deb822-style
+** Migrate sources to deb822 style
 :PROPERTIES:
 :header-args+: :noweb-ref apt_modernize_apt-sources
 :END:
