@@ -963,7 +963,6 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
   <<k6_install>>
 
   <<opencode_install>>
-  <<opencode_add_link>>
 
   <<trivy_install>>
 
@@ -1911,24 +1910,44 @@ Configure aider to use =AGENTS.md=, like it is described on [[https://agents.md/
 #+end_src
 
 ** Install OpenCode
-1. Following [[https://opencode.ai/docs/de#installation][the installation manual]], using npm. Install OpenCode into the local installation directory =~/opt/opencode=:
-   #+name: opencode_install
+:PROPERTIES:
+:header-args: :noweb-ref opencode_install
+:END:
+
+1. Following the [[https://opencode.ai/v2/docs/migrate-v1/][migration manual]], remove old v1 installation:
    #+begin_src shell :results silent
-     mkdir -p ~/opt
-     npm install -g --prefix ~/opt/opencode opencode-ai
+     npm uninstall -g --prefix ~/opt/opencode opencode-ai
+     rm -r ~/opt/opencode
    #+end_src
 
-2. Create a link to the installed version in =~/.local/bin=, to add =opencode= to the =PATH=:
-   #+name: opencode_add_link
+2. Following [[https://opencode.ai/v2/docs/#cli][CLI installation manual]], using npm. Install OpenCode into the local installation directory =~/opt/opencode=:
+   #+begin_src shell :results silent
+     mkdir -p ~/opt
+     npm install -g --prefix ~/opt/opencode @opencode/cli
+   #+end_src
+
+3. Create a link to the installed version in =~/.local/bin=, to add =opencode= to the =PATH=:
    #+begin_src shell mermaid_add_link :results silent
      mkdir -p ~/.local/bin
      ln -fs ~/opt/opencode/bin/opencode ~/.local/bin/opencode
    #+end_src
 
+4. Verify installation:
+   #+begin_src shell :noweb-ref nil
+     opencode --version
+   #+end_src
+
+   This should result into something like:
+   : opencode v2.2.5
+
 *** Upgrade OpenCode
+:PROPERTIES:
+:header-args: :noweb-ref nil
+:END:
+
 If OpenCode was installed like described above, the built in upgrade in OpenCode does not work. To update OpenCode execute the following:
 #+begin_src shell :results silent
-  npm update -g --prefix ~/opt/opencode opencode-ai
+  npm update -g --prefix ~/opt/opencode @opencode/cli
 #+end_src
 
 ** Install trivy 0.69.3
