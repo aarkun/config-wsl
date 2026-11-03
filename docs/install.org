@@ -43,21 +43,26 @@ If the target directory does not exist, it is created:
 
 If the user agent seems to be a browser the URL of ~salsa.debian.org~ demands some JavaScript code to be executed. So the user agent is set to something which does not look like a browser:
 #+begin_src powershell
-  $wsl_file = "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
+  $wsl_file = "Debian_WSL_AMD64_v1.19.0.0.wsl"
+  $install_file = "$target_dir\$wsl_file"
 
-  if (-Not (Test-Path $wsl_file)) {
+  if (-Not (Test-Path "$install_file")) {
       Invoke-WebRequest `
-        -OutFile "$wsl_file" `
+        -OutFile "$install_file" `
         -UserAgent 'foo' `
-        -Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
+        -Uri "https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/$wsl_file"
   }
 #+end_src
 
 *** Import the new distro
-Import the distro as second distro as =Debian-1= with files at =%USERPROFILE\wsl\Debian-1%=:
+Import the distro as second distro as =My_Debian_1= with files at =%USERPROFILE\wsl\My_Debian_1%=. The directory =%USERPROFILE\wsl= is created, if it does not exist:
 #+begin_src powershell
-  wsl --import Debian-1 $env:USERPROFILE\wsl\Debian-1 `
-    "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
+  $distro = "My_Debian_1"
+  $install_dir = "$env:USERPROFILE\wsl"
+
+  New-Item  -Path "$install_dir" -ItemType Directory -Force
+
+  wsl --import $distro "$install_dir\$distro" "$install_file"
   if(!$?) { Exit $LASTEXITCODE }
 #+end_src
 
@@ -65,17 +70,19 @@ Import the distro as second distro as =Debian-1= with files at =%USERPROFILE\wsl
 User creation is based on https://learn.microsoft.com/en-en/windows/wsl/build-custom-distro and the [[https://salsa.debian.org/debian/WSL/-/blob/master/linux_files/oobe.sh][oobe.sh]] of the Debian distribution:
 1. Create a user with default UID of 1000. Interaction is only needed to set the password. The username is based on the current username:
    #+begin_src powershell
-     wsl -d Debian-1 -u root sh -c "adduser --uid 1000 --quiet --gecos '' $env:USERNAME"
+     wsl -d $distro -u root sh -c `
+       "adduser --uid 1000 --quiet --gecos '' $env:USERNAME"
    #+end_src
 
 2. Add the user to the default groups:
    #+begin_src powershell
-     wsl -d Debian-1 -u root sh -c "usermod $env:USERNAME -aG 'adm,cdrom,sudo,dip,plugdev'"
+     wsl -d $distro -u root sh -c `
+       "usermod $env:USERNAME -aG 'adm,cdrom,sudo,dip,plugdev'"
    #+end_src
 
 3. Set the default user to the current username:
    #+begin_src powershell
-     wsl --manage Debian-1 --set-default-user $env:USERNAME
+     wsl --manage $distro --set-default-user $env:USERNAME
    #+end_src
 
 *** Install from local file
@@ -83,9 +90,9 @@ User creation is based on https://learn.microsoft.com/en-en/windows/wsl/build-cu
 :header-args:powershell: :tangle no
 :END:
 
-An alternate approach to import the downloaded file, is to install the distro from a local file, by using the parameter ~--from-file~. This option is not yet official documented. To install the WSL with the given name ~Debian-1~, execute:
+An alternate approach to import the downloaded file, is to install the distro from a local file, by using the parameter ~--from-file~. This option is not yet official documented. To install the WSL with the given name ~My_Debian_1~, execute:
 #+begin_src powershell
-  wsl --install --name Debian-1 --from-file .\Downloads\Debian_WSL_AMD64_v1.19.0.0.wsl
+  wsl --install --name $distro --from-file "$install_file"
 #+end_src
 
 This installs the given =.wsl= file as ~Debian- with files in a generated directory in =%LOCALAPPDATA%\wsl=. To find  the correct directory and more information about the WSL installation, execute:
@@ -131,18 +138,18 @@ This is an alternate approach, in which a base distro from a fresh installation 
 This works like a normal [[file:backup.org::#reimport][reimport]].
 1. Remove the new distro:
    #+begin_src powershell
-     wsl --unregister Debian-1
+     wsl --unregister My_Debian_1
    #+end_src
 
-2. Reimport the base distro as second distro /Debian-1/:
+2. Reimport the base distro as second distro /My_Debian_1/:
    #+begin_src powershell
-     wsl --import Debian-1 $env:USERPROFILE\wsl\Debian-1 `
+     wsl --import My_Debian_1 $env:USERPROFILE\wsl\My_Debian_1 `
        "$backup_dir\backup.wsl2.debian.base.tar"
    #+end_src
 
 3. Set the default user to the current username:
    #+begin_src powershell
-     wsl --manage Debian-1 --set-default-user $env:USERNAME
+     wsl --manage My_Debian_1 --set-default-user $env:USERNAME
    #+end_src
 
 * Verify created distros
@@ -154,18 +161,18 @@ To verify the distros, execute:
 This should result to:
 : Windows Subsystem for Linux Distributions:
 : Debian (Default)
-: Debian-1
+: My_Debian_1
 
 * Use the new distro
 Use the second distro with
 #+begin_src powershell
-  wsl -d Debian-1
+  wsl -d My_Debian_1
 #+end_src
 
 * Fix terminal
 After creating a new Terminal, error messages occur, because no icon is set. To fix this, set a proper icon in Terminal. Set Icon to one of the following options:
 - Tux :: ~ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png~
-- Debian swirl :: ~C:\Users\%USERPROFILE%\wsl\Debian-1\shortcut.ico~
+- Debian swirl :: ~C:\Users\%USERPROFILE%\wsl\My_Debian_1\shortcut.ico~
 
 * Run Linux GUI apps
 To [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][run Linux GUI apps on the Windows Subsystem for Linux]], an update may be necessary:
