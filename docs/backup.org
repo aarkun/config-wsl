@@ -111,7 +111,7 @@ The following files and directories are not regenerated during the [[file:config
 ** Global dotenv file
 Global dotenv file, containing environment variables and secrets. These are used by direnv and other tools:
 #+begin_src text
-  .env
+  .envrc
 #+end_src
 
 ** Aspell Dictionaries

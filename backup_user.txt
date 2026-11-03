@@ -1,4 +1,4 @@
-.env
+.envrc
 .aspell.de.prepl
 .aspell.de.pws
 .aspell.en.prepl
