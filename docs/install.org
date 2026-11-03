@@ -19,7 +19,7 @@ To install multiple Debian distros, several options exist:
 ** Use an official distro
 :PROPERTIES:
 :CUSTOM_ID: official_distro
-:header-args: powershell :tangle ../bin/install.ps1
+:header-args:powershell: :tangle ../bin/install.ps1
 :END:
 
 According to [[https://learn.microsoft.com/en-us/windows/wsl/build-custom-distro][Build a Custom Linux Distribution for WSL]], a =.wsl= file is only a [[https://www.gnu.org/software/tar/][Tar]] archive, which can be imported with ~wsl -import~.
@@ -77,6 +77,21 @@ User creation is based on https://learn.microsoft.com/en-en/windows/wsl/build-cu
    #+begin_src powershell
      wsl --manage Debian-1 --set-default-user $env:USERNAME
    #+end_src
+
+*** Install from local file
+:PROPERTIES:
+:header-args:powershell: :tangle no
+:END:
+
+An alternate approach to import the downloaded file, is to install the distro from a local file, by using the parameter ~--from-file~. This option is not yet official documented. To install the WSL with the given name ~Debian-1~, execute:
+#+begin_src powershell
+  wsl --install --name Debian-1 --from-file .\Downloads\Debian_WSL_AMD64_v1.19.0.0.wsl
+#+end_src
+
+This installs the given =.wsl= file as ~Debian- with files in a generated directory in =%LOCALAPPDATA%\wsl=. To find  the correct directory and more information about the WSL installation, execute:
+#+begin_src powershell
+  Get-ChildItem HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss -Recurse
+#+end_src
 
 ** Create and use a base distro
 :PROPERTIES:
