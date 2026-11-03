@@ -47,9 +47,9 @@ If the user agent seems to be a browser the URL of ~salsa.debian.org~ demands so
 
   if (-Not (Test-Path $wsl_file)) {
       Invoke-WebRequest `
-	-OutFile "$wsl_file" `
-	-UserAgent 'foo' `
-	-Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
+        -OutFile "$wsl_file" `
+        -UserAgent 'foo' `
+        -Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
   }
 #+end_src
 
