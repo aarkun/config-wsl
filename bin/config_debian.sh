@@ -192,6 +192,9 @@ apt-get install -y \
 	libgl1 \
 	libnss3
 
-apt-get install -y graphviz
+apt-get install -y \
+	curl \
+	gnupg \
+	graphviz
 
 echo 'Finished Debian configuration'
