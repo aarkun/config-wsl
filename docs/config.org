@@ -484,7 +484,7 @@ The installation is based on https://docs.docker.com/compose/install. Since Dock
 
 2. Add Docker's official GPG key:
    #+name: docker-compose_add_gpg-key
-   #+begin_src shell :results silent :session docker-compose_add :dir /sudo::
+   #+begin_src shell :results silent :session *docker-compose_add* :dir /sudo::
      DOCKER_KEY_FILE=/usr/share/keyrings/docker.asc
      curl -fsSL https://download.docker.com/linux/debian/gpg -o "$DOCKER_KEY_FILE"
      chmod 0644 "$DOCKER_KEY_FILE"
@@ -492,7 +492,7 @@ The installation is based on https://docs.docker.com/compose/install. Since Dock
 
 3. Add the repository to apt sources and update apt:
    #+name: docker-compose_add_apt-sources
-   #+begin_src shell :results silent :session docker-compose_add :dir /sudo::
+   #+begin_src shell :results silent :session *docker-compose_add* :dir /sudo::
      tee /etc/apt/sources.list.d/docker.sources <<EOF
      Types: deb
      URIs: https://download.docker.com/linux/debian
