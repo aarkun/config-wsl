@@ -54,9 +54,9 @@ If the user agent seems to be a browser the URL of ~salsa.debian.org~ demands so
 #+end_src
 
 *** Import the new distro
-Import the distro as second distro as =Debian-1= with files at =%USERPROFILE\Deb-Dir_1%=:
+Import the distro as second distro as =Debian-1= with files at =%USERPROFILE\wsl\Debian-1%=:
 #+begin_src powershell
-  wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
+  wsl --import Debian-1 $env:USERPROFILE\wsl\Debian-1 `
     "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
   if(!$?) { Exit $LASTEXITCODE }
 #+end_src
@@ -136,7 +136,7 @@ This works like a normal [[file:backup.org::#reimport][reimport]].
 
 2. Reimport the base distro as second distro /Debian-1/:
    #+begin_src powershell
-     wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
+     wsl --import Debian-1 $env:USERPROFILE\wsl\Debian-1 `
        "$backup_dir\backup.wsl2.debian.base.tar"
    #+end_src
 
@@ -165,7 +165,7 @@ Use the second distro with
 * Fix terminal
 After creating a new Terminal, error messages occur, because no icon is set. To fix this, set a proper icon in Terminal. Set Icon to one of the following options:
 - Tux :: ~ms-appx:///ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.png~
-- Debian swirl :: ~C:\Users\%USERPROFILE%\Deb-Dir_1\shortcut.ico~
+- Debian swirl :: ~C:\Users\%USERPROFILE%\wsl\Debian-1\shortcut.ico~
 
 * Run Linux GUI apps
 To [[https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps][run Linux GUI apps on the Windows Subsystem for Linux]], an update may be necessary:

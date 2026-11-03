@@ -13,7 +13,7 @@ if (-Not (Test-Path $wsl_file)) {
       -Uri 'https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/Debian_WSL_AMD64_v1.19.0.0.wsl'
 }
 
-wsl --import Debian-1 $env:USERPROFILE\Deb-Dir_1 `
+wsl --import Debian-1 $env:USERPROFILE\wsl\Debian-1 `
   "$target_dir\Debian_WSL_AMD64_v1.19.0.0.wsl"
 if(!$?) { Exit $LASTEXITCODE }
 
