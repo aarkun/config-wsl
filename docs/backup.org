@@ -91,11 +91,7 @@ The following files and directories are not regenerated during the [[file:config
 #+begin_src shell :tangle ../bin/backup_user.sh :mkdirp yes :noweb yes :shebang "#!/bin/sh" :exports none :results silent
   set -e
 
-  if [ $# -ne 1 ]; then
-      printf "ERROR: Wrong number of arguments!\nUsage: %s <backup_dir>\n" "${0}"
-      exit 1
-  fi
-  BACKUP_DIR="${1}"
+  BACKUP_DIR="${1:-.}"
   ARCHIVE_TAR="$BACKUP_DIR/backup_wsl2_$USER.tar"
 
   echo "Start backup user environment: $ARCHIVE_TAR"

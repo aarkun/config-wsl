@@ -1,11 +1,7 @@
 #!/bin/sh
 set -e
 
-if [ $# -ne 1 ]; then
-    printf "ERROR: Wrong number of arguments!\nUsage: %s <backup_dir>\n" "${0}"
-    exit 1
-fi
-BACKUP_DIR="${1}"
+BACKUP_DIR="${1:-.}"
 ARCHIVE_TAR="$BACKUP_DIR/backup_wsl2_$USER.tar"
 
 echo "Start backup user environment: $ARCHIVE_TAR"
