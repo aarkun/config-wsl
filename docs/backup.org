@@ -99,15 +99,23 @@ The following files and directories are not regenerated during the [[file:config
   mkdir -p "$BACKUP_DIR"
   tar -C ~ -cf $ARCHIVE_TAR \
       -T "$(dirname "${0}")/../backup_user.txt"
+  <<tar_add_dotenvs>>
   <<tar_add_gitconfig_includes>>
 
   echo 'Finished backup user environment'
 #+end_src
 
-** Global dotenv file
-Global dotenv file, containing environment variables and secrets. These are used by direnv and other tools:
+** dotenv files
+The global dotenv file, containing environment variables and secrets. These are used by direnv and other tools:
 #+begin_src text
   .envrc
+#+end_src
+
+Append dotenv files from within directory =~/work= to the archive. Also strip the prefix for the HOME directory from the file paths within the archive:
+#+name: tar_add_dotenvs
+#+begin_src shell :results silent
+  find ~/work -name '.envrc' -exec \
+       tar --transform "s|home/$USER/||" -rf $ARCHIVE_TAR {} \;
 #+end_src
 
 ** Aspell Dictionaries
