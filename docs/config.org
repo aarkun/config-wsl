@@ -893,8 +893,6 @@ The script [[file:~/work/config-wsl/bin/config_user.sh][config_user.sh]] include
   <<asdf_create_config>>
 
   <<direnv_install>>
-  <<direnv_hook_into_shell>>
-  <<direnv_config_accept_env>>
 
   <<kubectl_install>>
 
@@ -1154,10 +1152,13 @@ Create a configuration file =$HOME/.asdfrc=, to support versions files used by o
    #+end_src
 
 ** Install direnv
+:PROPERTIES:
+:header-args:shell: :noweb-ref direnv_install
+:END:
+
 For many configurations, [[https://direnv.net/][direnv]] is very useful. In general, the latest version of direnv is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:
 
 1. Add the asdf plugin and install the latest version of kubectl with asdf:
-   #+name: direnv_install
    #+begin_src shell :results silent
      asdf plugin add direnv
      asdf install direnv latest
@@ -1165,7 +1166,7 @@ For many configurations, [[https://direnv.net/][direnv]] is very useful. In gene
    #+end_src
 
 2. Verify installation:
-   #+begin_src shell
+   #+begin_src shell :noweb-ref nil
      direnv --version
    #+end_src
 
@@ -1174,18 +1175,12 @@ For many configurations, [[https://direnv.net/][direnv]] is very useful. In gene
 
 3. [[https://direnv.net/docs/hook.html][Hook]] direnv into the shell.
    =.bashrc= is sourced into =.profile= before the =PATH= is extended in =.profile=. Therefore, neither the executable =asdf=, nor =direnv= can be used without a prefix. To get the current path of =direnv=, ~which~ is used, which should result to the shim =~/.asdf/shims/direnv=. Because the shim =~/.asdf/shims/direnv= itself uses the command ~asdf~ without a prefix, The path to =asdf= is also temporarily added to the command:
-   #+name: direnv_hook_into_shell
    #+begin_src shell :results silent
      printf '\n. <(PATH="$HOME/.local/bin:$PATH" %s hook bash)\n' "$(which direnv)" \
             >> ~/.bashrc
    #+end_src
 
-4. Configure direnv by its [[https://direnv.net/man/direnv.toml.1.html][configuration file]] =$HOME/.config/direnv/direnv.toml= to accept =.env= files:
-   #+name: direnv_config_accept_env
-   #+begin_src shell :results silent
-     mkdir -p ~/.config/direnv
-     printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
-   #+end_src
+*Note* Do *not* configure direnv to accept =.env= files, because this might clash with existing =.env= files.
 
 ** Install kubectl
 In general, the latest version of [[https://kubernetes.io/docs/reference/kubectl/][kubectl]] is used for all projects as a default. It may be overridden for specific projects by an existing =.tool-versions=:

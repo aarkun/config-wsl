@@ -65,8 +65,6 @@ asdf install direnv latest
 asdf set -u direnv latest
 printf '\n. <(PATH="$HOME/.local/bin:$PATH" %s hook bash)\n' "$(which direnv)" \
        >> ~/.bashrc
-mkdir -p ~/.config/direnv
-printf '[global]\nload_dotenv = true\n' > ~/.config/direnv/direnv.toml
 
 asdf plugin add kubectl
 asdf install kubectl latest
