@@ -97,25 +97,12 @@ The following files and directories are not regenerated during the [[file:config
   echo "Start backup user environment: $ARCHIVE_TAR"
 
   mkdir -p "$BACKUP_DIR"
-  tar -C ~ -cf $ARCHIVE_TAR \
+  tar -C ~ -cf "$ARCHIVE_TAR" \
       -T "$(dirname "${0}")/../backup_user.txt"
-  <<tar_add_dotenvs>>
+  <<tar_add_direnv_envrcs>>
   <<tar_add_gitconfig_includes>>
 
   echo 'Finished backup user environment'
-#+end_src
-
-** dotenv files
-The global dotenv file, containing environment variables and secrets. These are used by direnv and other tools:
-#+begin_src text
-  .envrc
-#+end_src
-
-Append dotenv files from within directory =~/work= to the archive. Also strip the prefix for the HOME directory from the file paths within the archive:
-#+name: tar_add_dotenvs
-#+begin_src shell :results silent
-  find ~/work -name '.envrc' -exec \
-       tar --transform "s|home/$USER/||" -rf $ARCHIVE_TAR {} \;
 #+end_src
 
 ** Aspell Dictionaries
@@ -133,6 +120,19 @@ Configuration of IntelliJ:
   .local/share/DBeaverData/workspace6
 #+end_src
 
+** direnv files
+The global =.envrc= file, containing environment variables and secrets. It is used by direnv:
+#+begin_src text
+  .envrc
+#+end_src
+
+Append =.envrc= files from within directory =~/work= to the archive. Also strip the prefix for the home directory from the file paths within the archive:
+#+name: tar_add_direnv_envrcs
+#+begin_src shell :results silent
+  find ~/work -name '.envrc' -exec \
+       tar --transform "s|home/$USER/||" -rf "$ARCHIVE_TAR" {} \;
+#+end_src
+
 ** Emacs Org agenda file
 The local Org agenda files, which are configured within [[https://github.com/aarkun/config-emacs/blob/main/init.org#define-agenda-files][Emacs]]:
 #+begin_src text
@@ -145,11 +145,11 @@ The global Git config file:
   .gitconfig
 #+end_src
 
-Append gitconfig includes from within directory =~/work= to the archive. Also strip the prefix for the HOME directory from the file paths within the archive:
+Append gitconfig includes from within directory =~/work= to the archive. Also strip the prefix for the home directory from the file paths within the archive:
 #+name: tar_add_gitconfig_includes
 #+begin_src shell :results silent
   find ~/work -name 'gitconfig*.inc' -exec \
-       tar --transform "s|home/$USER/||" -rf $ARCHIVE_TAR {} \;
+       tar --transform "s|home/$USER/||" -rf "$ARCHIVE_TAR" {} \;
 #+end_src
 
 ** GnuPG

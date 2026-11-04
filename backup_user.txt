@@ -1,9 +1,9 @@
-.envrc
 .aspell.de.prepl
 .aspell.de.pws
 .aspell.en.prepl
 .aspell.en.pws
 .local/share/DBeaverData/workspace6
+.envrc
 .emacs.d/org-agenda-files
 .gitconfig
 .gnupg
