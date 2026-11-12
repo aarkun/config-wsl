@@ -157,7 +157,7 @@ mkdir -p ~/.local/bin
 ln -fs ~/opt/VSCode-linux-x64/code ~/.local/bin/code
 
 gpg --recv-keys 019586D44BD80213
-PLANTUML_VERSION=1.2025.3
+PLANTUML_VERSION=1.2026.10
 PLANTUML_INSTALLATION_FILE=plantuml-$PLANTUML_VERSION.jar
 mkdir -p ~/opt
 curl -L -O --output-dir ~/opt \

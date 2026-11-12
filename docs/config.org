@@ -1748,7 +1748,7 @@ The latest version can be installed from https://dbeaver.io/download/.
      ln -fs ~/opt/VSCode-linux-x64/code ~/.local/bin/code
    #+end_src
 
-** Install PlantUML 1.2025.3
+** Install PlantUML 1.2026.10
 :PROPERTIES:
 :header-args:shell :session *plantuml_install* :noweb-ref plantuml_install
 :END:
@@ -1776,7 +1776,7 @@ The latest version can be installed from https://dbeaver.io/download/.
 
 2. Download the desired version of the GPL release from [[https://code.visualstudio.com/docs/supporting/faq#_previous-release-versions][https://plantuml.com/en/download]], to have the most features supported. Also download the corresponding signature:
    #+begin_src shell :results silent
-     PLANTUML_VERSION=1.2025.3
+     PLANTUML_VERSION=1.2026.10
      PLANTUML_INSTALLATION_FILE=plantuml-$PLANTUML_VERSION.jar
      mkdir -p ~/opt
      curl -L -O --output-dir ~/opt \
@@ -1803,8 +1803,8 @@ The latest version can be installed from https://dbeaver.io/download/.
    *Note*: This only works, if the signing key is present!
 
    In this case, the verification above should result to something like:
-   : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2025.3.jar'
-   : gpg: Signature made Sun 01 Jun 2025 11:18:54 AM CEST
+   : gpg: assuming signed data in '/home/kunde/opt/plantuml-1.2026.10.jar'
+   : gpg: Signature made Wed 11 Nov 2026 12:09:03 PM CET
    : gpg:                using RSA key 019586D44BD80213
    : gpg: Good signature from "PlantUML JAR Signing Key <plantuml@gmail.com>" [full]
 
@@ -1820,12 +1820,29 @@ The latest version can be installed from https://dbeaver.io/download/.
 
 6. Verify installation:
    #+begin_src shell :noweb-ref nil
-     java -jar ~/opt/plantuml.jar -testdot
+     java -jar ~/opt/plantuml.jar -version
    #+end_src
 
    This should result to something like:
-   : Dot version: dot - graphviz version 2.43.0 (0)
-   : Installation seems OK. File generation OK
+   #+begin_example
+     PlantUML version 1.2026.10 / a00edda [2026-11-11 11:04:35 UTC]
+     (GPL source distribution)
+
+     Build Version: 1.2026.10
+     Git Commit: a00edda
+     Compile Time: 2026-11-11 11:04:35 UTC
+
+     Java Runtime: OpenJDK Runtime Environment
+     JVM: OpenJDK 64-Bit Server VM
+     Default Encoding: UTF-8
+     Language: en
+     Country: US
+
+     PLANTUML_LIMIT_SIZE: 4096
+
+     GraphViz: dot - graphviz version 2.42.4 (0)
+     Installation seems OK. File generation OK
+   #+end_example
 
 ** Configure Testcontainers
 1. Set socket for Podman. According to [[https://podman-desktop.io/tutorial/testcontainers-with-podman][Testcontainers with Podman]], a file =$HOME/.testcontainers.properties= must be created:
