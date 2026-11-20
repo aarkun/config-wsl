@@ -4,14 +4,14 @@ Param (
 
 New-Item -Path "$target_dir" -ItemType Directory -Force
 
-$wsl_file = "Debian_WSL_AMD64_v1.19.0.0.wsl"
+$wsl_file = "Debian_WSL_AMD64_v1.27.0.0.wsl"
 $install_file = "$target_dir\$wsl_file"
 
 if (-Not (Test-Path "$install_file")) {
     Invoke-WebRequest `
       -OutFile "$install_file" `
       -UserAgent 'foo' `
-      -Uri "https://salsa.debian.org/debian/WSL/-/jobs/7125470/artifacts/raw/$wsl_file"
+      -Uri "https://salsa.debian.org/debian/WSL/-/jobs/10481389/artifacts/raw/$wsl_file"
 }
 
 $distro = "My_Debian_1"
